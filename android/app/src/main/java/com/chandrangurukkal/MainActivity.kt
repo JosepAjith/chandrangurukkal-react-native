@@ -1,4 +1,4 @@
-package com.chandrangurukkal
+package com.chandrangurukkal.mobile
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate
