@@ -39,7 +39,7 @@ const PasswordScreen: React.FC<Props> = () => {
           marginB-15
         />
 
-        <CommonButton title={'Login'} onPress={() => {}} />
+        <CommonButton title={'Login'} onPress={() => {navigation.navigate(RouteNames.Dashboard)}} />
 
         <Text>Forgot your password?</Text>
 

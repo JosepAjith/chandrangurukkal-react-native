@@ -32,6 +32,11 @@ fontFamily:AppFonts.LATO_MEDIUM
         height: 40,
         flexDirection: 'row',
       },
+      drawerText:{
+        fontSize:14,
+        fontFamily:AppFonts.LATO_REGULAR,
+        color:AppColors.greyBlack,
+      }
 });
 
 export default AppStyles;

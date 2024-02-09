@@ -7,7 +7,8 @@ const AppColors = {
     stroke: "#DEDEDE",
     whitish: "#FFFFFF",
     gray: "#8A8A8A",
-    black: "#262626"
+    black: "#262626",
+    greyBlack: "#363636"
     }
     
     export default AppColors;

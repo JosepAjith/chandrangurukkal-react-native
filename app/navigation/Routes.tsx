@@ -4,5 +4,17 @@ export const RouteNames = {
   RegisterScreen: 'RegisterScreen',
   ForgotPasswordScreen: 'ForgotPasswordScreen',
   PasswordScreen: 'PasswordScreen',
-  GuestLogin: 'GuestLogin'
+  GuestLogin: 'GuestLogin',
+  BottomTabs:'BottomTabs',
+  HomeScreen: 'HomeScreen',
+  AppointmentScreen: 'AppointmentScreen',
+  CallBackScreen: 'CallBackScreen',
+  Dashboard:'Dashboard',
+  MyProfile: 'MyProfile',
+  PrescriptionDetails: 'PrescriptionDetails',
+  PurchaseHistoryList: 'PurchaseHistoryList',
+  ReferNEarn: 'ReferNEarn',
+  OfferScreen: 'OfferScreen',
+  PurchaseHistoryDetails: 'PurchaseHistoryDetails',
+  Purchase:'Purchase'
 } as const;
