@@ -45,13 +45,13 @@ const HomeScreen: React.FC<Props> = () => {
   return (
     <ScrollView style={{backgroundColor: AppColors.white}}>
       <View flex paddingV-20>
-        <HomeHeader />
+        <HomeHeader leftIcon={AppImages.MENU} onPress={() => navigation.toggleDrawer()}/>
 
         <View flex marginT-20 marginB-60 paddingL-20>
           <Text style={styles.title}>Welcome back,</Text>
           <Text style={styles.nameText}>Krishna</Text>
 
-          <View style={styles.cardView}>
+          {/* <View style={styles.cardView}>
             <View style={{position: 'absolute', alignSelf: 'flex-end'}}>
               <Image source={AppImages.CARDLOGO} />
             </View>
@@ -67,9 +67,9 @@ const HomeScreen: React.FC<Props> = () => {
                 <Text style={styles.dateText}>June 22, 2024</Text>
               </View>
             </View>
-          </View>
+          </View> */}
 
-          <View>
+          <View marginT-20>
             <Text style={styles.title}>Packages</Text>
             <ScrollView horizontal>
               {packages.map((item, index) => (
@@ -108,7 +108,7 @@ const HomeScreen: React.FC<Props> = () => {
             </ScrollView>
           </View>
 
-          <CarouselView/>
+          {/* <CarouselView/> */}
         </View>
       </View>
     </ScrollView>

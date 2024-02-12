@@ -2,17 +2,18 @@ import React from 'react';
 import {Image, View} from 'react-native-ui-lib';
 import AppImages from '../constants/AppImages';
 import {TouchableOpacity} from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 
-interface Props {}
+interface Props {
+  leftIcon: any;
+  onPress? : any;
+}
 
-const HomeHeader = ({}: Props) => {
-    const navigation = useNavigation();
+const HomeHeader = ({leftIcon,onPress}: Props) => {
   return (
     <View row paddingH-20>
       <View flex left>
-        <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
-          <Image source={AppImages.MENU} width={24} height={24} />
+        <TouchableOpacity onPress={onPress}>
+          <Image source={leftIcon}/>
         </TouchableOpacity>
       </View>
 

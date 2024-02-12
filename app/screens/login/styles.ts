@@ -82,7 +82,20 @@ const styles = StyleSheet.create({
     fontFamily:AppFonts.LATO_REGULAR,
     fontSize:16,
     color:'#3A3A3A'
-  }
+  },
+  title1: {
+    fontSize: 24,
+    color: AppColors.black,
+    marginBottom:20,
+    fontFamily:AppFonts.LATO_MEDIUM
+  },
+  fgtPass:{
+    fontFamily:AppFonts.LATO_REGULAR,
+    fontSize:14,
+    color:AppColors.green,
+    alignSelf:'center',
+    marginTop:40
+  },
 });
 
 export default styles;

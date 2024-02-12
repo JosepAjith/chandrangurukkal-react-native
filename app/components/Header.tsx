@@ -14,8 +14,6 @@ const Header = ({onPress}: Props) => {
         <TouchableOpacity onPress={onPress}>
           <Image
             source={AppImages.LEFT}
-            width={24}
-            height={24}
             tintColor="black"
           />
         </TouchableOpacity>

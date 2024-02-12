@@ -3,6 +3,7 @@ LOGO: require('../images/Logo.png'),
 USER: require('../images/user.png'),
 LEFT: require('../images/left.png'),
 HOME: require('../images/home.png'),
+APPOINTMENT: require('../images/appointment.png'),
 CALENDAR: require('../images/calendar.png'),
 CALLBACK: require('../images/callback.png'),
 MENU: require('../images/menu.png'),
@@ -22,7 +23,10 @@ SHIRO: require('../images/shiro.png'),
 NASYAM: require('../images/nasyam.png'),
 ABHYA: require('../images/abhya.png'),
 KIZHI: require('../images/kizhi.png'),
-PURCHASEIMG: require('../images/purchase.png')
+PURCHASEIMG: require('../images/purchase.png'),
+NEXT: require('../images/next.png'),
+CLOCK: require('../images/clock.png'),
+DOWN: require('../images/down.png')
 }
 
 export default AppImages;

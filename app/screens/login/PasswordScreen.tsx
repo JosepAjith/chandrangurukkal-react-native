@@ -18,7 +18,10 @@ export type PasswordScreenNavigationProps = NativeStackNavigationProp<
   'PasswordScreen'
 >;
 
-export type PasswordScreenRouteProps = RouteProp<RootStackParams, 'PasswordScreen'>;
+export type PasswordScreenRouteProps = RouteProp<
+  RootStackParams,
+  'PasswordScreen'
+>;
 
 interface Props {}
 
@@ -27,9 +30,16 @@ const PasswordScreen: React.FC<Props> = () => {
 
   return (
     <View style={styles.container} paddingV-20>
-       <Header onPress={()=>{}}/>
-        <Text style={styles.title}>Enter password</Text>
-        <Text style={styles.text}>Use your password to login to your existing account</Text>
+      <Header
+        onPress={() => {
+          navigation.goBack();
+        }}
+      />
+      <View flex marginT-30>
+        <Text style={styles.title1}>Enter password</Text>
+        <Text style={styles.text}>
+          Use your password to login to your existing account
+        </Text>
 
         <TextField
           placeholder={'Password'}
@@ -37,12 +47,18 @@ const PasswordScreen: React.FC<Props> = () => {
           fieldStyle={styles.fieldStyle}
           paddingH-15
           marginB-15
+          marginT-30
         />
 
-        <CommonButton title={'Login'} onPress={() => {navigation.navigate(RouteNames.Dashboard)}} />
+        <CommonButton
+          title={'Login'}
+          onPress={() => {
+            navigation.navigate(RouteNames.Dashboard);
+          }}
+        />
 
-        <Text>Forgot your password?</Text>
-
+        <Text style={styles.fgtPass}>Forgot your password?</Text>
+      </View>
     </View>
   );
 };

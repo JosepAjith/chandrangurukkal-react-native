@@ -2,21 +2,24 @@ import React, {useEffect} from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {Image, Text, View} from 'react-native-ui-lib';
 import {RouteProp} from '@react-navigation/native';
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {NativeStackNavigationProp, createNativeStackNavigator} from '@react-navigation/native-stack';
 import {
   PermissionsAndroid,
   StyleSheet,
   TouchableWithoutFeedback,
 } from 'react-native';
-import {RootStackParams} from '../../navigation';
+import {RootStackParams, RouteNames} from '../../navigation';
 import HomeScreen from '../home/HomeScreen';
 import AppointmentScreen from '../appointment/AppointmentScreen';
 import CallBackScreen from '../callback/CallBackScreen';
 import AppImages from '../../constants/AppImages';
 import AppColors from '../../constants/AppColors';
 import AppFonts from '../../constants/AppFonts';
+import ScheduleAppointment from '../appointment/ScheduleAppointment';
+import ConfirmAppointment from '../appointment/ConfirmAppointment';
 
 const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
 
 export type BottomTabsNavigationProps = NativeStackNavigationProp<
   RootStackParams,
@@ -65,12 +68,12 @@ const BottomTabs: React.FC<Props> = () => {
       />
       <Tab.Screen
         name="Appointment"
-        component={AppointmentScreen}
+        component={Appointment}
         options={{
           tabBarIcon: ({focused}) => (
             <View center>
               <Image
-                source={AppImages.CALENDAR}
+                source={AppImages.APPOINTMENT}
                 resizeMode="contain"
                 style={{
                   width: 20,
@@ -113,6 +116,22 @@ const BottomTabs: React.FC<Props> = () => {
     </Tab.Navigator>
   );
 };
+
+const Appointment = () => {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+        animationTypeForReplace: 'pop',
+        animation: 'slide_from_right',
+        animationDuration: 1000,
+      }}>
+      <Stack.Screen name={RouteNames.AppointmentScreen} component={AppointmentScreen} />
+      <Stack.Screen name={RouteNames.ScheduleAppointment} component={ScheduleAppointment} />
+      <Stack.Screen name={RouteNames.ConfirmAppointment} component={ConfirmAppointment} />
+    </Stack.Navigator>
+  );
+}
 
 export default BottomTabs;
 

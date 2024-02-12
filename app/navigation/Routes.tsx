@@ -16,5 +16,7 @@ export const RouteNames = {
   ReferNEarn: 'ReferNEarn',
   OfferScreen: 'OfferScreen',
   PurchaseHistoryDetails: 'PurchaseHistoryDetails',
-  Purchase:'Purchase'
+  Purchase:'Purchase',
+  ScheduleAppointment: 'ScheduleAppointment',
+  ConfirmAppointment:'ConfirmAppointment'
 } as const;

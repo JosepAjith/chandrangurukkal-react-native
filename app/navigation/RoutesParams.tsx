@@ -18,4 +18,6 @@ export type RootStackParams = {
   ReferNEarn: undefined;
   OfferScreen: undefined;
   PurchaseHistoryDetails: undefined;
+  ScheduleAppointment: undefined;
+  ConfirmAppointment: undefined;
 };
