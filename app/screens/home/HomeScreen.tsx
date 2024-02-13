@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
-import {Button, Image, Incubator, Text, View} from 'react-native-ui-lib';
+import {Button, GridList, Image, Incubator, Spacings, Text, View} from 'react-native-ui-lib';
 import {RootStackParams} from '../../navigation';
 import {RouteProp} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {useNavigation} from '@react-navigation/native';
 import AppImages from '../../constants/AppImages';
-import {ImageBackground, ScrollView, TouchableOpacity} from 'react-native';
+import {Dimensions, FlatList, ImageBackground, ScrollView, TouchableOpacity} from 'react-native';
 import MenuDrawer from '../drawer/MenuDrawer';
 import HomeHeader from '../../components/HomeHeader';
 import {styles} from './style';
@@ -25,6 +25,8 @@ interface Props {}
 
 const HomeScreen: React.FC<Props> = () => {
   const navigation = useNavigation<HomeScreenNavigationProps>();
+  const windowWidth = Dimensions.get('window').width;
+  const itemWidth = (windowWidth - 50) / 2;
   const [packages, setPackages] = useState([
     {id: 1, image: AppImages.SERVICE, title: 'Body Rejuvenation Package'},
     {id: 2, image: AppImages.SERVICE, title: 'Body Detox Package'},
@@ -40,16 +42,22 @@ const HomeScreen: React.FC<Props> = () => {
     {id: 5, image: AppImages.SHIRO, title: 'Tharpanam'},
     {id: 6, image: AppImages.ABHYA, title: 'Pizhichil'},
     {id: 7, image: AppImages.NASYAM, title: 'Shirodhara'},
-    {id: 8, image: AppImages.KIZHI, title: 'View All'},
+    {id: 8, image: AppImages.KIZHI, title: 'Tharpanam'},
+    {id: 9, image: AppImages.SHIRO, title: 'Shirovasti'},
+    {id: 10, image: AppImages.ABHYA, title: 'Abhyanga'},
+    {id: 11, image: AppImages.NASYAM, title: 'Nasyam'},
+    {id: 12, image: AppImages.KIZHI, title: 'Kizhi'},
+    {id: 13, image: AppImages.SHIRO, title: 'Tharpanam'},
+    {id: 14, image: AppImages.ABHYA, title: 'Pizhichil'},
+    {id: 15, image: AppImages.NASYAM, title: 'Shirodhara'}
   ]);
   return (
     <ScrollView style={{backgroundColor: AppColors.white}}>
       <View flex paddingV-20>
         <HomeHeader leftIcon={AppImages.MENU} onPress={() => navigation.toggleDrawer()}/>
 
-        <View flex marginT-20 marginB-60 paddingL-20>
-          <Text style={styles.title}>Welcome back,</Text>
-          <Text style={styles.nameText}>Krishna</Text>
+        <View flex marginT-20 marginB-60>
+          
 
           {/* <View style={styles.cardView}>
             <View style={{position: 'absolute', alignSelf: 'flex-end'}}>
@@ -69,7 +77,9 @@ const HomeScreen: React.FC<Props> = () => {
             </View>
           </View> */}
 
-          <View marginT-20>
+          <View paddingL-20>
+          <Text style={styles.title}>Welcome back,</Text>
+          <Text style={styles.nameText}>Krishna</Text>
             <Text style={styles.title}>Packages</Text>
             <ScrollView horizontal>
               {packages.map((item, index) => (
@@ -96,16 +106,24 @@ const HomeScreen: React.FC<Props> = () => {
             </ScrollView>
           </View>
 
-          <View marginV-20>
-            <Text style={styles.title}>Services</Text>
-            <ScrollView horizontal>
-              {services.map((item, index) => (
-                <View key={index} center marginT-10 marginR-10>
-                  <Image source={item.image} width={80} height={80} />
-                  <Text style={styles.serviceText}>{item.title}</Text>
-                </View>
-              ))}
-            </ScrollView>
+          <View >
+            <Text style={[styles.title,{padding:20}]}>Services</Text>
+
+            <GridList
+        
+             listPadding={20}
+          data={services}
+          numColumns={4}
+          renderItem={({item, index}) => {
+            return (
+              <TouchableOpacity>
+                         <View center>
+                         <Image  source={item.image} width={70} height={70} />
+              <Text style={styles.serviceText}>{item.title}</Text>
+             </View>
+              </TouchableOpacity>
+            )}}
+        />
           </View>
 
           {/* <CarouselView/> */}

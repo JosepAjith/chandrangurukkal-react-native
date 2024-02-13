@@ -18,6 +18,8 @@ import AppColors from '../constants/AppColors';
 import AppStyles from '../constants/AppStyles';
 import PurchaseHistoryList from '../screens/purchase/PurchaseHistoryList';
 import PurchaseHistoryDetails from '../screens/purchase/PurchaseHistoryDetails';
+import ScheduleAppointment from '../screens/appointment/ScheduleAppointment';
+import ConfirmAppointment from '../screens/appointment/ConfirmAppointment';
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -39,6 +41,8 @@ const AppStack = () => {
       />
       <Stack.Screen name={RouteNames.GuestLogin} component={GuestLogin} />
       <Stack.Screen name={RouteNames.Dashboard} component={DrawerStack} />
+      <Stack.Screen name={RouteNames.ScheduleAppointment} component={ScheduleAppointment} />
+      <Stack.Screen name={RouteNames.ConfirmAppointment} component={ConfirmAppointment} />
     </Stack.Navigator>
   );
 };

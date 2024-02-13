@@ -26,7 +26,8 @@ KIZHI: require('../images/kizhi.png'),
 PURCHASEIMG: require('../images/purchase.png'),
 NEXT: require('../images/next.png'),
 CLOCK: require('../images/clock.png'),
-DOWN: require('../images/down.png')
+DOWN: require('../images/down.png'),
+ROUND: require('../images/round.png')
 }
 
 export default AppImages;

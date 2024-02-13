@@ -16,14 +16,14 @@ export const styles = StyleSheet.create({
         marginBottom:10
     },
     smallView:{
-        width:90,
         height:30,
         backgroundColor:'rgba(87, 87, 87, 0.32)',
         borderWidth:1,
         borderColor:'#BABABA',
         borderRadius:20,
         alignItems:'center',
-        justifyContent:'center'
+        justifyContent:'center',
+        paddingHorizontal:10
      },
      statusText: {
         fontSize:14,
@@ -34,7 +34,8 @@ export const styles = StyleSheet.create({
         position: 'absolute',
         left: 15,
         right: 0,
-        top: 15
+        top: 15,
+        width: 90
      },
      image:{
         width: '100%', height: 130,
@@ -56,4 +57,40 @@ export const styles = StyleSheet.create({
         fontSize:12,
         fontFamily:AppFonts.LATO_MEDIUM,
     },
+    detailsView:{
+        borderWidth:1,
+        borderColor:'#E4E4E4',
+        backgroundColor:AppColors.whitish,
+        marginBottom:10,
+        borderRadius:5,
+        padding:20
+    },
+    subHeading:{
+        color:AppColors.green,
+        fontSize:18,
+        fontFamily:AppFonts.LATO_MEDIUM,
+        marginBottom:10
+    },
+    innerView:{
+        backgroundColor:'#EDF2F0',
+        marginTop:10,
+        padding:20,
+        borderRadius:5
+    },
+    subText:{
+        color:AppColors.greyBlack,
+        fontSize:16,
+        fontFamily:AppFonts.LATO_MEDIUM,
+    },
+    subText1:{
+        color:'#818181',
+        fontSize:14,
+        fontFamily:AppFonts.LATO_REGULAR,
+        marginTop:10
+    },
+    priceText: {
+        fontSize:14,
+        fontFamily: AppFonts.LATO_MEDIUM,
+        color:AppColors.white
+     },
 })

@@ -5,16 +5,17 @@ import {TouchableOpacity} from 'react-native';
 
 interface Props {
   onPress: any;
+  color: any;
 }
 
-const Header = ({onPress}: Props) => {
+const Header = ({onPress, color}: Props) => {
   return (
     <View row backgroundColor="transparent">
       <View flex left>
         <TouchableOpacity onPress={onPress}>
           <Image
             source={AppImages.LEFT}
-            tintColor="black"
+            tintColor={color}
           />
         </TouchableOpacity>
       </View>

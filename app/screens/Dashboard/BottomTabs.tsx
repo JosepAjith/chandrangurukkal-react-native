@@ -15,11 +15,8 @@ import CallBackScreen from '../callback/CallBackScreen';
 import AppImages from '../../constants/AppImages';
 import AppColors from '../../constants/AppColors';
 import AppFonts from '../../constants/AppFonts';
-import ScheduleAppointment from '../appointment/ScheduleAppointment';
-import ConfirmAppointment from '../appointment/ConfirmAppointment';
 
 const Tab = createBottomTabNavigator();
-const Stack = createNativeStackNavigator();
 
 export type BottomTabsNavigationProps = NativeStackNavigationProp<
   RootStackParams,
@@ -68,7 +65,7 @@ const BottomTabs: React.FC<Props> = () => {
       />
       <Tab.Screen
         name="Appointment"
-        component={Appointment}
+        component={AppointmentScreen}
         options={{
           tabBarIcon: ({focused}) => (
             <View center>
@@ -116,22 +113,6 @@ const BottomTabs: React.FC<Props> = () => {
     </Tab.Navigator>
   );
 };
-
-const Appointment = () => {
-  return (
-    <Stack.Navigator
-      screenOptions={{
-        headerShown: false,
-        animationTypeForReplace: 'pop',
-        animation: 'slide_from_right',
-        animationDuration: 1000,
-      }}>
-      <Stack.Screen name={RouteNames.AppointmentScreen} component={AppointmentScreen} />
-      <Stack.Screen name={RouteNames.ScheduleAppointment} component={ScheduleAppointment} />
-      <Stack.Screen name={RouteNames.ConfirmAppointment} component={ConfirmAppointment} />
-    </Stack.Navigator>
-  );
-}
 
 export default BottomTabs;
 

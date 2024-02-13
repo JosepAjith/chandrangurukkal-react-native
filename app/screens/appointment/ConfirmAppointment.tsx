@@ -7,7 +7,6 @@ import {useNavigation} from '@react-navigation/native';
 import HomeHeader from '../../components/HomeHeader';
 import {styles} from './styles';
 import AppImages from '../../constants/AppImages';
-import {Dimensions, FlatList, ImageBackground} from 'react-native';
 import CommonButton from '../../components/CommonButton';
 
 const {TextField} = Incubator;
@@ -34,7 +33,7 @@ const ConfirmAppointment: React.FC<Props> = () => {
         onPress={() => navigation.goBack()}
       />
 
-      <View flex margin-20 marginB-60>
+      <View flex margin-20>
         <Text style={styles.heading}>Confirm Appointment?</Text>
 
         <Text style={styles.subHeading}>

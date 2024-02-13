@@ -13,7 +13,7 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: AppFonts.LATO_REGULAR,
     color: AppColors.black,
-    marginBottom:20
+    marginBottom: 20,
   },
   title: {
     fontSize: 18,
@@ -26,50 +26,77 @@ export const styles = StyleSheet.create({
     padding: 10,
     marginVertical: 6,
   },
-  rectangle:{
-    height:54,
-    borderWidth:1,
-    borderColor:AppColors.stroke,
-    backgroundColor:AppColors.fill,
-    borderRadius:5,
-    flexDirection:'row',
-    paddingHorizontal:20,
-    marginTop:20
+  rectangle: {
+    height: 54,
+    borderWidth: 1,
+    borderColor: AppColors.stroke,
+    backgroundColor: AppColors.fill,
+    borderRadius: 5,
+    flexDirection: 'row',
+    paddingHorizontal: 20,
+    marginTop: 20,
   },
-  label:{
-    fontSize:12,
-    fontFamily:AppFonts.LATO_REGULAR,
-    color:AppColors.lightGrey
+  label: {
+    fontSize: 12,
+    fontFamily: AppFonts.LATO_REGULAR,
+    color: AppColors.lightGrey,
   },
-  value:{
-    fontSize:16,
-    fontFamily:AppFonts.LATO_REGULAR,
-    color:AppColors.darkGrey
+  value: {
+    fontSize: 16,
+    fontFamily: AppFonts.LATO_REGULAR,
+    color: AppColors.gray,
   },
-  cardView:{
-    borderWidth:1,
-    borderColor:'#DFDFDF',
-    backgroundColor:'rgba(7,109,57,0.05)',
-    borderRadius:10,
-    padding:14,
-    marginVertical:20,
-    marginRight:20
- },
- details:{
-        fontSize: 20,
-        fontFamily: AppFonts.LATO_BOLD,
-        color: AppColors.green,
-        paddingVertical:10
- },
- text:{
-    fontSize:12,
-    fontFamily:AppFonts.LATO_REGULAR,
-    color:AppColors.black
+  cardView: {
+    borderWidth: 1,
+    borderColor: '#DFDFDF',
+    backgroundColor: 'rgba(7,109,57,0.05)',
+    borderRadius: 10,
+    padding: 14,
+    marginVertical: 20,
+    marginRight: 20,
   },
-  text1:{
-    fontSize:16,
-    fontFamily:AppFonts.LATO_MEDIUM,
-    color:AppColors.black,
-    marginTop:5
+  details: {
+    fontSize: 20,
+    fontFamily: AppFonts.LATO_BOLD,
+    color: AppColors.green,
+    paddingVertical: 10,
+  },
+  text: {
+    fontSize: 12,
+    fontFamily: AppFonts.LATO_REGULAR,
+    color: AppColors.black,
+  },
+  text1: {
+    fontSize: 16,
+    fontFamily: AppFonts.LATO_MEDIUM,
+    color: AppColors.black,
+    marginTop: 5,
+  },
+  chip: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+  },
+  handle: {
+    height:5,
+    width: 50,
+    alignSelf: 'center',
+    backgroundColor:'#D9D9D9',
+    borderRadius:8
+  },
+  modal: {
+    width: '100%',
+    position: 'absolute',
+    bottom: 0,
+    backgroundColor: 'white',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    elevation:10,
+    padding:20
+  },
+  select: {
+    fontSize: 16,
+    fontFamily: AppFonts.LATO_MEDIUM,
+    color: AppColors.green,
   },
 });

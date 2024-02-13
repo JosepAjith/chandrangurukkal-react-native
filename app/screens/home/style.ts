@@ -53,7 +53,8 @@ export const styles = StyleSheet.create({
  nameText: {
     fontSize:24,
     fontFamily: AppFonts.LATO_MEDIUM,
-    color:AppColors.black
+    color:AppColors.black,
+    marginBottom:20
  },
  packageText: {
     fontSize:22,

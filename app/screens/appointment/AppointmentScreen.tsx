@@ -7,7 +7,7 @@ import {useNavigation} from '@react-navigation/native';
 import HomeHeader from '../../components/HomeHeader';
 import {styles} from './styles';
 import AppImages from '../../constants/AppImages';
-import {Dimensions, FlatList, ImageBackground} from 'react-native';
+import {Dimensions, FlatList, ImageBackground, Pressable} from 'react-native';
 import CommonButton from '../../components/CommonButton';
 
 const {TextField} = Incubator;
@@ -36,14 +36,11 @@ const AppointmentScreen: React.FC<Props> = () => {
     {id: 5, image: AppImages.SERVICE, title: 'Six Months Package'},
     {id: 6, image: AppImages.SERVICE, title: 'ShiroVasti'},
     {id: 7, image: AppImages.SERVICE, title: 'Weight Loss Package'},
-    {id: 8, image: AppImages.SERVICE, title: 'One Year Package'},
-    {id: 9, image: AppImages.SERVICE, title: 'Body Rejuvenation Package'},
-    {id: 10, image: AppImages.SERVICE, title: 'Body Detox Package'},
+    {id: 8, image: AppImages.SERVICE, title: 'Weight Loss Package'},
+    {id: 9, image: AppImages.SERVICE, title: 'ShiroVasti'},
+    {id: 10, image: AppImages.SERVICE, title: 'Weight Loss Package'},
     {id: 11, image: AppImages.SERVICE, title: 'Weight Loss Package'},
-    {id: 12, image: AppImages.SERVICE, title: 'One Year Package'},
-    {id: 13, image: AppImages.SERVICE, title: 'Six Months Package'},
-    {id: 14, image: AppImages.SERVICE, title: 'ShiroVasti'},
-    {id: 15, image: AppImages.SERVICE, title: 'Weight Loss Package'},
+
   ]);
 
   return (
@@ -66,11 +63,14 @@ const AppointmentScreen: React.FC<Props> = () => {
             const isEvenIndex = index % 2 === 0;
             const alignmentStyle = isEvenIndex ? 'flex-start' : 'flex-end';
             return (
-              <View style={{ alignItems: alignmentStyle, flex: 1 }}>
+              <View style={{ alignItems: alignmentStyle, flex:1 }}>
               <ImageBackground
                 source={item.image}
                 style={[styles.itemView,{width: itemWidth}]}
                 imageStyle={{borderRadius: 5}}>
+                  <Pressable style={styles.chip}>
+                    <Image source={AppImages.ROUND}/>
+                  </Pressable>
                 <Text style={styles.title}>{item.title}</Text>
               </ImageBackground>
               </View>
@@ -78,7 +78,7 @@ const AppointmentScreen: React.FC<Props> = () => {
           }}
         />
 
-        <CommonButton title="Continue" onPress={() => navigation.navigate(RouteNames.ScheduleAppointment)} />
+        <CommonButton title="Continue" onPress={() => navigation.navigate(RouteNames.ScheduleAppointment,{status:'appoint'})} />
       </View>
     </View>
   );

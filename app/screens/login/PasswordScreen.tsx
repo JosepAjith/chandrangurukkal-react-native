@@ -34,6 +34,7 @@ const PasswordScreen: React.FC<Props> = () => {
         onPress={() => {
           navigation.goBack();
         }}
+        color={'black'}
       />
       <View flex marginT-30>
         <Text style={styles.title1}>Enter password</Text>
