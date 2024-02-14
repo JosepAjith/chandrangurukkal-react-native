@@ -1,11 +1,25 @@
 import React, {useState} from 'react';
-import {Button, GridList, Image, Incubator, Spacings, Text, View} from 'react-native-ui-lib';
-import {RootStackParams} from '../../navigation';
+import {
+  Button,
+  GridList,
+  Image,
+  Incubator,
+  Spacings,
+  Text,
+  View,
+} from 'react-native-ui-lib';
+import {RootStackParams, RouteNames} from '../../navigation';
 import {RouteProp} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {useNavigation} from '@react-navigation/native';
 import AppImages from '../../constants/AppImages';
-import {Dimensions, FlatList, ImageBackground, ScrollView, TouchableOpacity} from 'react-native';
+import {
+  Dimensions,
+  FlatList,
+  ImageBackground,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
 import MenuDrawer from '../drawer/MenuDrawer';
 import HomeHeader from '../../components/HomeHeader';
 import {styles} from './style';
@@ -49,16 +63,17 @@ const HomeScreen: React.FC<Props> = () => {
     {id: 12, image: AppImages.KIZHI, title: 'Kizhi'},
     {id: 13, image: AppImages.SHIRO, title: 'Tharpanam'},
     {id: 14, image: AppImages.ABHYA, title: 'Pizhichil'},
-    {id: 15, image: AppImages.NASYAM, title: 'Shirodhara'}
+    {id: 15, image: AppImages.NASYAM, title: 'Shirodhara'},
   ]);
   return (
     <ScrollView style={{backgroundColor: AppColors.white}}>
       <View flex paddingV-20>
-        <HomeHeader leftIcon={AppImages.MENU} onPress={() => navigation.toggleDrawer()}/>
+        <HomeHeader
+          leftIcon={AppImages.MENU}
+          onPress={() => navigation.toggleDrawer()}
+        />
 
         <View flex marginT-20 marginB-60>
-          
-
           {/* <View style={styles.cardView}>
             <View style={{position: 'absolute', alignSelf: 'flex-end'}}>
               <Image source={AppImages.CARDLOGO} />
@@ -78,8 +93,8 @@ const HomeScreen: React.FC<Props> = () => {
           </View> */}
 
           <View paddingL-20>
-          <Text style={styles.title}>Welcome back,</Text>
-          <Text style={styles.nameText}>Krishna</Text>
+            <Text style={styles.title}>Welcome back,</Text>
+            <Text style={styles.nameText}>Krishna</Text>
             <Text style={styles.title}>Packages</Text>
             <ScrollView horizontal>
               {packages.map((item, index) => (
@@ -106,24 +121,29 @@ const HomeScreen: React.FC<Props> = () => {
             </ScrollView>
           </View>
 
-          <View >
-            <Text style={[styles.title,{padding:20}]}>Services</Text>
+          <View>
+            <Text style={[styles.title, {padding: 20}]}>Services</Text>
 
             <GridList
-        
-             listPadding={20}
-          data={services}
-          numColumns={4}
-          renderItem={({item, index}) => {
-            return (
-              <TouchableOpacity>
-                         <View center>
-                         <Image  source={item.image} width={70} height={70} />
-              <Text style={styles.serviceText}>{item.title}</Text>
-             </View>
-              </TouchableOpacity>
-            )}}
-        />
+              listPadding={20}
+              data={services}
+              numColumns={4}
+              renderItem={({item, index}) => {
+                return (
+                  <TouchableOpacity
+                    onPress={() =>
+                      navigation.navigate(RouteNames.ScheduleAppointment, {
+                        status: 'appoint',
+                      })
+                    }>
+                    <View center>
+                      <Image source={item.image} width={70} height={70} />
+                      <Text style={styles.serviceText}>{item.title}</Text>
+                    </View>
+                  </TouchableOpacity>
+                );
+              }}
+            />
           </View>
 
           {/* <CarouselView/> */}

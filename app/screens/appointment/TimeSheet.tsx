@@ -1,5 +1,5 @@
 import React, {useRef, useState, useEffect} from 'react';
-import {Text, View, Incubator, Button} from 'react-native-ui-lib';
+import {Text, View, Incubator, Button, GridList} from 'react-native-ui-lib';
 import {Animated, Dimensions, PanResponder, StyleSheet} from 'react-native';
 import CommonButton from '../../components/CommonButton';
 import AppColors from '../../constants/AppColors';
@@ -8,6 +8,22 @@ const deviceHeight = Dimensions.get('window').height;
 
 const TimeSheet = (props: {close: any}) => {
   const close = props.close;
+  const [times, setTimes] = useState([
+    {id: 1, time: '06:00 AM'},
+    {id: 2, time: '07:00 AM'},
+    {id: 3, time: '08:00 AM'},
+    {id: 4, time: '09:00 AM'},
+    {id: 5, time: '10:00 AM'},
+    {id: 6, time: '11:00 AM'},
+    {id: 7, time: '12:00 PM'},
+    {id: 8, time: '02:00 PM'},
+    {id: 9, time: '03:00 PM'},
+    {id: 10, time: '04:00 PM'},
+    {id: 11, time: '05:00 PM'},
+    {id: 12, time: '06:00 PM'},
+    {id: 13, time: '07:00 PM'},
+    {id: 14, time: '08:00 PM'},
+  ]);
 
   useEffect(() => {
     openModal();
@@ -57,13 +73,27 @@ const TimeSheet = (props: {close: any}) => {
 
   return (
     <Animated.View
-      style={[styles.modal, {transform: [{translateY: modalY}]}]}
+      style={[styles.modal, {transform: [{translateY: modalY}],padding:0}]}
       {...panResponder.panHandlers}>
-      <View style={styles.handle} />
-      <View marginV-10>
-        <Text style={styles.select}>Select a time</Text>
+      <View style={[styles.handle,{marginTop:20}]} />
+      <View>
+        <Text style={[styles.select,{margin:20}]}>Select a time</Text>
+
+        <GridList
+     data={times}
+     listPadding={20}
+     numColumns={3}
+     renderItem={({item, index}) => {
+       return (
+        <View center paddingV-5 style={{borderWidth:1,borderColor:AppColors.stroke,backgroundColor:'#F1F1F1'}}>
+         <Text style={styles.time}>{item.time}</Text>
+         </View>
+       )}}
+   />
       </View>
+      <View padding-20>
       <CommonButton title="Confirm" onPress={() => close()} />
+      </View>
     </Animated.View>
   );
 };

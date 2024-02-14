@@ -99,4 +99,9 @@ export const styles = StyleSheet.create({
     fontFamily: AppFonts.LATO_MEDIUM,
     color: AppColors.green,
   },
+  time: {
+    fontSize: 16,
+    fontFamily: AppFonts.LATO_MEDIUM,
+    color: AppColors.black,
+  },
 });

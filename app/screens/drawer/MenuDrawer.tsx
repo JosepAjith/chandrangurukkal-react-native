@@ -18,9 +18,9 @@ const MenuDrawer = (props: any) => {
           <View>
             <Image source={AppImages.PROF1} />
           </View>
-          <View marginL-20>
-            <Text>Krishna</Text>
-            <Text>user@gmail.com</Text>
+          <View marginL-5>
+            <Text style={AppStyles.buttonlabel1}>Krishna</Text>
+            <Text style={[AppStyles.drawerText,{color:'#949494',marginLeft:10}]}>user@gmail.com</Text>
           </View>
         </View>
 
