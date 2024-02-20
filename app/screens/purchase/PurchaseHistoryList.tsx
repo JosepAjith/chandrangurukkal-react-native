@@ -61,6 +61,7 @@ const PurchaseHistoryList: React.FC<Props> = () => {
 
         <FlatList
           data={purchases}
+          showsVerticalScrollIndicator={false}
           renderItem={({item}) => {
             return (
               <TouchableOpacity onPress={()=>navigation.navigate(RouteNames.PurchaseHistoryDetails)}>

@@ -66,7 +66,7 @@ const HomeScreen: React.FC<Props> = () => {
     {id: 15, image: AppImages.NASYAM, title: 'Shirodhara'},
   ]);
   return (
-    <ScrollView style={{backgroundColor: AppColors.white}}>
+    <ScrollView style={{backgroundColor: AppColors.white}} showsVerticalScrollIndicator={false}>
       <View flex paddingV-20>
         <HomeHeader
           leftIcon={AppImages.MENU}
@@ -96,7 +96,7 @@ const HomeScreen: React.FC<Props> = () => {
             <Text style={styles.title}>Welcome back,</Text>
             <Text style={styles.nameText}>Krishna</Text>
             <Text style={styles.title}>Packages</Text>
-            <ScrollView horizontal>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
               {packages.map((item, index) => (
                 <View key={index} marginT-10 marginR-10>
                   <ImageBackground

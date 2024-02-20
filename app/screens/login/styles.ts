@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
   },
   footer: {
-    position: 'absolute',
+    // position: 'absolute',
     bottom: 20,
     alignSelf:'center'
   },

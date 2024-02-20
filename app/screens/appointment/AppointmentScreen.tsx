@@ -58,6 +58,7 @@ const AppointmentScreen: React.FC<Props> = () => {
         </Text>
         <FlatList
           data={packages}
+          showsVerticalScrollIndicator={false}
           numColumns={2}
           renderItem={({item, index}) => {
             const isEvenIndex = index % 2 === 0;

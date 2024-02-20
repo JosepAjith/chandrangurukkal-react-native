@@ -35,6 +35,7 @@ const GuestLogin: React.FC<Props> = () => {
 
         <ButtonView
           title={'Continue with Google'}
+          source={AppImages.GOOGLE}
           onPress={() => {}}
           bottom={20}
         />
@@ -42,12 +43,14 @@ const GuestLogin: React.FC<Props> = () => {
 <ButtonView
           title={'Continue with Facebook'}
           onPress={() => {}}
+          source={AppImages.FACEBOOK}
         />
 
         <Text style={styles.or}>or</Text>
 
         <ButtonView
           title={'Customer Login'}
+          source={AppImages.USER}
           onPress={() => {navigation.navigate(RouteNames.LoginScreen)}}
         />
       </View>

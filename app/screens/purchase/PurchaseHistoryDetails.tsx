@@ -80,6 +80,7 @@ const PurchaseHistoryDetails: React.FC<Props> = () => {
 
           <FlatList
             data={details}
+            showsVerticalScrollIndicator={false}
             renderItem={({item}) => {
               return (
                 <View style={styles.innerView}>

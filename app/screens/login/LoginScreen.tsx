@@ -53,6 +53,7 @@ const LoginScreen: React.FC<Props> = () => {
 
         <ButtonView
           title={'Guest Login'}
+          source={AppImages.USER}
           onPress={() => {
             navigation.navigate(RouteNames.GuestLogin);
           }}

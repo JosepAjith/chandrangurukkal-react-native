@@ -27,7 +27,9 @@ PURCHASEIMG: require('../images/purchase.png'),
 NEXT: require('../images/next.png'),
 CLOCK: require('../images/clock.png'),
 DOWN: require('../images/down.png'),
-ROUND: require('../images/round.png')
+ROUND: require('../images/round.png'),
+GOOGLE: require('../images/google.png'),
+FACEBOOK: require('../images/facebook.png')
 }
 
 export default AppImages;

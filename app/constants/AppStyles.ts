@@ -13,7 +13,6 @@ fontFamily:AppFonts.LATO_MEDIUM
         backgroundColor:AppColors.primary,
         width:'100%',
         borderRadius:5,
-        height:40
     },
     buttonlabel1: {
         color: AppColors.black,
