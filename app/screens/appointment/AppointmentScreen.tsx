@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Button, Image, Incubator, Text, View} from 'react-native-ui-lib';
 import {RootStackParams, RouteNames} from '../../navigation';
-import {RouteProp} from '@react-navigation/native';
+import {RouteProp, useFocusEffect} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {useNavigation} from '@react-navigation/native';
 import HomeHeader from '../../components/HomeHeader';
@@ -9,6 +9,11 @@ import {styles} from './styles';
 import AppImages from '../../constants/AppImages';
 import {Dimensions, FlatList, ImageBackground, Pressable} from 'react-native';
 import CommonButton from '../../components/CommonButton';
+import { AnyAction, ThunkDispatch } from '@reduxjs/toolkit';
+import { RootState } from '../../../store';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchServiceList } from '../../api/service/ServiceListSlice';
+import { fetchPackageList } from '../../api/package/PackageListSlice';
 
 const {TextField} = Incubator;
 
@@ -42,6 +47,34 @@ const AppointmentScreen: React.FC<Props> = () => {
     {id: 11, image: AppImages.SERVICE, title: 'Weight Loss Package'},
 
   ]);
+  const dispatch: ThunkDispatch<RootState, any, AnyAction> = useDispatch();
+  // const {packages, loadingPackages, packageError} = useSelector(
+  //   (state: RootState) => state.PackageList,
+  // );
+  // const {services, loadingServices, serviceError} = useSelector(
+  //   (state: RootState) => state.ServiceList,
+  // );
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const companyId = '1';
+
+      const fetchPackagesPromise = dispatch(
+        fetchPackageList({uri: `GetAllPackages?composite={"CompanyID":"${companyId}"}` }),
+      );
+      const fetchServicesPromise = dispatch(
+        fetchServiceList({uri: `GetAllServices?composite={"CompanyID":"${companyId}"}` }),
+      );
+
+      Promise.all([fetchPackagesPromise, fetchServicesPromise]).then(() => {
+        // Both requests are complete
+      });
+
+      return () => {
+        // Cleanup if needed
+      };
+    }, []),
+  );
 
   return (
     <View flex paddingV-20>
@@ -57,6 +90,7 @@ const AppointmentScreen: React.FC<Props> = () => {
           Select the service or package that you need an appointment for
         </Text>
         <FlatList
+        // data={[...packages, ...services]} // Combine packages and services
           data={packages}
           showsVerticalScrollIndicator={false}
           numColumns={2}

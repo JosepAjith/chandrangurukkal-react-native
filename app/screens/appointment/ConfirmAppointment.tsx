@@ -71,7 +71,7 @@ const ConfirmAppointment: React.FC<Props> = () => {
 
         <CommonButton
           title="Book Appointment"
-          onPress={() => navigation.navigate(RouteNames.ScheduleAppointment)}
+          onPress={() =>{}}
         />
       </View>
     </View>
