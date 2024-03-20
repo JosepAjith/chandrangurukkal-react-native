@@ -1,24 +1,20 @@
 import React, {useState} from 'react';
-import {
-  Incubator,
-  Text,
-  View,
-} from 'react-native-ui-lib';
+import {Incubator, Text, View} from 'react-native-ui-lib';
 import {RootStackParams, RouteNames} from '../../navigation';
 import {RouteProp} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {useNavigation} from '@react-navigation/native';
 import AppImages from '../../constants/AppImages';
-import {
-  Dimensions,
-  ScrollView,
-} from 'react-native';
+import {Dimensions, ScrollView} from 'react-native';
 import HomeHeader from '../../components/HomeHeader';
 import {styles} from './style';
 import AppColors from '../../constants/AppColors';
 import CarouselView from '../../components/CarousalView';
 import Packages from './Packages';
 import Services from './Services';
+import {useSelector} from 'react-redux';
+import {RootState} from '../../../store';
+import BackgroundLoader from '../../components/BackgroundLoader';
 
 const {TextField} = Incubator;
 
@@ -35,16 +31,22 @@ const HomeScreen: React.FC<Props> = () => {
   const navigation = useNavigation<HomeScreenNavigationProps>();
   const windowWidth = Dimensions.get('window').width;
   const itemWidth = (windowWidth - 50) / 2;
-
+  const {loadingPackages} = useSelector(
+    (state: RootState) => state.PackageList,
+  );
+  const {loadingServices} = useSelector(
+    (state: RootState) => state.ServiceList,
+  );
 
   return (
-    <ScrollView style={{backgroundColor: AppColors.white}} showsVerticalScrollIndicator={false}>
-      <View flex paddingV-20>
-        <HomeHeader
-          leftIcon={AppImages.MENU}
-          onPress={() => navigation.toggleDrawer()}
-        />
+    <View flex paddingV-20>
+      <HomeHeader
+        leftIcon={AppImages.MENU}
+        onPress={() => navigation.toggleDrawer()}
+      />
 
+      {loadingPackages && loadingServices && <BackgroundLoader />}
+      <ScrollView>
         <View flex marginT-20 marginB-60>
           {/* <View style={styles.cardView}>
             <View style={{position: 'absolute', alignSelf: 'flex-end'}}>
@@ -69,20 +71,20 @@ const HomeScreen: React.FC<Props> = () => {
             <Text style={styles.nameText}>Krishna</Text>
             <Text style={styles.title}>Packages</Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-           <Packages/>
+              <Packages />
             </ScrollView>
           </View>
 
           <View>
             <Text style={[styles.title, {padding: 20}]}>Services</Text>
 
-            <Services navigation={navigation}/>
+            <Services navigation={navigation} />
           </View>
 
           {/* <CarouselView/> */}
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 };
 export default HomeScreen;

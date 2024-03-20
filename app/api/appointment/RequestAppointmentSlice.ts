@@ -16,10 +16,9 @@ const initialState: RequestAppointmentState = {
 
 export const requestAppointment = createAsyncThunk<
   {requestAppointmentData: RequestAppointmentResponse | null},
-  {requestBody: any, uri: any}
->('requestAppointment', async ({requestBody, uri}) => {
-  if (requestBody != null) {
-    const response = await apiInterface.requestAppointment(requestBody, uri);
+  {uri: any}
+>('requestAppointment', async ({uri}) => {
+    const response = await apiInterface.requestAppointment( uri);
     if (response.kind == 'success') {
       return {
         requestAppointmentData: response.body ?? null,
@@ -27,11 +26,6 @@ export const requestAppointment = createAsyncThunk<
     } else {
       throw 'Error while creating';
     }
-  } else {
-    return {
-        requestAppointmentData: initialState.requestAppointmentData,
-    };
-  }
 });
 
 const RequestAppointmentSlice = createSlice({

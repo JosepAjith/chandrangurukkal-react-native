@@ -16,10 +16,9 @@ const initialState: BookAppointmentState = {
 
 export const bookAppointment = createAsyncThunk<
   {bookAppointmentData: BookAppointmentResponse | null},
-  {requestBody: any, uri: any}
->('bookAppointment', async ({requestBody, uri}) => {
-  if (requestBody != null) {
-    const response = await apiInterface.bookAppointment(requestBody, uri);
+  {uri: any}
+>('bookAppointment', async ({uri}) => {
+    const response = await apiInterface.bookAppointment(uri);
     if (response.kind == 'success') {
       return {
         bookAppointmentData: response.body ?? null,
@@ -27,11 +26,6 @@ export const bookAppointment = createAsyncThunk<
     } else {
       throw 'Error while creating';
     }
-  } else {
-    return {
-        bookAppointmentData: initialState.bookAppointmentData,
-    };
-  }
 });
 
 const BookAppointmentSlice = createSlice({

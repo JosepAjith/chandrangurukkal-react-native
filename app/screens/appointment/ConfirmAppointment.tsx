@@ -8,6 +8,9 @@ import HomeHeader from '../../components/HomeHeader';
 import {styles} from './styles';
 import AppImages from '../../constants/AppImages';
 import CommonButton from '../../components/CommonButton';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../../store';
+import { AnyAction, ThunkDispatch } from '@reduxjs/toolkit';
 
 const {TextField} = Incubator;
 
@@ -25,6 +28,10 @@ interface Props {}
 
 const ConfirmAppointment: React.FC<Props> = () => {
   const navigation = useNavigation<ConfirmAppointmentNavigationProps>();
+  const dispatch: ThunkDispatch<RootState, any, AnyAction> = useDispatch();
+  const {bookAppointmentData, loadingBookAppointment, bookAppointmentError} = useSelector(
+    (state: RootState) => state.BookAppointment,
+  );
 
   return (
     <View flex paddingV-20>

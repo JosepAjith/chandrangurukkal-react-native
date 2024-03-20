@@ -1,9 +1,18 @@
 import React, {useRef, useState, useEffect} from 'react';
 import {Text, View, Incubator, Button, GridList} from 'react-native-ui-lib';
-import {Animated, Dimensions, PanResponder, StyleSheet} from 'react-native';
+import {
+  Animated,
+  Dimensions,
+  PanResponder,
+  Pressable,
+  StyleSheet,
+} from 'react-native';
 import CommonButton from '../../components/CommonButton';
 import AppColors from '../../constants/AppColors';
 import {styles} from './styles';
+import {useDispatch, useSelector} from 'react-redux';
+import {RootState} from '../../../store';
+import {isoTime} from '../../constants/commonUtils';
 const deviceHeight = Dimensions.get('window').height;
 
 const TimeSheet = (props: {close: any}) => {
@@ -24,6 +33,10 @@ const TimeSheet = (props: {close: any}) => {
     {id: 13, time: '07:00 PM'},
     {id: 14, time: '08:00 PM'},
   ]);
+  const dispatch = useDispatch();
+  const {RequestedTime} = useSelector(
+    (state: RootState) => state.AppointRequest,
+  );
 
   useEffect(() => {
     openModal();
@@ -73,26 +86,48 @@ const TimeSheet = (props: {close: any}) => {
 
   return (
     <Animated.View
-      style={[styles.modal, {transform: [{translateY: modalY}],padding:0}]}
+      style={[styles.modal, {transform: [{translateY: modalY}], padding: 0}]}
       {...panResponder.panHandlers}>
-      <View style={[styles.handle,{marginTop:20}]} />
+      <View style={[styles.handle, {marginTop: 20}]} />
       <View>
-        <Text style={[styles.select,{margin:20}]}>Select a time</Text>
+        <Text style={[styles.select, {margin: 20}]}>Select a time</Text>
 
         <GridList
-     data={times}
-     listPadding={20}
-     numColumns={3}
-     renderItem={({item, index}) => {
-       return (
-        <View center paddingV-5 style={{borderWidth:1,borderColor:AppColors.stroke,backgroundColor:'#F1F1F1'}}>
-         <Text style={styles.time}>{item.time}</Text>
-         </View>
-       )}}
-   />
+          data={times}
+          listPadding={20}
+          numColumns={3}
+          renderItem={({item, index}) => {
+            return (
+              <Pressable
+                onPress={() =>
+                  dispatch({
+                    type: 'SET_REQUESTED_TIME',
+                    payload: isoTime(item.time),
+                  })
+                }>
+                <View
+                  center
+                  paddingV-5
+                  style={{
+                    borderWidth: 1,
+                    borderColor: AppColors.stroke,
+                    backgroundColor:
+                      RequestedTime === isoTime(item.time)
+                        ? AppColors.green
+                        : '#F1F1F1',
+                  }}>
+                  <Text style={[styles.time,{  color:
+                        RequestedTime === isoTime(item.time)
+                          ? 'white'
+                          : 'black',}]}>{item.time}</Text>
+                </View>
+              </Pressable>
+            );
+          }}
+        />
       </View>
       <View padding-20>
-      <CommonButton title="Confirm" onPress={() => close()} />
+        <CommonButton title="Confirm" onPress={() => close()} />
       </View>
     </Animated.View>
   );

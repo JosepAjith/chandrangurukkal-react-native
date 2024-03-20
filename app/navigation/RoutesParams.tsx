@@ -4,7 +4,7 @@ export type RootStackParams = {
   LoginScreen: undefined;
   RegisterScreen: undefined;
   ForgotPasswordScreen: undefined;
-  PasswordScreen: undefined;
+  PasswordScreen: {userId: any};
   GuestLogin: undefined;
   BottomTabs: undefined;
   HomeScreen: undefined;

@@ -10,6 +10,7 @@ export type GetAllServicesResult = {
 
 export type Datum = {
     Error:       boolean;
+    ImgUrl:      string;
     Message:     string;
     ServiceId:   number;
     ServiceName: string;

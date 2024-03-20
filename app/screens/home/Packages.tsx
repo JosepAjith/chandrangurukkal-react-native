@@ -12,17 +12,11 @@ import { fetchPackageList } from '../../api/package/PackageListSlice';
 interface Props {}
 
 const Packages = ({}: Props) => {
-  const [packages, setPackages] = useState([
-    {id: 1, image: AppImages.SERVICE, title: 'Body Rejuvenation Package'},
-    {id: 2, image: AppImages.SERVICE, title: 'Body Detox Package'},
-    {id: 3, image: AppImages.SERVICE, title: 'Weight Loss Package'},
-    {id: 4, image: AppImages.SERVICE, title: 'One Year Package'},
-  ]);
 
   const dispatch: ThunkDispatch<RootState, any, AnyAction> = useDispatch();
-  // const {packages, loadingPackages, packageError} = useSelector(
-  //   (state: RootState) => state.PackageList,
-  // );
+  const {packages, loadingPackages, packageError} = useSelector(
+    (state: RootState) => state.PackageList,
+  );
 
 
   useFocusEffect(
@@ -38,14 +32,14 @@ const Packages = ({}: Props) => {
   );
   return (
     <>
-      {packages.map((item, index) => (
+      {packages?.GetAllPackagesResult.Data.map((item, index) => (
         <View key={index} marginT-10 marginR-10>
           <ImageBackground
-            source={item.image}
+            source={item.ImgUrl? {uri:item.ImgUrl} : AppImages.SERVICE}
             style={{width: 330, height: 180}}
             imageStyle={{borderRadius: 10}}>
             <View flex bottom marginH-20 marginB-20>
-              <Text style={styles.packageText}>{item.title}</Text>
+              <Text style={styles.packageText}>{item.PackageName}</Text>
               <View row marginT-20>
                 <View style={styles.smallView}>
                   <Text style={styles.priceText}>AED 2500</Text>

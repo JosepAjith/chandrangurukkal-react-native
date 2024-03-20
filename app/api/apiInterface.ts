@@ -1,11 +1,11 @@
 import {
-  ApiFormData,
+  PostApiClient,
   SimpleApiClient,
-  apiClient,
 } from './apiClient';
 import { BookAppointmentResponse } from './appointment/BookAppointmentResponse';
 import { RequestAppointmentResponse } from './appointment/RequestAppointmentResponse';
 import { BranchResponse } from './branch/BranchResponse';
+import { LoginResponse } from './login/LoginCreateSlice';
 import { PackageResponse } from './package/PackageResponse';
 import { ServiceResponse } from './service/ServiceResponse';
 
@@ -77,7 +77,7 @@ export const fetchBranchList = async (
 export const requestAppointment = async (
   uri: any
 ): Promise<NetworkResponse<RequestAppointmentResponse>> => {
-  const response = await SimpleApiClient(uri);
+  const response = await PostApiClient(uri);
 
   if (response.status) {
     const json = await response.data;
@@ -110,6 +110,25 @@ export const bookAppointment = async (
     };
   }
 };
+
+//API FOR LOGIN
+export const createLogin = async (
+  uri: any
+ ): Promise<NetworkResponse<LoginResponse | null>> => {
+   const response = await SimpleApiClient(uri);
+ 
+   if (response.status) {
+     const json = await response.data;
+     return {
+       kind: 'success',
+       body: json,
+     };
+   } else {
+     return {
+       kind: 'failure',
+     };
+   }
+ };
 
 
 

@@ -29,7 +29,9 @@ CLOCK: require('../images/clock.png'),
 DOWN: require('../images/down.png'),
 ROUND: require('../images/round.png'),
 GOOGLE: require('../images/google.png'),
-FACEBOOK: require('../images/facebook.png')
+FACEBOOK: require('../images/facebook.png'),
+EYE: require('../images/eye.png'),
+EYECLOSE: require('../images/eyeclose.png'),
 }
 
 export default AppImages;

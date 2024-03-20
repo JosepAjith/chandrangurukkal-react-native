@@ -1,7 +1,14 @@
-import React, {useState} from 'react';
-import {Button, Image, Incubator, Text, View} from 'react-native-ui-lib';
+import React, {useEffect, useState} from 'react';
+import {
+  Button,
+  Image,
+  Incubator,
+  Picker,
+  Text,
+  View,
+} from 'react-native-ui-lib';
 import {RootStackParams, RouteNames} from '../../navigation';
-import {RouteProp} from '@react-navigation/native';
+import {RouteProp, useFocusEffect} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {useNavigation} from '@react-navigation/native';
 import HomeHeader from '../../components/HomeHeader';
@@ -18,6 +25,15 @@ import {Easing} from 'react-native-reanimated';
 import CalendarSheet from './CalendarSheet';
 import AppColors from '../../constants/AppColors';
 import TimeSheet from './TimeSheet';
+import {AnyAction, ThunkDispatch} from '@reduxjs/toolkit';
+import {RootState} from '../../../store';
+import {useDispatch, useSelector} from 'react-redux';
+import {fetchBranchList} from '../../api/branch/BranchListSlice';
+import {formatTime, getUserDate, showToast} from '../../constants/commonUtils';
+import {
+  requestAppointment,
+  requestAppointmentReset,
+} from '../../api/appointment/RequestAppointmentSlice';
 
 const {TextField} = Incubator;
 
@@ -33,11 +49,43 @@ export type ScheduleAppointmentRouteProps = RouteProp<
 
 interface Props {}
 
+const options = [
+  {label: 'JavaScript', value: 'js'},
+  {label: 'Java', value: 'java'},
+  {label: 'Python', value: 'python'},
+  {label: 'C++', value: 'c++', disabled: true},
+  {label: 'Perl', value: 'perl'},
+];
+
 const ScheduleAppointment: React.FC<Props> = ({route}: any) => {
   const navigation = useNavigation<ScheduleAppointmentNavigationProps>();
   const [calendarOpen, setCalendarOpen] = useState(false);
   const [timeOpen, setTimeOpen] = useState(false);
   const status = route.params.status;
+  const dispatch: ThunkDispatch<RootState, any, AnyAction> = useDispatch();
+  const {branches, loadingBranches, branchError} = useSelector(
+    (state: RootState) => state.BranchList,
+  );
+  const {
+    requestAppointmentData,
+    loadingRequestAppointment,
+    requestAppointmentError,
+  } = useSelector((state: RootState) => state.RequestAppointment);
+  const {
+    RequestedDate,
+    RequestedBranch,
+    RequestedTime,
+    RequestedServicesOrPackages,
+    PatientId,
+  } = useSelector((state: RootState) => state.AppointRequest);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      dispatch(fetchBranchList({uri: `GetAllBranches`}));
+
+      return () => {};
+    }, []),
+  );
 
   const CalendarClose = () => {
     setCalendarOpen(false);
@@ -46,6 +94,61 @@ const ScheduleAppointment: React.FC<Props> = ({route}: any) => {
   const TimeClose = () => {
     setTimeOpen(false);
   };
+
+  function Validate() {
+    if (RequestedDate == '') {
+      showToast('Date Required');
+      return false;
+    }
+    if (RequestedTime == '') {
+      showToast('Time Required');
+      return false;
+    }
+    if (RequestedBranch == 0) {
+      showToast('Branch Required');
+      return false;
+    }
+    return true;
+  }
+
+  const Request = async () => {
+    let composite = {
+      PatientId: PatientId,
+      RequestedBranch: RequestedBranch,
+      RequestedDate: RequestedDate,
+      RequestedTime: RequestedTime,
+      RequestedServicesOrPackages: RequestedServicesOrPackages,
+    };
+    dispatch(
+      requestAppointment({
+        uri: `RequestAppointment?composite=${JSON.stringify(composite)}`,
+      }),
+    )
+      .then(() => {
+        dispatch(requestAppointmentReset());
+      })
+      .catch((err: any) => console.log(err));
+  };
+
+  useEffect(() => {
+    if (requestAppointmentData != null) {
+      if (
+        !loadingRequestAppointment &&
+        !requestAppointmentError &&
+        !requestAppointmentData.RequestAppointmentResult.Error
+      ) {
+        showToast(requestAppointmentData.RequestAppointmentResult.Message);
+        dispatch({
+          type: 'SET_REQUEST_ID',
+          payload:
+            requestAppointmentData.RequestAppointmentResult.AppointmentRequestId,
+        });
+        navigation.navigate(RouteNames.ConfirmAppointment);
+      } else {
+        showToast(requestAppointmentData.RequestAppointmentResult.Message);
+      }
+    }
+  }, [requestAppointmentData]);
 
   return (
     <View flex paddingV-20 backgroundColor={AppColors.white}>
@@ -72,7 +175,9 @@ const ScheduleAppointment: React.FC<Props> = ({route}: any) => {
             onPress={() => setCalendarOpen(!calendarOpen)}>
             <View flex left centerV>
               <Text style={styles.label}>Date</Text>
-              <Text style={styles.value}>DD/MM/YYYY</Text>
+              <Text style={styles.value}>
+                {RequestedDate ? getUserDate(RequestedDate) : 'DD/MM/YYYY'}
+              </Text>
             </View>
             <View flex right centerV>
               <Image source={AppImages.CALENDAR} />
@@ -84,7 +189,9 @@ const ScheduleAppointment: React.FC<Props> = ({route}: any) => {
             onPress={() => setTimeOpen(!timeOpen)}>
             <View flex left centerV>
               <Text style={styles.label}>Time</Text>
-              <Text style={styles.value}>Select a time</Text>
+              <Text style={styles.value}>
+                {RequestedTime ? formatTime(RequestedTime) : 'Select a time'}
+              </Text>
             </View>
             <View flex right centerV>
               <Image source={AppImages.CLOCK} />
@@ -92,14 +199,34 @@ const ScheduleAppointment: React.FC<Props> = ({route}: any) => {
           </TouchableOpacity>
 
           {status == 'appoint' && (
-            <View style={styles.rectangle}>
-              <View flex left centerV>
+            <View>
+              <View absT marginH-20 style={{top: 30, zIndex: 2}}>
                 <Text style={styles.label}>Branch</Text>
-                <Text style={styles.value}>Select a branch</Text>
               </View>
-              <View flex right centerV>
-                <Image source={AppImages.DOWN} />
-              </View>
+              <Picker
+                placeholder="Select a branch"
+                fieldStyle={styles.rectangle}
+                style={[styles.value, {top: 5}]}
+                trailingAccessory={
+                  <View>
+                    <Image source={AppImages.DOWN} />
+                  </View>
+                }
+                value={RequestedBranch}
+                onChange={item => {
+                  dispatch({
+                    type: 'SET_REQUESTED_BRANCH',
+                    payload: Number(item),
+                  });
+                }}>
+                {branches?.GetAllBranchesResult.Data.map((item, index) => (
+                  <Picker.Item
+                    key={index}
+                    value={item.CompanyId}
+                    label={item.CompanyName}
+                  />
+                ))}
+              </Picker>
             </View>
           )}
         </View>
@@ -107,7 +234,9 @@ const ScheduleAppointment: React.FC<Props> = ({route}: any) => {
         <CommonButton
           title="Continue"
           onPress={() => {
-            navigation.navigate(RouteNames.ConfirmAppointment);
+            if (Validate()) {
+              Request();
+            }
           }}
         />
       </View>

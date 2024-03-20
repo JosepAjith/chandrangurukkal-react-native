@@ -10,6 +10,7 @@ export type GetAllPackagesResult = {
 
 export type Datum = {
     Error:       boolean;
+    ImgUrl:      string;
     Message:     string;
     PackageId:   number;
     PackageName: string;

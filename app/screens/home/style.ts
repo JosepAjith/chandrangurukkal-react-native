@@ -9,7 +9,7 @@ export const styles = StyleSheet.create({
     color:AppColors.green
  },
  serviceText: {
-    fontSize:14,
+    fontSize:10,
     fontFamily: AppFonts.LATO_REGULAR,
     color:AppColors.greyBlack,
     marginTop:8

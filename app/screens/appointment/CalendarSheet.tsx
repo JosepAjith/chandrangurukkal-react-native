@@ -6,6 +6,8 @@ import AppColors from '../../constants/AppColors';
 import {styles} from './styles';
 import { Calendar, LocaleConfig } from 'react-native-calendars';
 import AppFonts from '../../constants/AppFonts';
+import { RootState } from '../../../store';
+import { useDispatch, useSelector } from 'react-redux';
 const deviceHeight = Dimensions.get('window').height;
 
 LocaleConfig.locales['custom'] = {
@@ -20,7 +22,10 @@ LocaleConfig.locales['custom'] = {
 
 const CalendarSheet = (props: {close: any}) => {
   const close = props.close;
-  const [selected, setSelected] = useState('');
+  const dispatch = useDispatch();
+  const {RequestedDate} = useSelector(
+    (state: RootState) => state.AppointRequest,
+  );
 
   useEffect(() => {
     openModal();
@@ -94,10 +99,12 @@ const CalendarSheet = (props: {close: any}) => {
           }}
           enableSwipeMonths={true}
           onDayPress={day => {
-            setSelected(day.dateString);
+            dispatch({
+              type: 'SET_REQUESTED_DATE',
+              payload: day.dateString})
           }}
           markedDates={{
-            [selected]: {selected: true, disableTouchEvent: true, selectedColor: AppColors.green, selectedTextColor:AppColors.whitish}
+            [RequestedDate]: {selected: true, disableTouchEvent: true, selectedColor: AppColors.green, selectedTextColor:AppColors.whitish}
           }}
         />
       </View>

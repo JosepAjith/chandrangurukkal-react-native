@@ -4,13 +4,17 @@ import PackageListSlice from "./app/api/package/PackageListSlice";
 import RequestAppointmentSlice from "./app/api/appointment/RequestAppointmentSlice";
 import BookAppointmentSlice from "./app/api/appointment/BookAppointmentSlice";
 import BranchListSlice from "./app/api/branch/BranchListSlice";
+import LoginCreateSlice from "./app/api/login/LoginCreateSlice";
+import AppointRequest from "./app/screens/appointment/AppointRequest";
 
 const rootReducer = combineReducers({
     ServiceList: ServiceListSlice,
     PackageList: PackageListSlice,
     RequestAppointment: RequestAppointmentSlice,
     BookAppointment: BookAppointmentSlice,
-    BranchList: BranchListSlice
+    BranchList: BranchListSlice,
+    loginCreate: LoginCreateSlice,
+    AppointRequest: AppointRequest
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

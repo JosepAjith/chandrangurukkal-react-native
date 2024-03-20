@@ -16,9 +16,9 @@ interface Props {
 
 const Services = ({navigation}: Props) => {
     const dispatch: ThunkDispatch<RootState, any, AnyAction> = useDispatch();
-    // const {services, loadingServices, serviceError} = useSelector(
-    //   (state: RootState) => state.ServiceList,
-    // );
+    const {services, loadingServices, serviceError} = useSelector(
+      (state: RootState) => state.ServiceList,
+    );
   
   
     useFocusEffect(
@@ -32,27 +32,10 @@ const Services = ({navigation}: Props) => {
         };
       }, []),
     );
-    const [services, setServices] = useState([
-        {id: 1, image: AppImages.SHIRO, title: 'Shirovasti'},
-        {id: 2, image: AppImages.ABHYA, title: 'Abhyanga'},
-        {id: 3, image: AppImages.NASYAM, title: 'Nasyam'},
-        {id: 4, image: AppImages.KIZHI, title: 'Kizhi'},
-        {id: 5, image: AppImages.SHIRO, title: 'Tharpanam'},
-        {id: 6, image: AppImages.ABHYA, title: 'Pizhichil'},
-        {id: 7, image: AppImages.NASYAM, title: 'Shirodhara'},
-        {id: 8, image: AppImages.KIZHI, title: 'Tharpanam'},
-        {id: 9, image: AppImages.SHIRO, title: 'Shirovasti'},
-        {id: 10, image: AppImages.ABHYA, title: 'Abhyanga'},
-        {id: 11, image: AppImages.NASYAM, title: 'Nasyam'},
-        {id: 12, image: AppImages.KIZHI, title: 'Kizhi'},
-        {id: 13, image: AppImages.SHIRO, title: 'Tharpanam'},
-        {id: 14, image: AppImages.ABHYA, title: 'Pizhichil'},
-        {id: 15, image: AppImages.NASYAM, title: 'Shirodhara'},
-      ]);
   return (
     <GridList
     listPadding={20}
-    data={services}
+    data={services?.GetAllServicesResult.Data}
     numColumns={4}
     renderItem={({item, index}) => {
       return (
@@ -63,8 +46,8 @@ const Services = ({navigation}: Props) => {
             })
           }>
           <View center>
-            <Image source={item.image} width={70} height={70} />
-            <Text style={styles.serviceText}>{item.title}</Text>
+            <Image source={item.ImgUrl? {uri:item.ImgUrl} : AppImages.SHIRO} width={70} height={70} style={{borderRadius:40}}/>
+            <Text style={styles.serviceText}>{item.ServiceName}</Text>
           </View>
         </TouchableOpacity>
       );

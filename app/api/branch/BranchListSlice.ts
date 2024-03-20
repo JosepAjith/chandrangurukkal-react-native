@@ -16,9 +16,9 @@ const initialState: BranchListState = {
 
 export const fetchBranchList = createAsyncThunk<
   {branches: BranchResponse | null},
-  {requestBody: any, uri: any}
->('fetchBranchList', async ({requestBody, uri}) => {
-  const response = await apiInterface.fetchBranchList(requestBody, uri);
+  {uri: any}
+>('fetchBranchList', async ({uri}) => {
+  const response = await apiInterface.fetchBranchList(uri);
   
 
   if (response.kind == 'success') {

@@ -24,6 +24,16 @@ interface Props {}
 
 const LoginScreen: React.FC<Props> = () => {
   const navigation = useNavigation<LoginScreenNavigationProps>();
+  const [userId, setUserId] = useState('');
+  const [InvalidId, setInvalidId] = useState(false);
+
+  function Validate() {
+    if(userId == ''){
+      setInvalidId(true);
+      return false;
+    }
+    return true;
+  }
 
   return (
     <View style={styles.container}>
@@ -40,12 +50,25 @@ const LoginScreen: React.FC<Props> = () => {
           fieldStyle={styles.fieldStyle}
           paddingH-15
           marginB-15
+          onChangeText={text => {
+            setUserId(text);
+            setInvalidId(false);
+          }}
+          trailingAccessory={
+            <View>
+              {InvalidId &&
+              <Text red10>*Required</Text>}
+            </View>
+          }
         />
 
         <CommonButton
           title={'Continue'}
           onPress={() => {
-            navigation.navigate(RouteNames.PasswordScreen);
+            if (Validate()) {
+              navigation.navigate(RouteNames.PasswordScreen,{userId:userId});
+            }
+           
           }}
         />
 
