@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Button, Image, Incubator, Text, View} from 'react-native-ui-lib';
 import {RootStackParams, RouteNames} from '../../navigation';
 import {RouteProp} from '@react-navigation/native';
@@ -11,6 +11,8 @@ import CommonButton from '../../components/CommonButton';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../store';
 import { AnyAction, ThunkDispatch } from '@reduxjs/toolkit';
+import { bookAppointment, bookAppointmentReset } from '../../api/appointment/BookAppointmentSlice';
+import { showToast } from '../../constants/commonUtils';
 
 const {TextField} = Incubator;
 
@@ -32,6 +34,35 @@ const ConfirmAppointment: React.FC<Props> = () => {
   const {bookAppointmentData, loadingBookAppointment, bookAppointmentError} = useSelector(
     (state: RootState) => state.BookAppointment,
   );
+  const {
+    AppointmentRequestId
+  } = useSelector((state: RootState) => state.AppointRequest);
+
+  const Book = async () => {
+    dispatch(
+      bookAppointment({
+        uri: `BookAppointment?composite={"AppointmentRequestId":${AppointmentRequestId}}`,
+      }),
+    )
+      .then(() => {
+        dispatch(bookAppointmentReset());
+      })
+      .catch((err: any) => console.log(err));
+  };
+
+  useEffect(() => {
+    if (bookAppointmentData != null) {
+      if (
+        !loadingBookAppointment &&
+        !bookAppointmentError &&
+        !bookAppointmentData.BookAppointmentResult.Error
+      ) {
+        showToast(bookAppointmentData.BookAppointmentResult.Message);
+      } else {
+        showToast(bookAppointmentData.BookAppointmentResult.Message);
+      }
+    }
+  }, [bookAppointmentData]);
 
   return (
     <View flex paddingV-20>
@@ -78,7 +109,7 @@ const ConfirmAppointment: React.FC<Props> = () => {
 
         <CommonButton
           title="Book Appointment"
-          onPress={() =>{}}
+          onPress={Book}
         />
       </View>
     </View>

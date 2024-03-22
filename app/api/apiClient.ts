@@ -38,6 +38,7 @@ export const SimpleApiClient = async (
 export const PostApiClient = async (
   endPoint: string
 ) => {
+  console.log(BASE_URL+endPoint)
   try{
   const response = await axios.post(
     BASE_URL + endPoint,
