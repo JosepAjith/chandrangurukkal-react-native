@@ -8,16 +8,23 @@ import { AnyAction, ThunkDispatch } from '@reduxjs/toolkit';
 import { RootState } from '../../../store';
 import { useFocusEffect } from '@react-navigation/native';
 import { fetchPackageList } from '../../api/package/PackageListSlice';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import AppStrings from '../../constants/AppStrings';
+import { RouteNames } from '../../navigation';
 
-interface Props {}
+interface Props {
+  navigation : any;
+}
 
-const Packages = ({}: Props) => {
+const Packages = ({navigation}: Props) => {
 
   const dispatch: ThunkDispatch<RootState, any, AnyAction> = useDispatch();
   const {packages, loadingPackages, packageError} = useSelector(
     (state: RootState) => state.PackageList,
   );
-
+  const {RequestedServicesOrPackages} = useSelector(
+    (state: RootState) => state.AppointRequest,
+  );
 
   useFocusEffect(
     React.useCallback(() => {
@@ -30,10 +37,34 @@ const Packages = ({}: Props) => {
       };
     }, []),
   );
+
+  const Continue = async (productId: number, productName: string) => {
+    const isSelected = RequestedServicesOrPackages.some(
+      (item: {ProductId: number}) => item.ProductId === productId,
+    );
+
+    // Dispatch action to update the state
+    dispatch({
+      type: 'SET_REQUESTED_SERVICES_OR_PACKAGES',
+      payload: isSelected
+        ? RequestedServicesOrPackages.filter(
+            (item: {ProductId: number}) => item.ProductId !== productId,
+          )
+        : [...RequestedServicesOrPackages, {ProductId: productId, ProductName: productName}],
+    });
+
+      navigation.navigate(RouteNames.ScheduleAppointment, {
+        status: 'appoint',
+      });
+  }
+  
   return (
     <>
       {packages?.GetAllPackagesResult.Data.map((item, index) => (
         <View key={index} marginT-10 marginR-10>
+          <TouchableOpacity onPress={() =>
+           Continue(item.PackageId, item.PackageName)
+          }>
           <ImageBackground
             source={item.ImgUrl? {uri:item.ImgUrl} : AppImages.SERVICE}
             style={{width: 330, height: 180}}
@@ -51,6 +82,7 @@ const Packages = ({}: Props) => {
               </View>
             </View>
           </ImageBackground>
+          </TouchableOpacity>
         </View>
       ))}
     </>

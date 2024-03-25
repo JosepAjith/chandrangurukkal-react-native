@@ -11,13 +11,14 @@ import AppColors from '../../constants/AppColors';
 import CommonButton from '../../components/CommonButton';
 import Header from '../../components/Header';
 import {TouchableOpacity} from 'react-native';
-import { AnyAction, ThunkDispatch } from '@reduxjs/toolkit';
-import { RootState } from '../../../store';
-import { useDispatch, useSelector } from 'react-redux';
-import { createLogin, reset } from '../../api/login/LoginCreateSlice';
-import { showToast } from '../../constants/commonUtils';
+import {AnyAction, ThunkDispatch} from '@reduxjs/toolkit';
+import {RootState} from '../../../store';
+import {useDispatch, useSelector} from 'react-redux';
+import {createLogin, reset} from '../../api/login/LoginCreateSlice';
+import {showToast} from '../../constants/commonUtils';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppStrings from '../../constants/AppStrings';
+import BackgroundLoader from '../../components/BackgroundLoader';
 
 const {TextField} = Incubator;
 
@@ -53,7 +54,11 @@ const PasswordScreen: React.FC<Props> = ({route}: any) => {
   }
 
   const Login = async () => {
-    dispatch(createLogin({uri: `CustomerLogin?composite={"UserId":"${userId}","Password":"${password}"}`}))
+    dispatch(
+      createLogin({
+        uri: `CustomerLogin?composite={"UserId":"${userId}","Password":"${password}"}`,
+      }),
+    )
       .then(() => {
         dispatch(reset());
       })
@@ -62,17 +67,47 @@ const PasswordScreen: React.FC<Props> = ({route}: any) => {
 
   useEffect(() => {
     if (LoginData != null) {
-      if (!loadingLogin && !LoginError && !LoginData.CustomerLoginResult.Error) {
+      if (
+        !loadingLogin &&
+        !LoginError &&
+        !LoginData.CustomerLoginResult.Error
+      ) {
         showToast(LoginData.CustomerLoginResult.Message);
         AsyncStorage.setItem(
           AppStrings.ACCESS_TOKEN,
-          LoginData.CustomerLoginResult.Tocken == null ? '' : LoginData.CustomerLoginResult.Tocken,
+          LoginData.CustomerLoginResult.Tocken == null
+            ? ''
+            : LoginData.CustomerLoginResult.Tocken,
         );
         AsyncStorage.setItem(
           AppStrings.PATIENT_ID,
-          LoginData.CustomerLoginResult.PatientId == null ? '' : String(LoginData.CustomerLoginResult.PatientId),
+          LoginData.CustomerLoginResult.PatientId == null
+            ? ''
+            : String(LoginData.CustomerLoginResult.PatientId),
         );
-        navigation.navigate(RouteNames.Dashboard);
+        AsyncStorage.setItem(
+          AppStrings.PATIENT_NAME,
+          LoginData.CustomerLoginResult.PatientName == null
+            ? ''
+            : LoginData.CustomerLoginResult.PatientName,
+        );
+        AsyncStorage.setItem(
+          AppStrings.PATIENT_REG_NO,
+          LoginData.CustomerLoginResult.PatientRegNo == null
+            ? ''
+            : LoginData.CustomerLoginResult.PatientRegNo,
+        );
+        AsyncStorage.setItem(
+          AppStrings.USER_EMAIL,
+          LoginData.CustomerLoginResult.Email == null
+            ? ''
+            : LoginData.CustomerLoginResult.Email,
+        );
+        AsyncStorage.setItem(AppStrings.IS_LOGIN, 'true');
+        navigation.reset({
+          index: 0,
+          routes: [{name: RouteNames.Dashboard}],
+        });
       } else {
         showToast(LoginData.CustomerLoginResult.Message);
       }
@@ -87,6 +122,8 @@ const PasswordScreen: React.FC<Props> = ({route}: any) => {
         }}
         color={'black'}
       />
+
+      {loadingLogin && <BackgroundLoader />}
       <View flex marginT-30>
         <Text style={styles.title1}>Enter password</Text>
         <Text style={styles.text}>

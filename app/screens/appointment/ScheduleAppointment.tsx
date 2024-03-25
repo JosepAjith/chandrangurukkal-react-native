@@ -75,9 +75,11 @@ const ScheduleAppointment: React.FC<Props> = ({route}: any) => {
     RequestedDate,
     RequestedBranch,
     RequestedTime,
-    RequestedServicesOrPackages,
-    PatientId,
+    RequestedServicesOrPackages
   } = useSelector((state: RootState) => state.AppointRequest);
+  const {PatientId} = useSelector(
+    (state: RootState) => state.GlobalVariables,
+  );
 
   useFocusEffect(
     React.useCallback(() => {
@@ -112,12 +114,13 @@ const ScheduleAppointment: React.FC<Props> = ({route}: any) => {
   }
 
   const Request = async () => {
+    const productIds = RequestedServicesOrPackages.map((item: { ProductId: any; }) => ({ ProductId: item.ProductId }));
     let composite = {
       PatientId: PatientId,
-      RequestedBranch: RequestedBranch,
+      RequestedBranch: RequestedBranch.Id,
       RequestedDate: RequestedDate,
       RequestedTime: RequestedTime,
-      RequestedServicesOrPackages: RequestedServicesOrPackages,
+      RequestedServicesOrPackages: productIds,
     };
     dispatch(
       requestAppointment({
@@ -135,7 +138,7 @@ const ScheduleAppointment: React.FC<Props> = ({route}: any) => {
       if (
         !loadingRequestAppointment &&
         !requestAppointmentError &&
-        !requestAppointmentData.RequestAppointmentResult.Error
+        requestAppointmentData.RequestAppointmentResult.AppointmentRequestNo
       ) {
         showToast(requestAppointmentData.RequestAppointmentResult.Message);
         dispatch({
@@ -143,7 +146,7 @@ const ScheduleAppointment: React.FC<Props> = ({route}: any) => {
           payload:
             requestAppointmentData.RequestAppointmentResult.AppointmentRequestId,
         });
-        navigation.navigate(RouteNames.ConfirmAppointment);
+        navigation.navigate(RouteNames.ConfirmRequest);
       } else {
         showToast(requestAppointmentData.RequestAppointmentResult.Message);
       }
@@ -212,12 +215,15 @@ const ScheduleAppointment: React.FC<Props> = ({route}: any) => {
                     <Image source={AppImages.DOWN} />
                   </View>
                 }
-                value={RequestedBranch}
-                onChange={item => {
-                  dispatch({
-                    type: 'SET_REQUESTED_BRANCH',
-                    payload: Number(item),
-                  });
+                value={RequestedBranch.Id}
+                onChange={itemId => {
+                  const selectedBranch = branches?.GetAllBranchesResult.Data.find(branch => branch.CompanyId === itemId);
+                  if (selectedBranch) {
+                    dispatch({
+                      type: 'SET_REQUESTED_BRANCH',
+                      payload: { Id: selectedBranch.CompanyId, name: selectedBranch.CompanyName },
+                    });
+                  }
                 }}>
                 {branches?.GetAllBranchesResult.Data.map((item, index) => (
                   <Picker.Item

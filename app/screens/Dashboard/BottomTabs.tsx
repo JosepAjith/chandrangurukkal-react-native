@@ -20,6 +20,11 @@ import CallBackScreen from '../callback/CallBackScreen';
 import AppImages from '../../constants/AppImages';
 import AppColors from '../../constants/AppColors';
 import AppFonts from '../../constants/AppFonts';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import AppStrings from '../../constants/AppStrings';
+import { useDispatch } from 'react-redux';
+import { AnyAction, ThunkDispatch } from '@reduxjs/toolkit';
+import { RootState } from '../../../store';
 
 const Tab = createBottomTabNavigator();
 
@@ -34,10 +39,33 @@ interface Props {}
 
 const BottomTabs: React.FC<Props> = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const dispatch: ThunkDispatch<RootState, any, AnyAction> = useDispatch();
 
   const toggleModal = () => {
     setIsModalVisible(!isModalVisible);
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const id = await AsyncStorage.getItem(AppStrings.PATIENT_ID);
+      const name = await AsyncStorage.getItem(AppStrings.PATIENT_NAME);
+      const reg = await AsyncStorage.getItem(AppStrings.PATIENT_REG_NO);
+      const email = await AsyncStorage.getItem(AppStrings.USER_EMAIL);
+      if (id !== null) {
+        dispatch({type: 'SET_PATIENT_ID', payload: Number(id)});
+      }
+      if (name !== null) {
+        dispatch({type: 'SET_PATIENT_NAME', payload: name});
+      }
+      if (reg !== null) {
+        dispatch({type: 'SET_PATIENT_REG_NO', payload: reg});
+      }
+      if (email !== null) {
+        dispatch({type: 'SET_USER_EMAIL', payload: email});
+      }
+    };
+    fetchData();
+  }, []);
 
   return (
     <>

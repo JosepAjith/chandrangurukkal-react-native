@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../store';
 import { AnyAction, ThunkDispatch } from '@reduxjs/toolkit';
 import { bookAppointment, bookAppointmentReset } from '../../api/appointment/BookAppointmentSlice';
-import { showToast } from '../../constants/commonUtils';
+import { formattedTime, getUserDate, showToast } from '../../constants/commonUtils';
 
 const {TextField} = Incubator;
 
@@ -35,7 +35,7 @@ const ConfirmAppointment: React.FC<Props> = () => {
     (state: RootState) => state.BookAppointment,
   );
   const {
-    AppointmentRequestId
+    AppointmentRequestId,RequestedBranch,RequestedDate,RequestedTime, RequestedServicesOrPackages
   } = useSelector((state: RootState) => state.AppointRequest);
 
   const Book = async () => {
@@ -87,22 +87,27 @@ const ConfirmAppointment: React.FC<Props> = () => {
             <Text style={styles.details}>Appointment Details</Text>
             <View marginT-10>
                 <Text style={styles.text}>Date</Text>
-                <Text style={styles.text1}>February 17,2024</Text>
+                <Text style={styles.text1}>{getUserDate(RequestedDate)}</Text>
             </View>
 
             <View marginT-10>
                 <Text style={styles.text}>Time</Text>
-                <Text style={styles.text1}>04:00 PM</Text>
+                <Text style={styles.text1}>{formattedTime(RequestedTime)}</Text>
             </View>
 
             <View marginT-10>
                 <Text style={styles.text}>Branch</Text>
-                <Text style={styles.text1}>Dubai Healthcare Centre</Text>
+                <Text style={styles.text1}>{RequestedBranch.name}</Text>
             </View>
 
             <View marginT-10>
                 <Text style={styles.text}>Services / Packages</Text>
-                <Text style={styles.text1}>Kizhi, Nasyam</Text>
+                {RequestedServicesOrPackages.map((item, index)=>( 
+                  <View key={index} row marginR-5>
+                <Text style={styles.text1}>{item.ProductName},</Text>
+                </View>
+                ))}
+                
             </View>
           </View>
         </View>

@@ -1,67 +1,64 @@
 import axios, {AxiosRequestConfig} from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import AppStrings from '../constants/AppStrings';
-import { Alert } from 'react-native';
-import { showToast } from '../constants/commonUtils';
+import {showToast} from '../constants/commonUtils';
+import NetInfo from '@react-native-community/netinfo';
 
 let BASE_URL = 'http://demo.chandran.prompttechsolutions.in/Service1.svc/';
 
-
-export const SimpleApiClient = async (
-  endPoint: string
-) => {
-  try{
-  const response = await axios.get(
-    BASE_URL + endPoint,
-    {
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-    },
-  );
-  return response;
-} catch (error: any) {
-  if (error.response) {
-    // Update UI accordingly
-    showToast(error.response.data.message);
-    console.log(error.response.data, error.response.status);
-  } else if (error.request) {
-    showToast(error.request);
+export const SimpleApiClient = async (endPoint: string) => {
+  const isConnected = await NetInfo.fetch().then(state => state.isConnected);
+  if (isConnected) {
+    console.log(BASE_URL + endPoint)
+    try {
+      const response = await axios.get(BASE_URL + endPoint, {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      });
+      return response;
+    } catch (error: any) {
+      if (error.response) {
+        // Update UI accordingly
+        showToast(error.response.data.message);
+        console.log(error.response.data, error.response.status);
+      } else if (error.request) {
+        showToast(error.request);
+      } else {
+        showToast(`Error message: ${error.message}`);
+      }
+      throw error; // Rethrow the error to propagate it to the calling code
+    }
   } else {
-    showToast(`Error message: ${error.message}`);
+    showToast('Need Internet connection');
   }
-  throw error; // Rethrow the error to propagate it to the calling code
-}
 };
 
-export const PostApiClient = async (
-  endPoint: string
-) => {
-  console.log(BASE_URL+endPoint)
-  try{
-  const response = await axios.post(
-    BASE_URL + endPoint,
-    {
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-    },
-  );
-  return response;
-} catch (error: any) {
-  if (error.response) {
-    // Update UI accordingly
-    showToast(error.response.data.message);
-    console.log(error.response.data, error.response.status);
-  } else if (error.request) {
-    showToast(error.request);
+export const PostApiClient = async (endPoint: string) => {
+  const isConnected = await NetInfo.fetch().then(state => state.isConnected);
+  if (isConnected) {
+    try {
+      const response = await axios.post(BASE_URL + endPoint, {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      });
+      return response;
+    } catch (error: any) {
+      if (error.response) {
+        // Update UI accordingly
+        showToast(error.response.data.message);
+        console.log(error.response.data, error.response.status);
+      } else if (error.request) {
+        showToast(error.request);
+      } else {
+        showToast(`Error message: ${error.message}`);
+      }
+      throw error; // Rethrow the error to propagate it to the calling code
+    }
   } else {
-    showToast(`Error message: ${error.message}`);
+    showToast('Need Internet connection');
   }
-  throw error; // Rethrow the error to propagate it to the calling code
-}
 };
 
 // export const SimpleApiClient = async (endPoint: string) => {

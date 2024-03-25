@@ -18,5 +18,6 @@ export const RouteNames = {
   PurchaseHistoryDetails: 'PurchaseHistoryDetails',
   Purchase:'Purchase',
   ScheduleAppointment: 'ScheduleAppointment',
-  ConfirmAppointment:'ConfirmAppointment'
+  ConfirmAppointment:'ConfirmAppointment',
+  ConfirmRequest: 'ConfirmRequest'
 } as const;

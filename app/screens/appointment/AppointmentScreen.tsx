@@ -73,7 +73,7 @@ const AppointmentScreen: React.FC<Props> = () => {
     }, []),
   );
 
-  const toggleSelection = (id: number) => {
+  const toggleSelection = (id: number, name: string) => {
     const isSelected = RequestedServicesOrPackages.some(
       (item: {ProductId: number}) => item.ProductId === id,
     );
@@ -85,15 +85,11 @@ const AppointmentScreen: React.FC<Props> = () => {
         ? RequestedServicesOrPackages.filter(
             (item: {ProductId: number}) => item.ProductId !== id,
           )
-        : [...RequestedServicesOrPackages, {ProductId: id}],
+        : [...RequestedServicesOrPackages, {ProductId: id, ProductName: name}],
     });
   };
 
   const Continue = async () => {
-    const Id = await AsyncStorage.getItem(AppStrings.PATIENT_ID)
-    dispatch({
-      type: 'SET_PATIENT_ID',
-      payload: Number(Id)})
 
       navigation.navigate(RouteNames.ScheduleAppointment, {
         status: 'appoint',
@@ -140,7 +136,7 @@ const AppointmentScreen: React.FC<Props> = () => {
             }
             return (
               <View style={{alignItems: alignmentStyle, flex: 1}}>
-                <Pressable onPress={() => toggleSelection(id)}>
+                <Pressable onPress={() => toggleSelection(id, title)}>
                   <ImageBackground
                     source={
                       item.ImgUrl ? {uri: item.ImgUrl} : AppImages.SERVICE

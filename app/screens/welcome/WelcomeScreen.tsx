@@ -7,6 +7,8 @@ import {useNavigation} from '@react-navigation/native';
 import {RouteNames} from '../../navigation';
 import AppImages from '../../constants/AppImages';
 import AppColors from '../../constants/AppColors';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import AppStrings from '../../constants/AppStrings';
 
 export type WelcomeScreenNavigationProps = NativeStackNavigationProp<
   RootStackParams,
@@ -24,8 +26,12 @@ const WelcomeScreen: React.FC<Props> = () => {
   const navigation = useNavigation<WelcomeScreenNavigationProps>();
 
   setTimeout(async () => {
-    navigation.replace(RouteNames.LoginScreen);
-  }, 5000);
+    if ((await AsyncStorage.getItem(AppStrings.IS_LOGIN)) == null) {
+      navigation.replace(RouteNames.LoginScreen);
+    } else {
+      navigation.replace(RouteNames.Dashboard);
+    }
+  }, 500);
 
   return (
     <View flex center backgroundColor={AppColors.primary}>

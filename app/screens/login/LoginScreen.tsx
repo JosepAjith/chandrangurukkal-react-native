@@ -10,6 +10,7 @@ import styles from './styles';
 import AppColors from '../../constants/AppColors';
 import CommonButton from '../../components/CommonButton';
 import ButtonView from '../../components/ButtonView';
+import { ScrollView } from 'react-native';
 
 const {TextField} = Incubator;
 
@@ -37,6 +38,8 @@ const LoginScreen: React.FC<Props> = () => {
 
   return (
     <View style={styles.container}>
+      
+    
       <View style={styles.logoContainer}>
         <Image source={AppImages.LOGO} width={113} height={113} />
       </View>
@@ -82,6 +85,8 @@ const LoginScreen: React.FC<Props> = () => {
           }}
         />
       </View>
+   
+    
 
       <View style={styles.footer}>
         <Text style={styles.privacyPolicy}>
@@ -91,7 +96,8 @@ const LoginScreen: React.FC<Props> = () => {
           <Text color={AppColors.green}>terms</Text> and{' '}
           <Text color={AppColors.green}>privacy policy</Text>
         </Text>
-      </View>
+      </View>  
+     
     </View>
   );
 };

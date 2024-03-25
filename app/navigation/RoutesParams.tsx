@@ -20,4 +20,5 @@ export type RootStackParams = {
   PurchaseHistoryDetails: undefined;
   ScheduleAppointment: {status: string};
   ConfirmAppointment: undefined;
+  ConfirmRequest: undefined;
 };

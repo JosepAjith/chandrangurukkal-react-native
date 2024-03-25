@@ -6,6 +6,7 @@ import BookAppointmentSlice from "./app/api/appointment/BookAppointmentSlice";
 import BranchListSlice from "./app/api/branch/BranchListSlice";
 import LoginCreateSlice from "./app/api/login/LoginCreateSlice";
 import AppointRequest from "./app/screens/appointment/AppointRequest";
+import GlobalVariables from "./app/constants/GlobalVariables";
 
 const rootReducer = combineReducers({
     ServiceList: ServiceListSlice,
@@ -14,7 +15,8 @@ const rootReducer = combineReducers({
     BookAppointment: BookAppointmentSlice,
     BranchList: BranchListSlice,
     loginCreate: LoginCreateSlice,
-    AppointRequest: AppointRequest
+    AppointRequest: AppointRequest,
+    GlobalVariables: GlobalVariables
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

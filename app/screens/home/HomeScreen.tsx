@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Incubator, Text, View} from 'react-native-ui-lib';
 import {RootStackParams, RouteNames} from '../../navigation';
-import {RouteProp} from '@react-navigation/native';
+import {RouteProp, useFocusEffect} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {useNavigation} from '@react-navigation/native';
 import AppImages from '../../constants/AppImages';
@@ -12,7 +12,7 @@ import AppColors from '../../constants/AppColors';
 import CarouselView from '../../components/CarousalView';
 import Packages from './Packages';
 import Services from './Services';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../../store';
 import BackgroundLoader from '../../components/BackgroundLoader';
 
@@ -30,6 +30,7 @@ interface Props {}
 const HomeScreen: React.FC<Props> = () => {
   const navigation = useNavigation<HomeScreenNavigationProps>();
   const windowWidth = Dimensions.get('window').width;
+  const dispatch = useDispatch();
   const itemWidth = (windowWidth - 50) / 2;
   const {loadingPackages} = useSelector(
     (state: RootState) => state.PackageList,
@@ -37,6 +38,15 @@ const HomeScreen: React.FC<Props> = () => {
   const {loadingServices} = useSelector(
     (state: RootState) => state.ServiceList,
   );
+  const {PatientName} = useSelector(
+    (state: RootState) => state.GlobalVariables,
+  );
+
+ useEffect(()=>{
+  dispatch({
+    type: 'CLEAR_ALL_VARIABLES'
+  });
+ },[loadingPackages,loadingServices]);
 
   return (
     <View flex paddingV-20>
@@ -68,10 +78,10 @@ const HomeScreen: React.FC<Props> = () => {
 
           <View paddingL-20>
             <Text style={styles.title}>Welcome back,</Text>
-            <Text style={styles.nameText}>Krishna</Text>
+            <Text style={styles.nameText}>{PatientName}</Text>
             <Text style={styles.title}>Packages</Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-              <Packages />
+              <Packages navigation={navigation} />
             </ScrollView>
           </View>
 

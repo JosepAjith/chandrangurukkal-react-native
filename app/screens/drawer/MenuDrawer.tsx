@@ -9,8 +9,28 @@ import {
 import AppColors from '../../constants/AppColors';
 import AppImages from '../../constants/AppImages';
 import AppStyles from '../../constants/AppStyles';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import AppStrings from '../../constants/AppStrings';
+import {useNavigation} from '@react-navigation/native';
+import {RouteNames} from '../../navigation';
+import { RootState } from '../../../store';
+import { useSelector } from 'react-redux';
 
 const MenuDrawer = (props: any) => {
+  const navigation = useNavigation();
+  const {PatientName, USER_EMAIL} = useSelector(
+    (state: RootState) => state.GlobalVariables,
+  );
+
+  const LoggingOut = async () => {
+    await AsyncStorage.removeItem(AppStrings.ACCESS_TOKEN);
+    await AsyncStorage.removeItem(AppStrings.IS_LOGIN);
+    await AsyncStorage.removeItem(AppStrings.PATIENT_ID);
+    navigation.reset({
+      index: 0,
+      routes: [{name: RouteNames.LoginScreen}],
+    });
+  };
   return (
     <View flex backgroundColor={AppColors.white} paddingV-20>
       <DrawerContentScrollView {...props}>
@@ -19,8 +39,14 @@ const MenuDrawer = (props: any) => {
             <Image source={AppImages.PROF1} />
           </View>
           <View marginL-5>
-            <Text style={AppStyles.buttonlabel1}>Krishna</Text>
-            <Text style={[AppStyles.drawerText,{color:'#949494',marginLeft:10}]}>user@gmail.com</Text>
+            <Text style={AppStyles.buttonlabel1}>{PatientName}</Text>
+            <Text
+              style={[
+                AppStyles.drawerText,
+                {color: '#949494', marginLeft: 10},
+              ]}>
+              {USER_EMAIL}
+            </Text>
           </View>
         </View>
 
@@ -28,14 +54,20 @@ const MenuDrawer = (props: any) => {
       </DrawerContentScrollView>
       <View bottom marginB-100 marginH-15>
         <View row centerV>
-        <Image source={AppImages.SETTING} width={20} height={20} />
-          <Text marginL-35 style={AppStyles.drawerText}>Settings</Text>
+          <Image source={AppImages.SETTING} width={20} height={20} />
+          <Text marginL-35 style={AppStyles.drawerText}>
+            Settings
+          </Text>
         </View>
 
-        <View row centerV marginT-30>
-        <Image source={AppImages.LOGOUT} width={20} height={20} />
-        <Text marginL-35 style={AppStyles.drawerText}>Logout</Text>
-        </View>
+        <TouchableOpacity onPress={LoggingOut}>
+          <View row centerV marginT-30>
+            <Image source={AppImages.LOGOUT} width={20} height={20} />
+            <Text marginL-35 style={AppStyles.drawerText}>
+              Logout
+            </Text>
+          </View>
+        </TouchableOpacity>
       </View>
     </View>
   );

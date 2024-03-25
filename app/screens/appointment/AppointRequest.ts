@@ -1,38 +1,31 @@
 export type VariableState = {
-    PatientId: number;
-    RequestedBranch: number;
+    RequestedBranch: { Id: number , name: string};
     RequestedDate: string;
     RequestedTime: string;
-    RequestedServicesOrPackages: { ProductId: number }[];
+    RequestedServicesOrPackages: { ProductId: number, ProductName: string }[];
     AppointmentRequestId: number;
   };
   
   const initialState: VariableState = {
-    PatientId: 0,
-    RequestedBranch: 0,
+    RequestedBranch: { Id: 0, name: '' },
     RequestedDate: '',
     RequestedTime: '',
     RequestedServicesOrPackages: [],
     AppointmentRequestId: 0
   };
   
-  const SET_PATIENT_ID = 'SET_PATIENT_ID';
   const SET_REQUESTED_BRANCH = 'SET_REQUESTED_BRANCH';
   const SET_REQUESTED_DATE = 'SET_REQUESTED_DATE';
   const SET_REQUESTED_TIME = 'SET_REQUESTED_TIME';
   const SET_REQUESTED_SERVICES_OR_PACKAGES = 'SET_REQUESTED_SERVICES_OR_PACKAGES';
   const SET_REQUEST_ID = 'SET_REQUEST_ID';
+  const CLEAR_ALL_VARIABLES = 'CLEAR_ALL_VARIABLES';
   
   const AppointRequest = (
     state = initialState,
     action: { type: string; payload: any }
   ) => {
     switch (action.type) {
-      case SET_PATIENT_ID:
-        return {
-          ...state,
-          PatientId: action.payload,
-        };
       case SET_REQUESTED_BRANCH:
         return {
           ...state,
@@ -58,6 +51,10 @@ export type VariableState = {
             ...state,
             AppointmentRequestId: action.payload,
           };
+
+          case CLEAR_ALL_VARIABLES:
+            return initialState;
+            
       default:
         return state;
     }

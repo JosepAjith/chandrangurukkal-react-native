@@ -9,6 +9,8 @@ import { AnyAction, ThunkDispatch } from '@reduxjs/toolkit';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFocusEffect } from '@react-navigation/native';
 import { fetchServiceList } from '../../api/service/ServiceListSlice';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import AppStrings from '../../constants/AppStrings';
 
 interface Props {
     navigation : any;
@@ -19,7 +21,9 @@ const Services = ({navigation}: Props) => {
     const {services, loadingServices, serviceError} = useSelector(
       (state: RootState) => state.ServiceList,
     );
-  
+    const {RequestedServicesOrPackages} = useSelector(
+      (state: RootState) => state.AppointRequest,
+    );
   
     useFocusEffect(
       React.useCallback(() => {
@@ -32,6 +36,26 @@ const Services = ({navigation}: Props) => {
         };
       }, []),
     );
+
+    const Continue = async (productId: number, productName: string) => {
+      const isSelected = RequestedServicesOrPackages.some(
+        (item: {ProductId: number}) => item.ProductId === productId,
+      );
+  
+      // Dispatch action to update the state
+      dispatch({
+        type: 'SET_REQUESTED_SERVICES_OR_PACKAGES',
+        payload: isSelected
+          ? RequestedServicesOrPackages.filter(
+              (item: {ProductId: number}) => item.ProductId !== productId,
+            )
+          : [...RequestedServicesOrPackages, {ProductId: productId, ProductName: productName}],
+      });
+  
+        navigation.navigate(RouteNames.ScheduleAppointment, {
+          status: 'appoint',
+        });
+    }
   return (
     <GridList
     listPadding={20}
@@ -41,9 +65,7 @@ const Services = ({navigation}: Props) => {
       return (
         <TouchableOpacity
           onPress={() =>
-            navigation.navigate(RouteNames.ScheduleAppointment, {
-              status: 'appoint',
-            })
+           Continue(item.ServiceId, item.ServiceName)
           }>
           <View center>
             <Image source={item.ImgUrl? {uri:item.ImgUrl} : AppImages.SHIRO} width={70} height={70} style={{borderRadius:40}}/>
