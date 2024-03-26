@@ -2,6 +2,7 @@ import {
   PostApiClient,
   SimpleApiClient,
 } from './apiClient';
+import { AppointListResponse } from './appointment/AppointListResponse';
 import { BookAppointmentResponse } from './appointment/BookAppointmentResponse';
 import { RequestAppointmentResponse } from './appointment/RequestAppointmentResponse';
 import { BranchResponse } from './branch/BranchResponse';
@@ -22,7 +23,26 @@ export const fetchServiceList = async (
 ): Promise<NetworkResponse<ServiceResponse>> => {
   const response = await SimpleApiClient(uri);
 
-  if (response.status) {
+  if (response && response.status) {
+    const json = await response.data;
+    return {
+      kind: 'success',
+      body: json,
+    };
+  } else {
+    return {
+      kind: 'failure',
+    };
+  }
+};
+
+//API FOR APPOINTMENT LIST
+export const fetchAppointmentList = async (
+  uri: any
+): Promise<NetworkResponse<AppointListResponse>> => {
+  const response = await SimpleApiClient(uri);
+
+  if (response && response.status) {
     const json = await response.data;
     return {
       kind: 'success',
@@ -41,7 +61,7 @@ export const fetchPackageList = async (
 ): Promise<NetworkResponse<PackageResponse>> => {
   const response = await SimpleApiClient(uri);
 
-  if (response.status) {
+  if (response && response.status) {
     const json = await response.data;
     return {
       kind: 'success',
@@ -60,7 +80,7 @@ export const fetchBranchList = async (
 ): Promise<NetworkResponse<BranchResponse>> => {
   const response = await SimpleApiClient(uri);
 
-  if (response.status) {
+  if (response && response.status) {
     const json = await response.data;
     return {
       kind: 'success',
@@ -79,7 +99,7 @@ export const requestAppointment = async (
 ): Promise<NetworkResponse<RequestAppointmentResponse>> => {
   const response = await PostApiClient(uri);
 
-  if (response.status) {
+  if (response && response.status) {
     const json = await response.data;
     return {
       kind: 'success',
@@ -98,7 +118,7 @@ export const bookAppointment = async (
 ): Promise<NetworkResponse<BookAppointmentResponse>> => {
   const response = await SimpleApiClient(uri);
 
-  if (response.status) {
+  if (response && response.status) {
     const json = await response.data;
     return {
       kind: 'success',
@@ -117,7 +137,7 @@ export const createLogin = async (
  ): Promise<NetworkResponse<LoginResponse | null>> => {
    const response = await SimpleApiClient(uri);
  
-   if (response.status) {
+   if (response && response.status) {
      const json = await response.data;
      return {
        kind: 'success',

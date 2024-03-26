@@ -21,6 +21,7 @@ import PurchaseHistoryDetails from '../screens/purchase/PurchaseHistoryDetails';
 import ScheduleAppointment from '../screens/appointment/ScheduleAppointment';
 import ConfirmAppointment from '../screens/appointment/ConfirmAppointment';
 import ConfirmRequest from '../screens/appointment/ConfirmRequest';
+import AppointmentListScreen from '../screens/appointment/AppointmentListScreen';
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -42,9 +43,18 @@ const AppStack = () => {
       />
       <Stack.Screen name={RouteNames.GuestLogin} component={GuestLogin} />
       <Stack.Screen name={RouteNames.Dashboard} component={DrawerStack} />
-      <Stack.Screen name={RouteNames.ScheduleAppointment} component={ScheduleAppointment} />
-      <Stack.Screen name={RouteNames.ConfirmAppointment} component={ConfirmAppointment} />
-      <Stack.Screen name={RouteNames.ConfirmRequest} component={ConfirmRequest} />
+      <Stack.Screen
+        name={RouteNames.ScheduleAppointment}
+        component={ScheduleAppointment}
+      />
+      <Stack.Screen
+        name={RouteNames.ConfirmAppointment}
+        component={ConfirmAppointment}
+      />
+      <Stack.Screen
+        name={RouteNames.ConfirmRequest}
+        component={ConfirmRequest}
+      />
     </Stack.Navigator>
   );
 };
@@ -52,7 +62,7 @@ const AppStack = () => {
 function DrawerStack() {
   return (
     <Drawer.Navigator
-    initialRouteName={RouteNames.BottomTabs}
+      initialRouteName={RouteNames.BottomTabs}
       drawerContent={props => <MenuDrawer {...props} />}
       screenOptions={{
         headerShown: false,
@@ -72,7 +82,7 @@ function DrawerStack() {
           headerShown: false,
           drawerLabel: () => null,
           swipeEnabled: false,
-          drawerActiveBackgroundColor: AppColors.white
+          drawerActiveBackgroundColor: AppColors.white,
         }}
       />
 
@@ -85,6 +95,19 @@ function DrawerStack() {
           drawerLabelStyle: AppStyles.drawerText,
           drawerIcon: () => (
             <Image source={AppImages.PROFILE} width={20} height={20} />
+          ),
+        }}
+      />
+
+      <Drawer.Screen
+        name={RouteNames.AppointmentListScreen}
+        component={AppointmentListScreen}
+        options={{
+          title: 'My Bookings',
+          headerShown: false,
+          drawerLabelStyle: AppStyles.drawerText,
+          drawerIcon: () => (
+            <Image source={AppImages.HISTORY} width={20} height={20} />
           ),
         }}
       />
@@ -152,8 +175,14 @@ const Purchase = () => {
         animation: 'slide_from_right',
         animationDuration: 1000,
       }}>
-      <Stack.Screen name={RouteNames.PurchaseHistoryList} component={PurchaseHistoryList} />
-      <Stack.Screen name={RouteNames.PurchaseHistoryDetails} component={PurchaseHistoryDetails} />
+      <Stack.Screen
+        name={RouteNames.PurchaseHistoryList}
+        component={PurchaseHistoryList}
+      />
+      <Stack.Screen
+        name={RouteNames.PurchaseHistoryDetails}
+        component={PurchaseHistoryDetails}
+      />
     </Stack.Navigator>
   );
 };

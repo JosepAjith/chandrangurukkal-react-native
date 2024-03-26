@@ -21,4 +21,5 @@ export type RootStackParams = {
   ScheduleAppointment: {status: string};
   ConfirmAppointment: undefined;
   ConfirmRequest: undefined;
+  AppointmentListScreen: undefined;
 };

@@ -55,6 +55,12 @@ export const styles = StyleSheet.create({
     marginVertical: 20,
     marginRight: 20,
   },
+  cardView1:{
+    borderColor:'#E4E4E4',
+    borderWidth:1,
+    borderRadius:10,
+    marginBottom:10
+},
   details: {
     fontSize: 20,
     fontFamily: AppFonts.LATO_BOLD,
@@ -62,7 +68,7 @@ export const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   text: {
-    fontSize: 12,
+    fontSize: 14,
     fontFamily: AppFonts.LATO_REGULAR,
     color: AppColors.black,
   },
@@ -104,4 +110,29 @@ export const styles = StyleSheet.create({
     fontFamily: AppFonts.LATO_MEDIUM,
     color: AppColors.black,
   },
+  image:{
+    width: '100%', height: 130,
+    borderTopLeftRadius:10,
+    borderTopRightRadius:10
+ },
+ line:{
+    borderLeftColor:AppColors.black, borderLeftWidth:1,
+    marginHorizontal:6,
+    height:14
+ },
+ smallView:{
+  height:30,
+  backgroundColor:'rgba(87, 87, 87, 0.32)',
+  borderWidth:1,
+  borderColor:'#BABABA',
+  borderRadius:20,
+  alignItems:'center',
+  justifyContent:'center',
+  paddingHorizontal:10
+},
+statusText: {
+  fontSize:14,
+  fontFamily: AppFonts.LATO_MEDIUM,
+  color:AppColors.white
+},
 });
