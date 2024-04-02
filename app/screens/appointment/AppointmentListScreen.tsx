@@ -7,11 +7,12 @@ import {useNavigation} from '@react-navigation/native';
 import Header from '../../components/Header';
 import {styles} from './styles';
 import {FlatList, ImageBackground, TouchableOpacity} from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../../store';
-import { AnyAction, ThunkDispatch } from '@reduxjs/toolkit';
-import { fetchAppointmentList } from '../../api/appointment/AppointmentListSlice';
+import {useDispatch, useSelector} from 'react-redux';
+import {RootState} from '../../../store';
+import {AnyAction, ThunkDispatch} from '@reduxjs/toolkit';
+import {fetchAppointmentList} from '../../api/appointment/AppointmentListSlice';
 import AppColors from '../../constants/AppColors';
+import AppFonts from '../../constants/AppFonts';
 
 const {TextField} = Incubator;
 
@@ -29,9 +30,7 @@ interface Props {}
 
 const AppointmentListScreen: React.FC<Props> = () => {
   const navigation = useNavigation<AppointmentListScreenNavigationProps>();
-  const {PatientId} = useSelector(
-    (state: RootState) => state.GlobalVariables,
-  );
+  const {PatientId} = useSelector((state: RootState) => state.GlobalVariables);
   const dispatch: ThunkDispatch<RootState, any, AnyAction> = useDispatch();
   const {appointments, loadingAppointments, appointmentError} = useSelector(
     (state: RootState) => state.AppointmentList,
@@ -39,20 +38,21 @@ const AppointmentListScreen: React.FC<Props> = () => {
 
   useFocusEffect(
     React.useCallback(() => {
-    
-      dispatch(fetchAppointmentList({uri: `GetAllAppointmentRequests?composite={"PatientId":"${PatientId}"}`}));
+      dispatch(
+        fetchAppointmentList({
+          uri: `GetAllAppointmentRequests?composite={"PatientId":"${PatientId}"}`,
+        }),
+      );
 
-      return () => {
-        
-      };
+      return () => {};
     }, []),
   );
 
   return (
-    <View flex padding-20>
-      <Header onPress={() => navigation.goBack()}  color={'black'}/>
+    <View flex>
+      <Header onPress={() => navigation.goBack()} color={'black'} />
 
-      <View flex marginT-20>
+      <View flex paddingH-20>
         <Text style={styles.heading}>My Bookings</Text>
 
         <FlatList
@@ -73,16 +73,43 @@ const AppointmentListScreen: React.FC<Props> = () => {
                 </View> */}
 
                 <View padding-15>
-                <Text style={[styles.title,{color:AppColors.green}]}>Request No :  {item.AppointmentRequestNo}</Text>
+                  <Text style={[styles.title, {color: AppColors.green}]}>
+                    Request No : {item.AppointmentRequestNo}
+                  </Text>
 
-                <View marginT-10 centerV>
-                  <Text style={styles.text}>Request Date :  {item.RequestedDate}</Text>
-                  <Text style={styles.text} marginV-10>Request Time :  {item.RequestedTime}</Text>
-                  <Text style={[styles.text]}>Request Branch :  {item.RequestedBranchName}</Text>
+                  <View marginT-10 centerV>
+                    <Text style={styles.text}>
+                    <Text style={{fontFamily:AppFonts.LATO_MEDIUM}}>Request Date</Text> : {item.RequestedDate}
+                    </Text>
+                    <Text style={styles.text} marginV-10>
+                    <Text style={{fontFamily:AppFonts.LATO_MEDIUM}}>Request Time</Text> : {item.RequestedTime}
+                    </Text>
+                    <Text style={[styles.text]}>
+                    <Text style={{fontFamily:AppFonts.LATO_MEDIUM}}>Request Branch</Text> : {item.RequestedBranchName}
+                    </Text>
                   </View>
 
-                  <Text marginT-10 style={[styles.title,{color:AppColors.greyBlack,fontSize:16}]}>Status :  {item.IsConfirmed ? 'Booking Confirmed' : 'Booking Pending'}</Text>
+                  {item.IsConfirmed && (
+                    <View>
+                      <Text marginV-10 style={styles.text}>
+                      <Text style={{fontFamily:AppFonts.LATO_MEDIUM}}>Appointment Date</Text> : {item.AppointmentDate}
+                      </Text>
+                      <Text style={styles.text}>
+                      <Text style={{fontFamily:AppFonts.LATO_MEDIUM}}>Appointment Time</Text> : {item.AppointmentFromTime} -{' '}
+                        {item.AppointmentToTime}
+                      </Text>
+                    </View>
+                  )}
 
+                  <Text
+                    marginT-10
+                    style={[
+                      styles.title,
+                      {color: AppColors.greyBlack, fontSize: 16},
+                    ]}>
+                    Status :{' '}
+                    {item.IsConfirmed ? 'Booking Confirmed' : 'Booking Pending'}
+                  </Text>
                 </View>
               </View>
             );

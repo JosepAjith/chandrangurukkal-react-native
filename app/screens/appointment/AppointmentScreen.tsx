@@ -97,14 +97,14 @@ const AppointmentScreen: React.FC<Props> = () => {
   }
 
   return (
-    <View flex paddingV-20>
+    <View flex>
       <HomeHeader
         leftIcon={AppImages.LEFT}
         onPress={() => navigation.goBack()}
       />
       {loadingPackages && loadingServices && <BackgroundLoader />}
 
-      <View flex margin-20 marginB-60>
+      <View flex marginH-20 marginB-80>
         <Text style={styles.heading}>Book An Appointment</Text>
 
         <Text style={styles.subHeading}>

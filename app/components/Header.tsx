@@ -11,12 +11,14 @@ interface Props {
 const Header = ({onPress, color}: Props) => {
   return (
     <View row backgroundColor="transparent">
-      <View flex left>
+      <View flex left >
         <TouchableOpacity onPress={onPress}>
+        <View style={{padding: 20}}>
           <Image
             source={AppImages.LEFT}
             tintColor={color}
           />
+          </View>
         </TouchableOpacity>
       </View>
 

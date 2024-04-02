@@ -5,21 +5,27 @@ import {TouchableOpacity} from 'react-native';
 
 interface Props {
   leftIcon: any;
-  onPress? : any;
+  onPress?: any;
 }
 
-const HomeHeader = ({leftIcon,onPress}: Props) => {
+const HomeHeader = ({leftIcon, onPress}: Props) => {
   return (
-    <View row paddingH-20>
+    <View row>
       <View flex left>
         <TouchableOpacity onPress={onPress}>
-          <Image source={leftIcon}/>
+          <View padding-20>
+            <Image source={leftIcon} />
+          </View>
         </TouchableOpacity>
       </View>
 
-      <View flex row right>
-        <Image source={AppImages.BELL} width={20} height={20} marginR-10 />
-        <Image source={AppImages.PROF} width={20} height={20} />
+      <View flex row right >
+        <View padding-20>
+          <Image source={AppImages.BELL} width={20} height={20}/>
+        </View>
+        <View padding-20>
+          <Image source={AppImages.PROF} width={20} height={20} />
+        </View>
       </View>
     </View>
   );

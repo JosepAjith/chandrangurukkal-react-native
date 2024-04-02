@@ -53,10 +53,10 @@ const PurchaseHistoryList: React.FC<Props> = () => {
   ]);
 
   return (
-    <View flex padding-20>
+    <View flex>
       <Header onPress={() => navigation.goBack()}  color={'black'}/>
 
-      <View flex marginT-20>
+      <View flex paddingH-20>
         <Text style={styles.heading}>Purchase History</Text>
 
         <FlatList

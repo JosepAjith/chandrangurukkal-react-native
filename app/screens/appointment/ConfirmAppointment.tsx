@@ -65,13 +65,13 @@ const ConfirmAppointment: React.FC<Props> = () => {
   }, [bookAppointmentData]);
 
   return (
-    <View flex paddingV-20>
+    <View flex>
       <HomeHeader
         leftIcon={AppImages.LEFT}
         onPress={() => navigation.goBack()}
       />
 
-      <View flex margin-20>
+      <View flex marginH-20 marginB-20>
         <Text style={styles.heading}>Confirm Appointment?</Text>
 
         <Text style={styles.subHeading}>

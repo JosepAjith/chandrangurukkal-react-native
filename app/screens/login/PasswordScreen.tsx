@@ -115,7 +115,7 @@ const PasswordScreen: React.FC<Props> = ({route}: any) => {
   }, [LoginData]);
 
   return (
-    <View style={styles.container} paddingV-20>
+    <View flex>
       <Header
         onPress={() => {
           navigation.goBack();
@@ -124,7 +124,7 @@ const PasswordScreen: React.FC<Props> = ({route}: any) => {
       />
 
       {loadingLogin && <BackgroundLoader />}
-      <View flex marginT-30>
+      <View flex padding-20>
         <Text style={styles.title1}>Enter password</Text>
         <Text style={styles.text}>
           Use your password to login to your existing account

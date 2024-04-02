@@ -146,7 +146,7 @@ const ScheduleAppointment: React.FC<Props> = ({route}: any) => {
           payload:
             requestAppointmentData.RequestAppointmentResult.AppointmentRequestId,
         });
-        navigation.navigate(RouteNames.ConfirmRequest);
+        navigation.navigate(RouteNames.ConfirmRequest,{requestNo: requestAppointmentData.RequestAppointmentResult.AppointmentRequestNo});
       } else {
         showToast(requestAppointmentData.RequestAppointmentResult.Message);
       }
@@ -154,13 +154,13 @@ const ScheduleAppointment: React.FC<Props> = ({route}: any) => {
   }, [requestAppointmentData]);
 
   return (
-    <View flex paddingV-20 backgroundColor={AppColors.white}>
+    <View flex backgroundColor={AppColors.white}>
       <HomeHeader
         leftIcon={AppImages.LEFT}
         onPress={() => navigation.goBack()}
       />
 
-      <View flex margin-20>
+      <View flex marginH-20 marginB-20>
         <Text style={styles.heading}>Schedule Your Appointment</Text>
 
         {status == 'purchase' ? (

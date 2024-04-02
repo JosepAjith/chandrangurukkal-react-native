@@ -49,7 +49,7 @@ const HomeScreen: React.FC<Props> = () => {
  },[loadingPackages,loadingServices]);
 
   return (
-    <View flex paddingV-20>
+    <View flex>
       <HomeHeader
         leftIcon={AppImages.MENU}
         onPress={() => navigation.toggleDrawer()}
@@ -57,7 +57,7 @@ const HomeScreen: React.FC<Props> = () => {
 
       {loadingPackages && loadingServices && <BackgroundLoader />}
       <ScrollView>
-        <View flex marginT-20 marginB-60>
+        <View flex marginB-60>
           {/* <View style={styles.cardView}>
             <View style={{position: 'absolute', alignSelf: 'flex-end'}}>
               <Image source={AppImages.CARDLOGO} />

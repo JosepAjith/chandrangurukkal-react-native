@@ -23,29 +23,29 @@ export type ConfirmRequestRouteProps = RouteProp<
 
 interface Props {}
 
-const ConfirmRequest: React.FC<Props> = () => {
+const ConfirmRequest: React.FC<Props> = ({route}: any) => {
   const navigation = useNavigation<ConfirmRequestNavigationProps>();
 
   return (
-    <View flex paddingV-20>
+    <View flex>
       <HomeHeader
         leftIcon={AppImages.LEFT}
         onPress={() => navigation.goBack()}
       />
 
-      <View flex margin-20>
+      <View flex marginH-20 marginB-20>
       <Text style={styles.heading}>Request Confirmation</Text>
 
         <View flex>
         <View style={styles.cardView}>
            
-                <Text style={styles.text1}>Your request has been successfully placed.</Text>
+                <Text style={styles.text1}>Your request {route.params.requestNo} has been successfully placed.</Text>
           </View>
         </View>
 
         <CommonButton
-          title="Home"
-        onPress={()=>navigation.navigate(RouteNames.Dashboard)}
+          title="Bookings"
+        onPress={()=>navigation.navigate(RouteNames.AppointmentListScreen)}
         />
       </View>
     </View>

@@ -58,9 +58,9 @@ const PurchaseHistoryDetails: React.FC<Props> = () => {
     <View flex backgroundColor={AppColors.whitish}>
       <ImageBackground
         source={AppImages.PURCHASEIMG}
-        style={{padding: 20, height: 340}}>
+        style={{ height: 340}}>
         <Header onPress={() => navigation.goBack()}  color={'white'}/>
-        <View flex bottom>
+        <View flex bottom padding-20>
           <Text style={[styles.statusText,{fontSize:24}]}>Kizhi, Nasyam, Body Detox Package</Text>
           <View row marginT-20>
                         <View style={styles.smallView}>
