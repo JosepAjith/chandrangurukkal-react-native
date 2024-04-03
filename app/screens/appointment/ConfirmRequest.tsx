@@ -26,14 +26,12 @@ interface Props {}
 const ConfirmRequest: React.FC<Props> = ({route}: any) => {
   const navigation = useNavigation<ConfirmRequestNavigationProps>();
 
-  return (
-    <View flex>
-      <HomeHeader
-        leftIcon={AppImages.LEFT}
-        onPress={() => navigation.goBack()}
-      />
+  setTimeout(async () => {
+    navigation.navigate(RouteNames.AppointmentListScreen)
+  }, 2000);
 
-      <View flex marginH-20 marginB-20>
+  return (
+      <View flex margin-20>
       <Text style={styles.heading}>Request Confirmation</Text>
 
         <View flex>
@@ -48,7 +46,6 @@ const ConfirmRequest: React.FC<Props> = ({route}: any) => {
         onPress={()=>navigation.navigate(RouteNames.AppointmentListScreen)}
         />
       </View>
-    </View>
   );
 };
 export default ConfirmRequest;

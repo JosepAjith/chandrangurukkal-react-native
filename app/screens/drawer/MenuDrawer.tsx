@@ -53,12 +53,12 @@ const MenuDrawer = (props: any) => {
         <DrawerItemList {...props} />
       </DrawerContentScrollView>
       <View bottom marginB-100 marginH-15>
-        <View row centerV>
+        {/* <View row centerV>
           <Image source={AppImages.SETTING} width={20} height={20} />
           <Text marginL-35 style={AppStyles.drawerText}>
             Settings
           </Text>
-        </View>
+        </View> */}
 
         <TouchableOpacity onPress={LoggingOut}>
           <View row centerV marginT-30>

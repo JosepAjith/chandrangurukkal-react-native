@@ -20,9 +20,9 @@ const HomeHeader = ({leftIcon, onPress}: Props) => {
       </View>
 
       <View flex row right >
-        <View padding-20>
+        {/* <View padding-20>
           <Image source={AppImages.BELL} width={20} height={20}/>
-        </View>
+        </View> */}
         <View padding-20>
           <Image source={AppImages.PROF} width={20} height={20} />
         </View>

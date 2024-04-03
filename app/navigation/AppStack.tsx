@@ -112,7 +112,7 @@ function DrawerStack() {
         }}
       />
 
-      <Drawer.Screen
+      {/* <Drawer.Screen
         name={RouteNames.PrescriptionDetails}
         component={PrescriptionDetails}
         options={{
@@ -161,7 +161,7 @@ function DrawerStack() {
             <Image source={AppImages.OFFER} width={20} height={20} />
           ),
         }}
-      />
+      /> */}
     </Drawer.Navigator>
   );
 }

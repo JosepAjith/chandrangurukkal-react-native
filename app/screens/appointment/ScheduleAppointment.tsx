@@ -49,14 +49,6 @@ export type ScheduleAppointmentRouteProps = RouteProp<
 
 interface Props {}
 
-const options = [
-  {label: 'JavaScript', value: 'js'},
-  {label: 'Java', value: 'java'},
-  {label: 'Python', value: 'python'},
-  {label: 'C++', value: 'c++', disabled: true},
-  {label: 'Perl', value: 'perl'},
-];
-
 const ScheduleAppointment: React.FC<Props> = ({route}: any) => {
   const navigation = useNavigation<ScheduleAppointmentNavigationProps>();
   const [calendarOpen, setCalendarOpen] = useState(false);
@@ -80,6 +72,7 @@ const ScheduleAppointment: React.FC<Props> = ({route}: any) => {
   const {PatientId} = useSelector(
     (state: RootState) => state.GlobalVariables,
   );
+
 
   useFocusEffect(
     React.useCallback(() => {
@@ -146,7 +139,7 @@ const ScheduleAppointment: React.FC<Props> = ({route}: any) => {
           payload:
             requestAppointmentData.RequestAppointmentResult.AppointmentRequestId,
         });
-        navigation.navigate(RouteNames.ConfirmRequest,{requestNo: requestAppointmentData.RequestAppointmentResult.AppointmentRequestNo});
+        navigation.replace(RouteNames.ConfirmRequest,{requestNo: requestAppointmentData.RequestAppointmentResult.AppointmentRequestNo});
       } else {
         showToast(requestAppointmentData.RequestAppointmentResult.Message);
       }
@@ -207,8 +200,11 @@ const ScheduleAppointment: React.FC<Props> = ({route}: any) => {
                 <Text style={styles.label}>Branch</Text>
               </View>
               <Picker
+              key={RequestedBranch.Id}
                 placeholder="Select a branch"
+                placeholderTextColor={'grey'}
                 fieldStyle={styles.rectangle}
+                color={'black'}
                 style={[styles.value, {top: 5}]}
                 trailingAccessory={
                   <View>

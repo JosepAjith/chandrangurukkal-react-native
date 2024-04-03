@@ -31,21 +31,25 @@ const CallBackScreen = ({modalVisible, setModalVisible}:Props) => {
               label={'Phone Number'}
               labelStyle={styles.label}
               placeholder={'Enter phone number'}
+              placeholderTextColor={'grey'}
               keyboardType={'phone-pad'}
               fieldStyle={styles.fieldStyle}
               marginB-10
               marginT-20
-              padding-10/>
+              padding-10
+              color={'black'}/>
 
               <TextField
               label={'Remarks'}
               labelStyle={styles.label}
               placeholder={'Write your issue here.............'}
+              placeholderTextColor={'grey'}
               fieldStyle={[styles.fieldStyle,{height:100}]}
               multiline
               marginB-20
               padding-10
-              textAlignVertical="top" />
+              textAlignVertical="top" 
+              color={'black'}/>
               <CommonButton title="Send Request" onPress={()=>{setModalVisible(false)}}/>
             </Card>
           </View>
