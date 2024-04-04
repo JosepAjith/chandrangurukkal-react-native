@@ -7,7 +7,9 @@ import { BookAppointmentResponse } from './appointment/BookAppointmentResponse';
 import { RequestAppointmentResponse } from './appointment/RequestAppointmentResponse';
 import { BranchResponse } from './branch/BranchResponse';
 import { LoginResponse } from './login/LoginCreateSlice';
+import { MasterResponse } from './master/MasterResponse';
 import { PackageResponse } from './package/PackageResponse';
+import { RegisterResponse } from './register/RegisterCreateSlice';
 import { ServiceResponse } from './service/ServiceResponse';
 
 type ResponseKind = 'success' | 'failure';
@@ -93,6 +95,25 @@ export const fetchBranchList = async (
   }
 };
 
+//API FOR MASTER DATA
+export const fetchMasterData = async (
+  uri: any
+): Promise<NetworkResponse<MasterResponse>> => {
+  const response = await SimpleApiClient(uri);
+
+  if (response && response.status) {
+    const json = await response.data;
+    return {
+      kind: 'success',
+      body: json,
+    };
+  } else {
+    return {
+      kind: 'failure',
+    };
+  }
+};
+
 //API FOR REQUESTING APPOINTMENT
 export const requestAppointment = async (
   uri: any
@@ -136,6 +157,25 @@ export const createLogin = async (
   uri: any
  ): Promise<NetworkResponse<LoginResponse | null>> => {
    const response = await SimpleApiClient(uri);
+ 
+   if (response && response.status) {
+     const json = await response.data;
+     return {
+       kind: 'success',
+       body: json,
+     };
+   } else {
+     return {
+       kind: 'failure',
+     };
+   }
+ };
+
+ //API FOR REGISTER
+export const createRegister = async (
+  uri: any
+ ): Promise<NetworkResponse<RegisterResponse | null>> => {
+   const response = await PostApiClient(uri);
  
    if (response && response.status) {
      const json = await response.data;

@@ -18,7 +18,7 @@ import { useSelector } from 'react-redux';
 
 const MenuDrawer = (props: any) => {
   const navigation = useNavigation();
-  const {PatientName, USER_EMAIL} = useSelector(
+  const {PatientName, UserEmail} = useSelector(
     (state: RootState) => state.GlobalVariables,
   );
 
@@ -36,7 +36,7 @@ const MenuDrawer = (props: any) => {
       <DrawerContentScrollView {...props}>
         <View flex row centerV marginH-15>
           <View>
-            <Image source={AppImages.PROF1} />
+            <Image source={AppImages.PLACEHOLDER} style={{width:60, height:60, borderRadius:30}}/>
           </View>
           <View marginL-5>
             <Text style={AppStyles.buttonlabel1}>{PatientName}</Text>
@@ -45,7 +45,7 @@ const MenuDrawer = (props: any) => {
                 AppStyles.drawerText,
                 {color: '#949494', marginLeft: 10},
               ]}>
-              {USER_EMAIL}
+              {UserEmail}
             </Text>
           </View>
         </View>

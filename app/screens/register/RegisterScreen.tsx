@@ -1,0 +1,277 @@
+import React, {useEffect, useState} from 'react';
+import {Button, Image, Incubator, Text, View} from 'react-native-ui-lib';
+import {RootStackParams} from '../../navigation';
+import {RouteProp} from '@react-navigation/native';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {useNavigation} from '@react-navigation/native';
+import {RouteNames} from '../../navigation';
+import AppImages from '../../constants/AppImages';
+import AppColors from '../../constants/AppColors';
+import CommonButton from '../../components/CommonButton';
+import ButtonView from '../../components/ButtonView';
+import {ScrollView, TouchableOpacity} from 'react-native';
+import styles from '../login/styles';
+import {RegisterRequest} from '../../api/register/RegisterRequest';
+import {RegisterValidation} from '../../api/register/RegistorValidation';
+import {showToast} from '../../constants/commonUtils';
+import {AnyAction, ThunkDispatch} from '@reduxjs/toolkit';
+import {RootState} from '../../../store';
+import {useDispatch, useSelector} from 'react-redux';
+import BackgroundLoader from '../../components/BackgroundLoader';
+import { createRegister, reset } from '../../api/register/RegisterCreateSlice';
+
+const {TextField} = Incubator;
+
+export type RegisterScreenNavigationProps = NativeStackNavigationProp<
+  RootStackParams,
+  'RegisterScreen'
+>;
+
+export type RegisterScreenRouteProps = RouteProp<
+  RootStackParams,
+  'RegisterScreen'
+>;
+
+interface Props {}
+
+const RegisterScreen: React.FC<Props> = () => {
+  const navigation = useNavigation<RegisterScreenNavigationProps>();
+  const [registerInput, setRegister] = useState<RegisterRequest>(
+    new RegisterRequest(),
+  );
+  const [registerValidate, setValidate] = useState<RegisterValidation>(
+    new RegisterValidation(),
+  );
+  const dispatch: ThunkDispatch<RootState, any, AnyAction> = useDispatch();
+  const {RegisterData, loadingRegister, RegisterError} = useSelector(
+    (state: RootState) => state.registerCreate,
+  );
+
+  function Validate() {
+    if (registerInput.FullName == '') {
+      setValidate({
+        ...registerValidate,
+        InvalidName: true,
+        error: '*Required',
+      });
+      return false;
+    }
+
+    if (registerInput.MobileNo == '') {
+      setValidate({
+        ...registerValidate,
+        InvalidPhone: true,
+        error: '*Required',
+      });
+      return false;
+    }
+
+    if (registerInput.MobileNo && !/^\d{10}$/.test(registerInput.MobileNo)) {
+      showToast('Invalid mobile number. Please enter a 10-digit number.');
+      return false;
+    }
+
+    if (
+      registerInput.Email &&
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(registerInput.Email)
+    ) {
+      showToast('Invalid email address. Please enter a valid email.');
+      return false;
+    }
+
+    if (registerInput.UserId == '') {
+      setValidate({
+        ...registerValidate,
+        InvalidUserId: true,
+        error: '*Required',
+      });
+      return false;
+    }
+
+    if (
+      registerInput.UserId &&
+      registerInput.UserId != registerValidate.confirmUser
+    ) {
+      showToast('Please confirm the user id. Mismatch happened.');
+      return false;
+    }
+
+    if (
+      registerInput.Password &&
+      registerInput.Password != registerValidate.confirmPass
+    ) {
+      showToast('Please confirm the password. Mismatch happened.');
+      return false;
+    }
+
+    return true;
+  }
+
+  const Register = async () => {
+    dispatch(
+      createRegister({
+        uri: `SaveSignUpDetails?composite=${JSON.stringify(registerInput)}`,
+      }),
+    )
+      .then(() => {
+        dispatch(reset());
+      })
+      .catch((err: any) => console.log(err));
+  };
+
+  useEffect(() => {
+    if (RegisterData != null) {
+      if (
+        !loadingRegister &&
+        !RegisterError &&
+        !RegisterData.SaveSignUpDetailsResult.Error
+      ) {
+        showToast(RegisterData.SaveSignUpDetailsResult.Message);
+        navigation.replace(RouteNames.LoginScreen)
+      } else {
+        showToast(RegisterData.SaveSignUpDetailsResult.Message);
+      }
+    }
+  }, [RegisterData]);
+
+  return (
+    <View style={styles.container}>
+      {loadingRegister && <BackgroundLoader />}
+      <ScrollView>
+        <View flex centerH>
+          <View style={[styles.logoContainer, {marginVertical: 20}]}>
+            <Image source={AppImages.LOGO} width={113} height={113} />
+          </View>
+
+          <Text style={styles.title}>Signup</Text>
+
+          <TextField
+            placeholder={'Full Name'}
+            placeholderTextColor={AppColors.gray}
+            fieldStyle={styles.fieldStyle}
+            paddingH-15
+            marginB-20
+            onChangeText={text => {
+              setRegister({...registerInput, FullName: text});
+              setValidate({...registerValidate, InvalidName: false});
+            }}
+            trailingAccessory={
+              <View>
+                {registerValidate.InvalidName && <Text red10>*Required</Text>}
+              </View>
+            }
+          />
+
+          <TextField
+            placeholder={'Mobile Number'}
+            placeholderTextColor={AppColors.gray}
+            fieldStyle={styles.fieldStyle}
+            paddingH-15
+            marginB-20
+            keyboardType={'phone-pad'}
+            onChangeText={text => {
+              setRegister({...registerInput, MobileNo: text});
+              setValidate({...registerValidate, InvalidPhone: false});
+            }}
+            trailingAccessory={
+              <View>
+                {registerValidate.InvalidPhone && <Text red10>*Required</Text>}
+              </View>
+            }
+          />
+
+          <TextField
+            placeholder={'Email'}
+            placeholderTextColor={AppColors.gray}
+            fieldStyle={styles.fieldStyle}
+            paddingH-15
+            marginB-20
+            onChangeText={text => {
+              setRegister({...registerInput, Email: text});
+              setValidate({...registerValidate, InvalidEmail: false});
+            }}
+          />
+
+          <TextField
+            placeholder={'Location'}
+            placeholderTextColor={AppColors.gray}
+            fieldStyle={styles.fieldStyle}
+            paddingH-15
+            marginB-20
+            onChangeText={text => {
+              setRegister({...registerInput, Location: text});
+            }}
+          />
+
+          <TextField
+            placeholder={'User ID'}
+            placeholderTextColor={AppColors.gray}
+            fieldStyle={styles.fieldStyle}
+            paddingH-15
+            marginB-20
+            onChangeText={text => {
+              setRegister({...registerInput, UserId: text});
+              setValidate({...registerValidate, InvalidUserId: false});
+            }}
+            trailingAccessory={
+              <View>
+                {registerValidate.InvalidUserId && <Text red10>*Required</Text>}
+              </View>
+            }
+          />
+
+          <TextField
+            placeholder={'Confirm User ID'}
+            placeholderTextColor={AppColors.gray}
+            fieldStyle={styles.fieldStyle}
+            paddingH-15
+            marginB-20
+            onChangeText={text => {
+              setValidate({...registerValidate, confirmUser: text});
+            }}
+          />
+
+          <TextField
+            placeholder={'Password'}
+            placeholderTextColor={AppColors.gray}
+            fieldStyle={styles.fieldStyle}
+            paddingH-15
+            marginB-20
+            onChangeText={text => {
+              setRegister({...registerInput, Password: text});
+              setValidate({...registerValidate, InvalidPassword: false});
+            }}
+          />
+
+          <TextField
+            placeholder={'Confirm Password'}
+            placeholderTextColor={AppColors.gray}
+            fieldStyle={styles.fieldStyle}
+            paddingH-15
+            marginB-20
+            onChangeText={text => {
+              setValidate({...registerValidate, confirmPass: text});
+            }}
+          />
+
+          <CommonButton
+            title={'Register'}
+            onPress={() => {
+              if (Validate()) {
+                Register();
+              }
+            }}
+          />
+
+          <View marginT-10 marginB-20>
+            <TouchableOpacity
+              onPress={() => navigation.replace(RouteNames.LoginScreen)}>
+              <Text style={styles.already}>Already have an account? Login</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </ScrollView>
+    </View>
+  );
+};
+export default RegisterScreen;

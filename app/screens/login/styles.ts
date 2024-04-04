@@ -96,6 +96,12 @@ const styles = StyleSheet.create({
     alignSelf:'center',
     marginTop:40
   },
+  already: {
+    textAlign: 'center',
+    fontSize: 14,
+    color: AppColors.black,
+    fontFamily:AppFonts.LATO_MEDIUM
+  },
 });
 
 export default styles;

@@ -12,28 +12,20 @@ import AppColors from '../../constants/AppColors';
 import {styles} from './styles';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../../store';
-import {isoTime} from '../../constants/commonUtils';
+import {isoTime, isoTimeValue} from '../../constants/commonUtils';
+import { useFocusEffect } from '@react-navigation/native';
+import { fetchMasterData } from '../../api/master/MasterDataSlice';
+import { AnyAction, ThunkDispatch } from '@reduxjs/toolkit';
 const deviceHeight = Dimensions.get('window').height;
 
-const TimeSheet = (props: {close: any}) => {
+const TimeSheet = (props: {close: any, comp_Id: any}) => {
   const close = props.close;
-  const [times, setTimes] = useState([
-    {id: 1, time: '06:00 AM'},
-    {id: 2, time: '07:00 AM'},
-    {id: 3, time: '08:00 AM'},
-    {id: 4, time: '09:00 AM'},
-    {id: 5, time: '10:00 AM'},
-    {id: 6, time: '11:00 AM'},
-    {id: 7, time: '12:00 PM'},
-    {id: 8, time: '02:00 PM'},
-    {id: 9, time: '03:00 PM'},
-    {id: 10, time: '04:00 PM'},
-    {id: 11, time: '05:00 PM'},
-    {id: 12, time: '06:00 PM'},
-    {id: 13, time: '07:00 PM'},
-    {id: 14, time: '08:00 PM'},
-  ]);
-  const dispatch = useDispatch();
+  const comp_Id = props.comp_Id;
+  const [times, setTimes] = useState([]);
+  const dispatch: ThunkDispatch<RootState, any, AnyAction> = useDispatch();
+  const {masterData, loadingMasterData, masterDataError} = useSelector(
+    (state: RootState) => state.MasterData,
+  );
   const {RequestedTime} = useSelector(
     (state: RootState) => state.AppointRequest,
   );
@@ -83,6 +75,46 @@ const TimeSheet = (props: {close: any}) => {
       },
     }),
   ).current;
+
+  useFocusEffect(
+    React.useCallback(() => {
+      let companyId = comp_Id;
+      
+      dispatch(fetchMasterData({uri: `SetMasterData?composite={"CompanyID":"${companyId}"}`}));
+
+      return () => {
+        
+      };
+    }, []),
+  );
+
+
+  // Function to generate time slots
+  const generateTimeSlots = (startTime: any, endTime: any) => {
+    if(startTime && endTime){
+    const startHour = parseInt(isoTimeValue(startTime).split(':')[0], 10);
+    const endHour = parseInt(isoTimeValue(endTime).split(':')[0], 10);
+
+    if (startHour < 0 || startHour > 23 || endHour < 0 || endHour > 23) {
+      console.error('Invalid start or end time');
+      return;
+    }
+
+    const timeSlots = [];
+
+    for (let i = startHour; i <= endHour; i++) {
+      const hour = i < 10 ? `0${i}` : `${i}`;
+      const time12HourFormat = i < 12 ? `${hour}:00 AM` : `${hour === '12' ? hour : hour - 12}:00 PM`;
+      timeSlots.push({ id: i, time: time12HourFormat });
+    }
+    setTimes(timeSlots);
+  }
+  };
+
+  // Call generateTimeSlots() when component mounts
+  useEffect(() => {
+    generateTimeSlots(masterData?.SetMasterDataResult.Data.CompanyDetails.AppointmentStartTime, masterData?.SetMasterDataResult.Data.CompanyDetails.AppointmentEndTime);
+  }, [masterData]);
 
   return (
     <Animated.View

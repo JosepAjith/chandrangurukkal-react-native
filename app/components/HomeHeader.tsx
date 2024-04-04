@@ -24,7 +24,7 @@ const HomeHeader = ({leftIcon, onPress}: Props) => {
           <Image source={AppImages.BELL} width={20} height={20}/>
         </View> */}
         <View padding-20>
-          <Image source={AppImages.PROF} width={20} height={20} />
+          <Image source={AppImages.PLACEHOLDER} width={20} height={20} />
         </View>
       </View>
     </View>

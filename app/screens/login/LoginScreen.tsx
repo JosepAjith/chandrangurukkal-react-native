@@ -77,11 +77,19 @@ const LoginScreen: React.FC<Props> = () => {
 
         <Text style={styles.or}>or</Text>
 
-        <ButtonView
+        {/* <ButtonView
           title={'Guest Login'}
           source={AppImages.USER}
           onPress={() => {
             navigation.navigate(RouteNames.GuestLogin);
+          }}
+        /> */}
+
+<ButtonView
+          title={'Sign Up'}
+          source={AppImages.USER}
+          onPress={() => {
+            navigation.navigate(RouteNames.RegisterScreen);
           }}
         />
       </View>

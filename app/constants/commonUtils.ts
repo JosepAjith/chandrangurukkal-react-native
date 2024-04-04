@@ -52,6 +52,10 @@ export const isoTime = (value: moment.MomentInput) => {
   return moment(value, 'hh:mm A').format('HH:mm:ss');
 }
 
+export const isoTimeValue = (value: moment.MomentInput) => { 
+  return moment(value, 'hh:mm A').format('HH:mm');
+}
+
 export const formatTime = (value: moment.MomentInput) => { 
   return moment(value, 'HH:mm:ss').format('h:mm A');
 }

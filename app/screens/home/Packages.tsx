@@ -66,12 +66,12 @@ const Packages = ({navigation}: Props) => {
            Continue(item.PackageId, item.PackageName)
           }>
           <ImageBackground
-            source={item.ImgUrl? {uri:item.ImgUrl} : AppImages.SERVICE}
+            source={item.ImgUrl? {uri:item.ImgUrl} : AppImages.NULLIMAGE}
             style={{width: 330, height: 180}}
             imageStyle={{borderRadius: 10}}>
             <View flex bottom marginH-20 marginB-20>
               <Text style={styles.packageText}>{item.PackageName}</Text>
-              <View row marginT-20>
+              {/* <View row marginT-20>
                 <View style={styles.smallView}>
                   <Text style={styles.priceText}>AED 2500</Text>
                 </View>
@@ -79,7 +79,7 @@ const Packages = ({navigation}: Props) => {
                 <View marginL-5 style={styles.smallView}>
                   <Text style={styles.priceText}>10 - 15 days</Text>
                 </View>
-              </View>
+              </View> */}
             </View>
           </ImageBackground>
           </TouchableOpacity>

@@ -8,6 +8,8 @@ import LoginCreateSlice from "./app/api/login/LoginCreateSlice";
 import AppointRequest from "./app/screens/appointment/AppointRequest";
 import GlobalVariables from "./app/constants/GlobalVariables";
 import AppointmentListSlice from "./app/api/appointment/AppointmentListSlice";
+import MasterDataSlice from "./app/api/master/MasterDataSlice";
+import RegisterCreateSlice from "./app/api/register/RegisterCreateSlice";
 
 const rootReducer = combineReducers({
     ServiceList: ServiceListSlice,
@@ -18,7 +20,9 @@ const rootReducer = combineReducers({
     loginCreate: LoginCreateSlice,
     AppointRequest: AppointRequest,
     GlobalVariables: GlobalVariables,
-    AppointmentList: AppointmentListSlice
+    AppointmentList: AppointmentListSlice,
+    MasterData: MasterDataSlice,
+    registerCreate: RegisterCreateSlice
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

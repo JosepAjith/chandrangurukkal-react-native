@@ -22,6 +22,7 @@ import ScheduleAppointment from '../screens/appointment/ScheduleAppointment';
 import ConfirmAppointment from '../screens/appointment/ConfirmAppointment';
 import ConfirmRequest from '../screens/appointment/ConfirmRequest';
 import AppointmentListScreen from '../screens/appointment/AppointmentListScreen';
+import RegisterScreen from '../screens/register/RegisterScreen';
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -37,6 +38,7 @@ const AppStack = () => {
       }}>
       <Stack.Screen name={RouteNames.WelcomeScreen} component={WelcomeScreen} />
       <Stack.Screen name={RouteNames.LoginScreen} component={LoginScreen} />
+      <Stack.Screen name={RouteNames.RegisterScreen} component={RegisterScreen} />
       <Stack.Screen
         name={RouteNames.PasswordScreen}
         component={PasswordScreen}

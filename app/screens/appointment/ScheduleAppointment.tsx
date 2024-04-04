@@ -67,12 +67,9 @@ const ScheduleAppointment: React.FC<Props> = ({route}: any) => {
     RequestedDate,
     RequestedBranch,
     RequestedTime,
-    RequestedServicesOrPackages
+    RequestedServicesOrPackages,
   } = useSelector((state: RootState) => state.AppointRequest);
-  const {PatientId} = useSelector(
-    (state: RootState) => state.GlobalVariables,
-  );
-
+  const {PatientId} = useSelector((state: RootState) => state.GlobalVariables);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -95,19 +92,21 @@ const ScheduleAppointment: React.FC<Props> = ({route}: any) => {
       showToast('Date Required');
       return false;
     }
-    if (RequestedTime == '') {
-      showToast('Time Required');
+    if (RequestedBranch.Id == 0) {
+      showToast('Branch Required');
       return false;
     }
-    if (RequestedBranch == 0) {
-      showToast('Branch Required');
+    if (RequestedTime == '') {
+      showToast('Time Required');
       return false;
     }
     return true;
   }
 
   const Request = async () => {
-    const productIds = RequestedServicesOrPackages.map((item: { ProductId: any; }) => ({ ProductId: item.ProductId }));
+    const productIds = RequestedServicesOrPackages.map(
+      (item: {ProductId: any}) => ({ProductId: item.ProductId}),
+    );
     let composite = {
       PatientId: PatientId,
       RequestedBranch: RequestedBranch.Id,
@@ -137,9 +136,14 @@ const ScheduleAppointment: React.FC<Props> = ({route}: any) => {
         dispatch({
           type: 'SET_REQUEST_ID',
           payload:
-            requestAppointmentData.RequestAppointmentResult.AppointmentRequestId,
+            requestAppointmentData.RequestAppointmentResult
+              .AppointmentRequestId,
         });
-        navigation.replace(RouteNames.ConfirmRequest,{requestNo: requestAppointmentData.RequestAppointmentResult.AppointmentRequestNo});
+        navigation.replace(RouteNames.ConfirmRequest, {
+          requestNo:
+            requestAppointmentData.RequestAppointmentResult
+              .AppointmentRequestNo,
+        });
       } else {
         showToast(requestAppointmentData.RequestAppointmentResult.Message);
       }
@@ -180,27 +184,13 @@ const ScheduleAppointment: React.FC<Props> = ({route}: any) => {
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity
-            style={styles.rectangle}
-            onPress={() => setTimeOpen(!timeOpen)}>
-            <View flex left centerV>
-              <Text style={styles.label}>Time</Text>
-              <Text style={styles.value}>
-                {RequestedTime ? formatTime(RequestedTime) : 'Select a time'}
-              </Text>
-            </View>
-            <View flex right centerV>
-              <Image source={AppImages.CLOCK} />
-            </View>
-          </TouchableOpacity>
-
           {status == 'appoint' && (
             <View>
               <View absT marginH-20 style={{top: 30, zIndex: 2}}>
                 <Text style={styles.label}>Branch</Text>
               </View>
               <Picker
-              key={RequestedBranch.Id}
+                key={RequestedBranch.Id}
                 placeholder="Select a branch"
                 placeholderTextColor={'grey'}
                 fieldStyle={styles.rectangle}
@@ -213,11 +203,17 @@ const ScheduleAppointment: React.FC<Props> = ({route}: any) => {
                 }
                 value={RequestedBranch.Id}
                 onChange={itemId => {
-                  const selectedBranch = branches?.GetAllBranchesResult.Data.find(branch => branch.CompanyId === itemId);
+                  const selectedBranch =
+                    branches?.GetAllBranchesResult.Data.find(
+                      branch => branch.CompanyId === itemId,
+                    );
                   if (selectedBranch) {
                     dispatch({
                       type: 'SET_REQUESTED_BRANCH',
-                      payload: { Id: selectedBranch.CompanyId, name: selectedBranch.CompanyName },
+                      payload: {
+                        Id: selectedBranch.CompanyId,
+                        name: selectedBranch.CompanyName,
+                      },
                     });
                   }
                 }}>
@@ -230,6 +226,22 @@ const ScheduleAppointment: React.FC<Props> = ({route}: any) => {
                 ))}
               </Picker>
             </View>
+          )}
+
+          {status == 'appoint' && RequestedBranch.Id != 0 && (
+            <TouchableOpacity
+              style={styles.rectangle}
+              onPress={() => setTimeOpen(!timeOpen)}>
+              <View flex left centerV>
+                <Text style={styles.label}>Time</Text>
+                <Text style={styles.value}>
+                  {RequestedTime ? formatTime(RequestedTime) : 'Select a time'}
+                </Text>
+              </View>
+              <View flex right centerV>
+                <Image source={AppImages.CLOCK} />
+              </View>
+            </TouchableOpacity>
           )}
         </View>
 
@@ -244,7 +256,7 @@ const ScheduleAppointment: React.FC<Props> = ({route}: any) => {
       </View>
       {calendarOpen && <CalendarSheet close={CalendarClose} />}
 
-      {timeOpen && <TimeSheet close={TimeClose} />}
+      {timeOpen && <TimeSheet close={TimeClose} comp_Id={RequestedBranch.Id} />}
     </View>
   );
 };

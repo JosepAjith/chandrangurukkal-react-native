@@ -16,8 +16,6 @@ import {fetchServiceList} from '../../api/service/ServiceListSlice';
 import {fetchPackageList} from '../../api/package/PackageListSlice';
 import BackgroundLoader from '../../components/BackgroundLoader';
 import {showToast} from '../../constants/commonUtils';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import AppStrings from '../../constants/AppStrings';
 
 const {TextField} = Incubator;
 
@@ -50,7 +48,7 @@ const AppointmentScreen: React.FC<Props> = () => {
 
   useFocusEffect(
     React.useCallback(() => {
-      const companyId = '1';
+      const companyId = '';
 
       const fetchPackagesPromise = dispatch(
         fetchPackageList({
@@ -139,7 +137,7 @@ const AppointmentScreen: React.FC<Props> = () => {
                 <Pressable onPress={() => toggleSelection(id, title)}>
                   <ImageBackground
                     source={
-                      item.ImgUrl ? {uri: item.ImgUrl} : AppImages.SERVICE
+                      item.ImgUrl ? {uri: item.ImgUrl} : AppImages.NULLIMAGE
                     }
                     style={[styles.itemView, {width: itemWidth}]}
                     imageStyle={{borderRadius: 5}}>
