@@ -71,6 +71,15 @@ const RegisterScreen: React.FC<Props> = () => {
       return false;
     }
 
+    if (registerInput.Location == '') {
+      setValidate({
+        ...registerValidate,
+        InvalidUserId: true,
+        error: '*Required',
+      });
+      return false;
+    }
+
     if (
       registerInput.Email &&
       !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(registerInput.Email)
@@ -93,6 +102,15 @@ const RegisterScreen: React.FC<Props> = () => {
       registerInput.UserId != registerValidate.confirmUser
     ) {
       showToast('Please confirm the user id. Mismatch happened.');
+      return false;
+    }
+
+    if (registerInput.Password == '') {
+      setValidate({
+        ...registerValidate,
+        InvalidUserId: true,
+        error: '*Required',
+      });
       return false;
     }
 
@@ -200,7 +218,14 @@ const RegisterScreen: React.FC<Props> = () => {
             marginB-20
             onChangeText={text => {
               setRegister({...registerInput, Location: text});
+              setValidate({...registerValidate, InvalidLoc: false});
             }}
+
+            trailingAccessory={
+              <View>
+                {registerValidate.InvalidLoc && <Text red10>*Required</Text>}
+              </View>
+            }
           />
 
           <TextField
@@ -241,6 +266,11 @@ const RegisterScreen: React.FC<Props> = () => {
               setRegister({...registerInput, Password: text});
               setValidate({...registerValidate, InvalidPassword: false});
             }}
+            trailingAccessory={
+              <View>
+                {registerValidate.InvalidPassword && <Text red10>*Required</Text>}
+              </View>
+            }
           />
 
           <TextField
