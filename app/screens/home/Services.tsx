@@ -37,7 +37,7 @@ const Services = ({navigation}: Props) => {
       }, []),
     );
 
-    const Continue = async (productId: number, productName: string) => {
+    const Continue = async (productId: number, productName: string, type: string) => {
       const isSelected = RequestedServicesOrPackages.some(
         (item: {ProductId: number}) => item.ProductId === productId,
       );
@@ -49,7 +49,7 @@ const Services = ({navigation}: Props) => {
           ? RequestedServicesOrPackages.filter(
               (item: {ProductId: number}) => item.ProductId !== productId,
             )
-          : [...RequestedServicesOrPackages, {ProductId: productId, ProductName: productName}],
+          : [...RequestedServicesOrPackages, {ProductId: productId, ProductName: productName, Type: type}],
       });
   
         navigation.navigate(RouteNames.ScheduleAppointment, {
@@ -65,7 +65,7 @@ const Services = ({navigation}: Props) => {
       return (
         <TouchableOpacity
           onPress={() =>
-           Continue(item.ServiceId, item.ServiceName)
+           Continue(item.ServiceId, item.ServiceName, 'service')
           }>
           <View center>
             <Image source={item.ImgUrl? {uri:item.ImgUrl} : AppImages.NULLIMAGE} width={70} height={70} style={{borderRadius:40}}/>

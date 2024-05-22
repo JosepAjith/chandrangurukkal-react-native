@@ -71,7 +71,7 @@ const AppointmentScreen: React.FC<Props> = () => {
     }, []),
   );
 
-  const toggleSelection = (id: number, name: string) => {
+  const toggleSelection = (id: number, name: string, type: string) => {
     const isSelected = RequestedServicesOrPackages.some(
       (item: {ProductId: number}) => item.ProductId === id,
     );
@@ -83,7 +83,7 @@ const AppointmentScreen: React.FC<Props> = () => {
         ? RequestedServicesOrPackages.filter(
             (item: {ProductId: number}) => item.ProductId !== id,
           )
-        : [...RequestedServicesOrPackages, {ProductId: id, ProductName: name}],
+        : [...RequestedServicesOrPackages, {ProductId: id, ProductName: name, Type: type}],
     });
   };
 
@@ -93,6 +93,8 @@ const AppointmentScreen: React.FC<Props> = () => {
         status: 'appoint',
       });
   }
+
+  // console.log(packages?.GetAllPackagesResult?.Data, services?.GetAllServicesResult.Data)
 
   return (
     <View flex>
@@ -120,11 +122,14 @@ const AppointmentScreen: React.FC<Props> = () => {
             const alignmentStyle = isEvenIndex ? 'flex-start' : 'flex-end';
             let title = '';
             let id = 0;
+            let type = '';
 
             if ('PackageName' in item) {
               title = item.PackageName;
+              type = 'package';
             } else if ('ServiceName' in item) {
               title = item.ServiceName;
+              type = 'service';
             }
 
             if ('PackageId' in item) {
@@ -134,7 +139,7 @@ const AppointmentScreen: React.FC<Props> = () => {
             }
             return (
               <View style={{alignItems: alignmentStyle, flex: 1}}>
-                <Pressable onPress={() => toggleSelection(id, title)}>
+                <Pressable onPress={() => toggleSelection(id, title, type)}>
                   <ImageBackground
                     source={
                       item.ImgUrl ? {uri: item.ImgUrl} : AppImages.NULLIMAGE

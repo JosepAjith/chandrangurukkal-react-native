@@ -38,7 +38,7 @@ const Packages = ({navigation}: Props) => {
     }, []),
   );
 
-  const Continue = async (productId: number, productName: string) => {
+  const Continue = async (productId: number, productName: string, type: string) => {
     const isSelected = RequestedServicesOrPackages.some(
       (item: {ProductId: number}) => item.ProductId === productId,
     );
@@ -50,7 +50,7 @@ const Packages = ({navigation}: Props) => {
         ? RequestedServicesOrPackages.filter(
             (item: {ProductId: number}) => item.ProductId !== productId,
           )
-        : [...RequestedServicesOrPackages, {ProductId: productId, ProductName: productName}],
+        : [...RequestedServicesOrPackages, {ProductId: productId, ProductName: productName, Type: type}],
     });
 
       navigation.navigate(RouteNames.ScheduleAppointment, {
@@ -63,7 +63,7 @@ const Packages = ({navigation}: Props) => {
       {packages?.GetAllPackagesResult.Data.map((item, index) => (
         <View key={index} marginT-10 marginR-10>
           <TouchableOpacity onPress={() =>
-           Continue(item.PackageId, item.PackageName)
+           Continue(item.PackageId, item.PackageName, 'package')
           }>
           <ImageBackground
             source={item.ImgUrl? {uri:item.ImgUrl} : AppImages.NULLIMAGE}

@@ -103,15 +103,24 @@ const ScheduleAppointment: React.FC<Props> = ({route}: any) => {
     return true;
   }
 
+
   const Request = async () => {
-    const productIds = RequestedServicesOrPackages.map(
-      (item: {ProductId: any}) => ({ProductId: item.ProductId}),
-    );
+    const productIds = RequestedServicesOrPackages.map((item) => {
+      if (item.Type === "package") {
+        return { PackageId: item.ProductId, ServiceId: 0 };
+      } else if (item.Type === "service") {
+        return { PackageId: 0, ServiceId: item.ProductId };
+      }
+      // Return an empty object or handle other types if necessary
+      return {};
+    });
+    
     let composite = {
       PatientId: PatientId,
       RequestedBranch: RequestedBranch.Id,
       RequestedDate: RequestedDate,
       RequestedTime: RequestedTime,
+      SalesId: 0,
       RequestedServicesOrPackages: productIds,
     };
     dispatch(

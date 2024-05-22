@@ -2,7 +2,7 @@ export type VariableState = {
     RequestedBranch: { Id: number , name: string};
     RequestedDate: string;
     RequestedTime: string;
-    RequestedServicesOrPackages: { ProductId: number, ProductName: string }[];
+    RequestedServicesOrPackages: { ProductId: number, ProductName: string, Type: string }[];
     AppointmentRequestId: number;
   };
   

@@ -71,10 +71,10 @@ const RegisterScreen: React.FC<Props> = () => {
       return false;
     }
 
-    if (registerInput.Location == '') {
+    if (registerInput.Email == '') {
       setValidate({
         ...registerValidate,
-        InvalidUserId: true,
+        InvalidEmail: true,
         error: '*Required',
       });
       return false;
@@ -87,6 +87,16 @@ const RegisterScreen: React.FC<Props> = () => {
       showToast('Invalid email address. Please enter a valid email.');
       return false;
     }
+
+    if (registerInput.Location == '') {
+      setValidate({
+        ...registerValidate,
+        InvalidLoc: true,
+        error: '*Required',
+      });
+      return false;
+    }
+
 
     if (registerInput.UserId == '') {
       setValidate({
@@ -208,6 +218,11 @@ const RegisterScreen: React.FC<Props> = () => {
               setRegister({...registerInput, Email: text});
               setValidate({...registerValidate, InvalidEmail: false});
             }}
+            trailingAccessory={
+              <View>
+                {registerValidate.InvalidEmail && <Text red10>*Required</Text>}
+              </View>
+            }
           />
 
           <TextField
