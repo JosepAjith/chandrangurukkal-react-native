@@ -49,11 +49,10 @@ export type ScheduleAppointmentRouteProps = RouteProp<
 
 interface Props {}
 
-const ScheduleAppointment: React.FC<Props> = ({route}: any) => {
+const ScheduleAppointment: React.FC<Props> = () => {
   const navigation = useNavigation<ScheduleAppointmentNavigationProps>();
   const [calendarOpen, setCalendarOpen] = useState(false);
   const [timeOpen, setTimeOpen] = useState(false);
-  const status = route.params.status;
   const dispatch: ThunkDispatch<RootState, any, AnyAction> = useDispatch();
   const {branches, loadingBranches, branchError} = useSelector(
     (state: RootState) => state.BranchList,
@@ -67,6 +66,7 @@ const ScheduleAppointment: React.FC<Props> = ({route}: any) => {
     RequestedDate,
     RequestedBranch,
     RequestedTime,
+    SalesId,
     RequestedServicesOrPackages,
   } = useSelector((state: RootState) => state.AppointRequest);
   const {PatientId} = useSelector((state: RootState) => state.GlobalVariables);
@@ -78,6 +78,8 @@ const ScheduleAppointment: React.FC<Props> = ({route}: any) => {
       return () => {};
     }, []),
   );
+
+  console.log(RequestedServicesOrPackages, RequestedServicesOrPackages[0].requestedServices)
 
   const CalendarClose = () => {
     setCalendarOpen(false);
@@ -105,23 +107,15 @@ const ScheduleAppointment: React.FC<Props> = ({route}: any) => {
 
 
   const Request = async () => {
-    const productIds = RequestedServicesOrPackages.map((item) => {
-      if (item.Type === "package") {
-        return { PackageId: item.ProductId, ServiceId: 0 };
-      } else if (item.Type === "service") {
-        return { PackageId: 0, ServiceId: item.ProductId };
-      }
-      // Return an empty object or handle other types if necessary
-      return {};
-    });
+    
     
     let composite = {
       PatientId: PatientId,
       RequestedBranch: RequestedBranch.Id,
       RequestedDate: RequestedDate,
       RequestedTime: RequestedTime,
-      SalesId: 0,
-      RequestedServicesOrPackages: productIds,
+      SalesId: SalesId,
+      RequestedServicesOrPackages: RequestedServicesOrPackages,
     };
     dispatch(
       requestAppointment({
@@ -169,15 +163,10 @@ const ScheduleAppointment: React.FC<Props> = ({route}: any) => {
       <View flex marginH-20 marginB-20>
         <Text style={styles.heading}>Schedule Your Appointment</Text>
 
-        {status == 'purchase' ? (
-          <Text style={styles.subHeading}>
-            Select a date and time for your appointment
-          </Text>
-        ) : (
           <Text style={styles.subHeading}>
             Select a date, time and preferred location for your appointment
           </Text>
-        )}
+
         <View flex>
           <TouchableOpacity
             style={styles.rectangle}
@@ -193,7 +182,6 @@ const ScheduleAppointment: React.FC<Props> = ({route}: any) => {
             </View>
           </TouchableOpacity>
 
-          {status == 'appoint' && (
             <View>
               <View absT marginH-20 style={{top: 30, zIndex: 2}}>
                 <Text style={styles.label}>Branch</Text>
@@ -235,9 +223,8 @@ const ScheduleAppointment: React.FC<Props> = ({route}: any) => {
                 ))}
               </Picker>
             </View>
-          )}
 
-          {status == 'appoint' && RequestedBranch.Id != 0 && (
+          {RequestedBranch.Id != 0 && (
             <TouchableOpacity
               style={styles.rectangle}
               onPress={() => setTimeOpen(!timeOpen)}>

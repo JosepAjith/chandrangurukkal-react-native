@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Button, Image, Incubator, Text, View} from 'react-native-ui-lib';
 import {RootStackParams, RouteNames} from '../../navigation';
 import {RouteProp} from '@react-navigation/native';
@@ -8,6 +8,10 @@ import Header from '../../components/Header';
 import {styles} from './styles';
 import AppImages from '../../constants/AppImages';
 import {FlatList, ImageBackground, TouchableOpacity} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
+import {RootState} from '../../../store';
+import {AnyAction, ThunkDispatch} from '@reduxjs/toolkit';
+import {fetchPurchaseList} from '../../api/purchase/PurchaseListSlice';
 
 const {TextField} = Incubator;
 
@@ -22,74 +26,110 @@ export type PurchaseHistoryListRouteProps = RouteProp<
 >;
 
 interface Props {}
+const Data = [
+  {
+    AppointmentId: 1,
+    Status: 'Completed',
+    PurchasedItemName: 'Sample Item',
+    AppointmentDate: '2024-05-22',
+    AppointmentTime: '10:00 AM',
+    BranchName: 'Branch A',
+    ItemDetails: [
+      {
+        ProductId: 101,
+        ProductName: 'Product A',
+        ProductType: 'Type A',
+        SalesId: 987654321,
+        ImgUrl: 'https://example.com/imageA.jpg',
+      },
+      {
+        ProductId: 102,
+        ProductName: 'Product B',
+        ProductType: 'Type B',
+        SalesId: 987654322,
+        ImgUrl: 'https://example.com/imageB.jpg',
+      },
+    ],
+  },
+  {
+    AppointmentId: 2,
+    Status: 'Pending',
+    PurchasedItemName: 'Another Sample Item',
+    AppointmentDate: '2024-05-23',
+    AppointmentTime: '11:00 AM',
+    BranchName: 'Branch B',
+    ItemDetails: [
+      {
+        ProductId: 103,
+        ProductName: 'Product C',
+        ProductType: 'Type C',
+        SalesId: 987654323,
+        ImgUrl: 'https://example.com/imageC.jpg',
+      },
+    ],
+  },
+];
 
 const PurchaseHistoryList: React.FC<Props> = () => {
   const navigation = useNavigation<PurchaseHistoryListNavigationProps>();
-  const [purchases, setPurchases] = useState([
-    {
-      id: 1,
-      image: AppImages.PURCHASEIMG,
-      title: 'Body Rejuvenation Package',
-      status: 'Upcoming',
-    },
-    {
-      id: 2,
-      image: AppImages.PURCHASEIMG,
-      title: 'Body Detox Package',
-      status: 'Ongoing',
-    },
-    {
-      id: 3,
-      image: AppImages.PURCHASEIMG,
-      title: 'Weight Loss Package',
-      status: 'Complete',
-    },
-    {
-      id: 4,
-      image: AppImages.PURCHASEIMG,
-      title: 'One Year Package',
-      status: 'Ongoing',
-    },
-  ]);
+  const dispatch: ThunkDispatch<RootState, any, AnyAction> = useDispatch();
+  const {purchases, loadingPurchases, purchaseError} = useSelector(
+    (state: RootState) => state.PurchaseList,
+  );
+  const {PatientId} = useSelector((state: RootState) => state.GlobalVariables);
+
+  // useEffect(() => {
+  //   dispatch(
+  //     fetchPurchaseList({
+  //       uri: `GetPurchaseList?composite={"PatientId":"${PatientId}"}`,
+  //     }),
+  //   );
+  // }, []);
 
   return (
     <View flex>
-      <Header onPress={() => navigation.goBack()}  color={'black'}/>
+      <Header onPress={() => navigation.goBack()} color={'black'} />
 
       <View flex paddingH-20>
         <Text style={styles.heading}>Purchase History</Text>
 
         <FlatList
-          data={purchases}
+          data={Data}
           showsVerticalScrollIndicator={false}
           renderItem={({item}) => {
             return (
-              <TouchableOpacity onPress={()=>navigation.navigate(RouteNames.PurchaseHistoryDetails)}>
-              <View style={styles.cardView}>
-                <Image
-                  source={item.image}
-                  style={styles.image}
-                  resizeMode="cover"
-                />
-                <View style={styles.chip}>
-                  <View style={styles.smallView}>
-                    <Text style={styles.statusText}>{item.status}</Text>
-                  </View>
-                </View>
-
-                <View padding-15>
-                <Text style={styles.title}>{item.title}</Text>
-
-                <View row marginT-10 centerV>
-                  <Text style={styles.text}>February 25,2024</Text>
-                  <View style={styles.line}/>
-                  <Text style={styles.text}> 05:00 PM</Text>
-                  <View style={styles.line}/>
-                  <Text style={styles.text}>Bangalore</Text>
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate(RouteNames.PurchaseHistoryDetails)
+                }>
+                <View style={styles.cardView}>
+                  <Image
+                    source={
+                      item.ItemDetails
+                        ? {uri: item.ItemDetails[0].ImgUrl}
+                        : AppImages.NULLIMAGE
+                    }
+                    style={styles.image}
+                    resizeMode="cover"
+                  />
+                  <View style={styles.chip}>
+                    <View style={styles.smallView}>
+                      <Text style={styles.statusText}>{item.Status}</Text>
+                    </View>
                   </View>
 
+                  <View padding-15>
+                    <Text style={styles.title}>{item.PurchasedItemName}</Text>
+
+                    <View row marginT-10 centerV>
+                      <Text style={styles.text}>{item.AppointmentDate}</Text>
+                      <View style={styles.line} />
+                      <Text style={styles.text}>{item.AppointmentTime}</Text>
+                      <View style={styles.line} />
+                      <Text style={styles.text}>{item.BranchName}</Text>
+                    </View>
+                  </View>
                 </View>
-              </View>
               </TouchableOpacity>
             );
           }}

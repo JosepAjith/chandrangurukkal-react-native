@@ -26,7 +26,7 @@ export const styles = StyleSheet.create({
         paddingHorizontal:10
      },
      statusText: {
-        fontSize:14,
+        fontSize:13,
         fontFamily: AppFonts.LATO_MEDIUM,
         color:AppColors.white
      },

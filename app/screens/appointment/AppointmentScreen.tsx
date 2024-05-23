@@ -71,27 +71,42 @@ const AppointmentScreen: React.FC<Props> = () => {
     }, []),
   );
 
-  const toggleSelection = (id: number, name: string, type: string) => {
-    const isSelected = RequestedServicesOrPackages.some(
-      (item: {ProductId: number}) => item.ProductId === id,
-    );
+  const toggleSelection = (id: number, type: string) => {
+    const isSelected = RequestedServicesOrPackages.some((item: any) => {
+      if (type === 'package') {
+        return item.PackageId === id;
+      }
+      return item.requestedServices.some((service: any) => service.ServiceId === id);
+    });
 
-    // Dispatch action to update the state
+    let updatedSelection;
+
+    if (isSelected) {
+      updatedSelection = RequestedServicesOrPackages.filter((item: any) => {
+        if (type === 'package') {
+          return item.PackageId !== id;
+        }
+        return !item.requestedServices.some((service: any) => service.ServiceId === id);
+      });
+    } else {
+      updatedSelection = [
+        ...RequestedServicesOrPackages,
+        {
+          PackageId: type === 'package' ? id : 0,
+          requestedServices: type === 'service' ? [{ ServiceId: id }] : [{ ServiceId: 0 }]
+        }
+      ];
+    }
+
     dispatch({
       type: 'SET_REQUESTED_SERVICES_OR_PACKAGES',
-      payload: isSelected
-        ? RequestedServicesOrPackages.filter(
-            (item: {ProductId: number}) => item.ProductId !== id,
-          )
-        : [...RequestedServicesOrPackages, {ProductId: id, ProductName: name, Type: type}],
+      payload: updatedSelection,
     });
   };
 
   const Continue = async () => {
 
-      navigation.navigate(RouteNames.ScheduleAppointment, {
-        status: 'appoint',
-      });
+      navigation.navigate(RouteNames.ScheduleAppointment);
   }
 
   // console.log(packages?.GetAllPackagesResult?.Data, services?.GetAllServicesResult.Data)
@@ -126,34 +141,36 @@ const AppointmentScreen: React.FC<Props> = () => {
 
             if ('PackageName' in item) {
               title = item.PackageName;
-              type = 'package';
             } else if ('ServiceName' in item) {
               title = item.ServiceName;
-              type = 'service';
             }
 
             if ('PackageId' in item) {
               id = item.PackageId;
+              type = 'package';
             } else if ('ServiceId' in item) {
               id = item.ServiceId;
+              type = 'service';
             }
             return (
               <View style={{alignItems: alignmentStyle, flex: 1}}>
-                <Pressable onPress={() => toggleSelection(id, title, type)}>
+                <Pressable onPress={() => toggleSelection(id, type)}>
                   <ImageBackground
                     source={
                       item.ImgUrl ? {uri: item.ImgUrl} : AppImages.NULLIMAGE
                     }
                     style={[styles.itemView, {width: itemWidth}]}
                     imageStyle={{borderRadius: 5}}>
-                    {RequestedServicesOrPackages.some(
-                      (selectedItem: {ProductId: number}) =>
-                        selectedItem.ProductId === id,
-                    ) && (
-                      <View style={styles.chip}>
-                        <Image source={AppImages.ROUND} />
-                      </View>
-                    )}
+                   {RequestedServicesOrPackages.some((selectedItem: any) => {
+                      if (type === 'package') {
+                        return selectedItem.PackageId === id;
+                      }
+                      return selectedItem.requestedServices.some((service: any) => service.ServiceId === id);
+                    }) && (
+                        <View style={styles.chip}>
+                          <Image source={AppImages.ROUND} />
+                        </View>
+                      )}
 
                     <Text style={styles.title}>{title}</Text>
                   </ImageBackground>

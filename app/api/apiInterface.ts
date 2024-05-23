@@ -9,6 +9,7 @@ import { BranchResponse } from './branch/BranchResponse';
 import { LoginResponse } from './login/LoginCreateSlice';
 import { MasterResponse } from './master/MasterResponse';
 import { PackageResponse } from './package/PackageResponse';
+import { PurchaseResponse } from './purchase/PurchaseResponse';
 import { RegisterResponse } from './register/RegisterCreateSlice';
 import { ServiceResponse } from './service/ServiceResponse';
 
@@ -189,6 +190,25 @@ export const createRegister = async (
      };
    }
  };
+
+ //API FOR Purchase LIST
+export const fetchPurchaseList = async (
+  uri: any
+): Promise<NetworkResponse<PurchaseResponse>> => {
+  const response = await SimpleApiClient(uri);
+
+  if (response && response.status) {
+    const json = await response.data;
+    return {
+      kind: 'success',
+      body: json,
+    };
+  } else {
+    return {
+      kind: 'failure',
+    };
+  }
+};
 
 
 

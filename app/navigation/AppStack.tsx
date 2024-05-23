@@ -114,6 +114,19 @@ function DrawerStack() {
         }}
       />
 
+<Drawer.Screen
+        name={RouteNames.Purchase}
+        component={Purchase}
+        options={{
+          title: 'Purchase History',
+          headerShown: false,
+          drawerLabelStyle: AppStyles.drawerText,
+          drawerIcon: () => (
+            <Image source={AppImages.HISTORY} width={20} height={20} />
+          ),
+        }}
+      />
+
       {/* <Drawer.Screen
         name={RouteNames.PrescriptionDetails}
         component={PrescriptionDetails}
@@ -127,18 +140,6 @@ function DrawerStack() {
         }}
       />
 
-      <Drawer.Screen
-        name={RouteNames.Purchase}
-        component={Purchase}
-        options={{
-          title: 'Purchase History',
-          headerShown: false,
-          drawerLabelStyle: AppStyles.drawerText,
-          drawerIcon: () => (
-            <Image source={AppImages.HISTORY} width={20} height={20} />
-          ),
-        }}
-      />
 
       <Drawer.Screen
         name={RouteNames.ReferNEarn}

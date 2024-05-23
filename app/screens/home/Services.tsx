@@ -37,25 +37,28 @@ const Services = ({navigation}: Props) => {
       }, []),
     );
 
-    const Continue = async (productId: number, productName: string, type: string) => {
+    const Continue = (serviceId: number) => {
       const isSelected = RequestedServicesOrPackages.some(
-        (item: {ProductId: number}) => item.ProductId === productId,
+        (item: { requestedServices: { ServiceId: number }[] }) =>
+          item.requestedServices.some(service => service.ServiceId === serviceId),
       );
   
       // Dispatch action to update the state
+      const updatedPackages = isSelected
+        ? RequestedServicesOrPackages.map((item: { requestedServices: any[]; }) => ({
+            ...item,
+            requestedServices: item.requestedServices.filter((service: { ServiceId: number; }) => service.ServiceId !== serviceId),
+          })).filter((item: { requestedServices: string | any[]; }) => item.requestedServices.length > 0)
+        : [...RequestedServicesOrPackages, { PackageId: 0, requestedServices: [{ ServiceId: serviceId }] }];
+  
       dispatch({
         type: 'SET_REQUESTED_SERVICES_OR_PACKAGES',
-        payload: isSelected
-          ? RequestedServicesOrPackages.filter(
-              (item: {ProductId: number}) => item.ProductId !== productId,
-            )
-          : [...RequestedServicesOrPackages, {ProductId: productId, ProductName: productName, Type: type}],
+        payload: updatedPackages,
       });
   
-        navigation.navigate(RouteNames.ScheduleAppointment, {
-          status: 'appoint',
-        });
-    }
+      navigation.navigate(RouteNames.ScheduleAppointment);
+    };
+    
   return (
     <GridList
     listPadding={20}
@@ -65,7 +68,7 @@ const Services = ({navigation}: Props) => {
       return (
         <TouchableOpacity
           onPress={() =>
-           Continue(item.ServiceId, item.ServiceName, 'service')
+           Continue(item.ServiceId)
           }>
           <View center>
             <Image source={item.ImgUrl? {uri:item.ImgUrl} : AppImages.NULLIMAGE} width={70} height={70} style={{borderRadius:40}}/>

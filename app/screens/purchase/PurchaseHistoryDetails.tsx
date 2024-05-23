@@ -27,50 +27,66 @@ interface Props {}
 
 const PurchaseHistoryDetails: React.FC<Props> = () => {
   const navigation = useNavigation<PurchaseHistoryDetailsNavigationProps>();
-  const [details, setDetails] = useState([
+  const [selectedIds, setSelectedIds] = useState<number[]>([]);
+  const PackageId = 399;
+
+  const [services, setServices] = useState([
     {
       id: 1,
-      title: 'Body Rejuvenation Package',
+      title: 'Kizhi',
       subTitle: 'Appointment scheduled on March 15, 2024',
       status: false,
     },
     {
       id: 2,
-      title: 'Body Detox Package',
+      title: 'Nasyam',
       subTitle: 'Click here to schedule an appointment',
       status: true,
     },
     {
       id: 3,
-      title: 'Weight Loss Package',
-      subTitle: 'Appointment scheduled on April 15, 2024',
-      status: false,
+      title: 'Siroshtra',
+      subTitle: 'Click here to schedule an appointment',
+      status: true,
     },
+  ]);
+
+  const [detail, setDetail] = useState([
     {
-      id: 4,
-      title: 'One Year Package',
+      id: 1,
+      title: 'Kizhi',
       subTitle: 'Appointment scheduled on March 15, 2024',
       status: false,
     },
   ]);
 
+  const handleSelect = (id: number, status: boolean) => {
+    if (status) {
+      setSelectedIds(prevSelectedIds =>
+        prevSelectedIds.includes(id)
+          ? prevSelectedIds.filter(selectedId => selectedId !== id)
+          : [...prevSelectedIds, id],
+      );
+    }
+  };
+
   return (
     <View flex backgroundColor={AppColors.whitish}>
-      <ImageBackground
-        source={AppImages.PURCHASEIMG}
-        style={{ height: 340}}>
-        <Header onPress={() => navigation.goBack()}  color={'white'}/>
+      <ImageBackground source={AppImages.PURCHASEIMG} style={{height: 340}}>
+        <Header onPress={() => navigation.goBack()} color={'white'} />
         <View flex bottom padding-20>
-          <Text style={[styles.statusText,{fontSize:24}]}>Kizhi, Nasyam, Body Detox Package</Text>
+          <Text style={[styles.statusText, {fontSize: 24}]}>
+          Body Rejuvenation Package
+          </Text>
           <View row marginT-20>
-                        <View style={styles.smallView}>
-                          <Text style={styles.priceText}>Upcoming</Text>
-                        </View>
+            <View style={styles.smallView}>
+              <Text style={styles.priceText}>Upcoming</Text>
+            </View>
 
-                        <View marginL-5 style={styles.smallView}>
-                          <Text style={styles.priceText}>Dubai HealthCare City</Text>
-                        </View>
-                      </View>
+            <View marginL-5 style={styles.smallView}>
+              <Text style={styles.priceText}>Dubai HealthCare City</Text>
+            </View>
+          </View>
         </View>
       </ImageBackground>
 
@@ -79,25 +95,35 @@ const PurchaseHistoryDetails: React.FC<Props> = () => {
           <Text style={styles.subHeading}>Purchase Details</Text>
 
           <FlatList
-            data={details}
+            data={services}
             showsVerticalScrollIndicator={false}
             renderItem={({item}) => {
               return (
-                <View style={styles.innerView}>
-                  <Text style={styles.subText}>{item.title}</Text>
-                  {item.status ? (
-                    <TouchableOpacity onPress={()=>navigation.navigate(RouteNames.ScheduleAppointment,{status:'purchase'})}>
-                      <Text style={styles.subText1}>{item.subTitle}</Text>
-                    </TouchableOpacity>
-                  ) : (
+                <TouchableOpacity
+                  onPress={() => handleSelect(item.id, item.status)}
+                  disabled={!item.status}>
+                  <View style={styles.innerView}>
+                    {selectedIds.includes(item.id) && (
+                      <View absT absR margin-15>
+                        <Image source={AppImages.ROUND} />
+                      </View>
+                    )}
+                    <Text style={styles.subText}>{item.title}</Text>
                     <Text style={styles.subText1}>{item.subTitle}</Text>
-                  )}
-                </View>
+                  </View>
+                </TouchableOpacity>
               );
             }}
           />
         </View>
-        <CommonButton title="Continue" onPress={() => {}} />
+        {selectedIds.length != 0 && (
+          <CommonButton
+            title="Continue"
+            onPress={() => {
+              navigation.navigate(RouteNames.ScheduleAppointment);
+            }}
+          />
+        )}
       </View>
     </View>
   );

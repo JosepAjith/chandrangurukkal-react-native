@@ -38,9 +38,10 @@ const Packages = ({navigation}: Props) => {
     }, []),
   );
 
-  const Continue = async (productId: number, productName: string, type: string) => {
+
+  const Continue = async (productId: number) => {
     const isSelected = RequestedServicesOrPackages.some(
-      (item: {ProductId: number}) => item.ProductId === productId,
+      (item: {PackageId: number}) => item.PackageId === productId,
     );
 
     // Dispatch action to update the state
@@ -48,14 +49,12 @@ const Packages = ({navigation}: Props) => {
       type: 'SET_REQUESTED_SERVICES_OR_PACKAGES',
       payload: isSelected
         ? RequestedServicesOrPackages.filter(
-            (item: {ProductId: number}) => item.ProductId !== productId,
+            (item: {PackageId: number}) => item.PackageId !== productId,
           )
-        : [...RequestedServicesOrPackages, {ProductId: productId, ProductName: productName, Type: type}],
+        : [...RequestedServicesOrPackages, {PackageId: productId, requestedServices: [{ ServiceId: 0 }] }],
     });
 
-      navigation.navigate(RouteNames.ScheduleAppointment, {
-        status: 'appoint',
-      });
+      navigation.navigate(RouteNames.ScheduleAppointment);
   }
   
   return (
@@ -63,7 +62,7 @@ const Packages = ({navigation}: Props) => {
       {packages?.GetAllPackagesResult.Data.map((item, index) => (
         <View key={index} marginT-10 marginR-10>
           <TouchableOpacity onPress={() =>
-           Continue(item.PackageId, item.PackageName, 'package')
+           Continue(item.PackageId)
           }>
           <ImageBackground
             source={item.ImgUrl? {uri:item.ImgUrl} : AppImages.NULLIMAGE}
