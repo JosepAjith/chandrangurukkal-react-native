@@ -118,7 +118,7 @@ function DrawerStack() {
         name={RouteNames.Purchase}
         component={Purchase}
         options={{
-          title: 'Purchase History',
+          title: 'Package History',
           headerShown: false,
           drawerLabelStyle: AppStyles.drawerText,
           drawerIcon: () => (

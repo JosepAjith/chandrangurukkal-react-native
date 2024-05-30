@@ -52,6 +52,13 @@ export const styles = StyleSheet.create({
         fontSize:16,
         fontFamily:AppFonts.LATO_MEDIUM,
     },
+    number:{
+        color:AppColors.green,
+        fontSize:16,
+        fontFamily:AppFonts.LATO_BOLD,
+        marginTop:15,
+        marginBottom:10
+    },
     text:{
         color:AppColors.black,
         fontSize:12,
@@ -60,7 +67,7 @@ export const styles = StyleSheet.create({
     detailsView:{
         borderWidth:1,
         borderColor:'#E4E4E4',
-        backgroundColor:AppColors.whitish,
+        backgroundColor:'#EDF2F0',
         marginBottom:10,
         borderRadius:5,
         padding:20
@@ -72,10 +79,13 @@ export const styles = StyleSheet.create({
         marginBottom:10
     },
     innerView:{
-        backgroundColor:'#EDF2F0',
-        marginTop:10,
-        padding:20,
-        borderRadius:5
+        backgroundColor:'white',
+        borderWidth:1,
+        borderColor:'#E4E4E4',
+        marginVertical:10,
+        paddingHorizontal:10,
+        borderRadius:5,
+        flex:1
     },
     subText:{
         color:AppColors.greyBlack,
@@ -84,7 +94,7 @@ export const styles = StyleSheet.create({
     },
     subText1:{
         color:'#818181',
-        fontSize:14,
+        fontSize:12,
         fontFamily:AppFonts.LATO_REGULAR,
         marginTop:10
     },
@@ -93,4 +103,14 @@ export const styles = StyleSheet.create({
         fontFamily: AppFonts.LATO_MEDIUM,
         color:AppColors.white
      },
+     separator:{
+        borderBottomWidth:1,
+        borderBottomColor:'#E4E4E4',
+        flex:1
+     },
+     dot:{
+        borderWidth:3,
+        borderColor:'#E4E4E4',
+        flex:0.001,
+     }
 })

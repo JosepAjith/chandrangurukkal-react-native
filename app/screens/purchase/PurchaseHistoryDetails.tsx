@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Button, Image, Incubator, Text, View} from 'react-native-ui-lib';
 import {RootStackParams, RouteNames} from '../../navigation';
 import {RouteProp} from '@react-navigation/native';
@@ -10,6 +10,11 @@ import AppImages from '../../constants/AppImages';
 import {FlatList, ImageBackground, TouchableOpacity} from 'react-native';
 import CommonButton from '../../components/CommonButton';
 import AppColors from '../../constants/AppColors';
+import { getSplitDate } from '../../constants/commonUtils';
+import { AnyAction, ThunkDispatch } from '@reduxjs/toolkit';
+import { RootState } from '../../../store';
+import { fetchPurchaseDetails } from '../../api/purchase/PurchaseDetailsSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 const {TextField} = Incubator;
 
@@ -25,10 +30,10 @@ export type PurchaseHistoryDetailsRouteProps = RouteProp<
 
 interface Props {}
 
-const PurchaseHistoryDetails: React.FC<Props> = () => {
+const PurchaseHistoryDetails: React.FC<Props> = ({route}: any) => {
   const navigation = useNavigation<PurchaseHistoryDetailsNavigationProps>();
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
-  const PackageId = 399;
+  const {sid, pid, name, date, status} = route.params;
 
   const [services, setServices] = useState([
     {
@@ -50,80 +55,97 @@ const PurchaseHistoryDetails: React.FC<Props> = () => {
       status: true,
     },
   ]);
+  const dispatch: ThunkDispatch<RootState, any, AnyAction> = useDispatch();
+  const {details, loadingDetails} = useSelector(
+    (state: RootState) => state.PurchaseDetails,
+  );
+  const {PatientId} = useSelector((state: RootState) => state.GlobalVariables);
 
-  const [detail, setDetail] = useState([
-    {
-      id: 1,
-      title: 'Kizhi',
-      subTitle: 'Appointment scheduled on March 15, 2024',
-      status: false,
-    },
-  ]);
+  useEffect(() => {
+    dispatch(
+      fetchPurchaseDetails({
+        uri: `GetPackageHistory?composite={"SalesId":"${sid}","PackageId":"${pid}"}`,
+      }),
+    );
+  }, []);
 
-  const handleSelect = (id: number, status: boolean) => {
-    if (status) {
-      setSelectedIds(prevSelectedIds =>
-        prevSelectedIds.includes(id)
-          ? prevSelectedIds.filter(selectedId => selectedId !== id)
-          : [...prevSelectedIds, id],
-      );
-    }
+  const Continue = () => {
+    navigation.navigate(RouteNames.ScheduleAppointment);
   };
 
   return (
     <View flex backgroundColor={AppColors.whitish}>
-      <ImageBackground source={AppImages.PURCHASEIMG} style={{height: 340}}>
         <Header onPress={() => navigation.goBack()} color={'white'} />
-        <View flex bottom padding-20>
-          <Text style={[styles.statusText, {fontSize: 24}]}>
-          Body Rejuvenation Package
+        <View flex paddingH-20 paddingB-20>  
+          <Text style={[styles.statusText, {fontSize: 24, color:'black'}]}>
+          {name}
           </Text>
-          <View row marginT-20>
-            <View style={styles.smallView}>
-              <Text style={styles.priceText}>Upcoming</Text>
-            </View>
 
-            <View marginL-5 style={styles.smallView}>
-              <Text style={styles.priceText}>Dubai HealthCare City</Text>
+          <View row centerV marginV-10 >
+          <View style={styles.smallView} marginR-10>
+              <Text style={styles.priceText}>{status}</Text>
             </View>
-          </View>
-        </View>
-      </ImageBackground>
-
-      <View flex padding-20>
+                      <Text style={[styles.statusText, {fontSize: 14, color:'black'}]}>{getSplitDate(date)}</Text>
+                    </View>
+        
+      <Text style={styles.subHeading}>Package Summary</Text>
         <View flex style={styles.detailsView}>
-          <Text style={styles.subHeading}>Purchase Details</Text>
+        
 
           <FlatList
-            data={services}
+            data={details?.GetPackageHistoryResult.ServicePendingList}
             showsVerticalScrollIndicator={false}
             renderItem={({item}) => {
               return (
                 <TouchableOpacity
-                  onPress={() => handleSelect(item.id, item.status)}
-                  disabled={!item.status}>
-                  <View style={styles.innerView}>
-                    {selectedIds.includes(item.id) && (
+                  // onPress={() => handleSelect(item.id, item.status)}
+                  // disabled={!item.status}
+                  >
+                    {/* {selectedIds.includes(item.id) && (
                       <View absT absR margin-15>
                         <Image source={AppImages.ROUND} />
                       </View>
-                    )}
-                    <Text style={styles.subText}>{item.title}</Text>
-                    <Text style={styles.subText1}>{item.subTitle}</Text>
-                  </View>
+                    )} */}
+                    <Text style={styles.subText}>{item.ServiceName}</Text>
+
+                    <View row>
+                      <View style={styles.innerView}>
+                        <Text style={styles.subText1}>Total Qty</Text>
+                        <Text style={styles.number}>{item.TotalQty}</Text>
+                      </View>
+
+                      <View marginH-5/>
+
+                      <View style={styles.innerView}>
+                        <Text style={styles.subText1}>Consumed Qty</Text>
+                        <Text style={styles.number}>{item.ConsumedQty}</Text>
+                      </View>
+
+                      <View marginH-5/>
+
+                      <View style={styles.innerView}>
+                        <Text style={styles.subText1}>Pending Qty</Text>
+                        <Text style={styles.number}>{item.PendingQty}</Text>
+                      </View>
+                    </View>
                 </TouchableOpacity>
               );
             }}
+            ItemSeparatorComponent={() => 
+            <View row flex center>
+              <View style={styles.dot} />
+              <View style={styles.separator} />
+              <View style={styles.dot} />
+              </View>}
+            
           />
         </View>
-        {selectedIds.length != 0 && (
           <CommonButton
             title="Continue"
             onPress={() => {
-              navigation.navigate(RouteNames.ScheduleAppointment);
+             Continue()
             }}
           />
-        )}
       </View>
     </View>
   );

@@ -39,6 +39,10 @@ export const getUserTime = (currentDate: moment.MomentInput) => {
   return moment(currentDate).format('h:mm A');
 };
 
+export const getSplitDate = (currentDate: moment.MomentInput) => {
+  return moment(currentDate, 'DD-MM-YYYY').format('ddd, MMM DD, YYYY');
+};
+
 export const roundValueAsNumber = (value: number): number => {
   const multiplier: number = Math.pow(10, 2);
   return Math.round(value * multiplier) / multiplier;

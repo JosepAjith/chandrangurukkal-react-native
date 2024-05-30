@@ -1,24 +1,18 @@
 export type PurchaseResponse = {
-    Message:   string;
-    Error:     boolean;
-    PatientId: number;
-    Data:      Datum[];
+    GetPurchaseListResult: GetPurchaseListResult;
 }
 
-export type Datum = {
-    AppointmentId:     number;
-    Status:            string;
-    PurchasedItemName: string;
-    AppointmentDate:   string;
-    AppointmentTime:   string;
-    BranchName:        string;
-    ItemDetails:       ItemDetail[];
+export type GetPurchaseListResult = {
+    Message:           string;
+    Error:             boolean;
+    PatientId:         number;
+    PurchasedPackages: PurchasedPackage[];
 }
 
-export type ItemDetail = {
-    ProductId:   number;
-    ProductName: string;
-    ProductType: string;
+export type PurchasedPackage = {
     SalesId:     number;
-    ImgUrl:      string;
+    BillDate:    string;
+    PackageId:   number;
+    PackageName: string;
+    Status:      string;
 }

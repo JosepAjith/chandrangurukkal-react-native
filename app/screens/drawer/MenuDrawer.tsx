@@ -34,11 +34,11 @@ const MenuDrawer = (props: any) => {
   return (
     <View flex backgroundColor={AppColors.white} paddingV-20>
       <DrawerContentScrollView {...props}>
-        <View flex row centerV marginH-15>
-          <View>
+        <View row centerV marginH-15 style={{width:'85%'}}>
+          <View >
             <Image source={AppImages.PLACEHOLDER} style={{width:60, height:60, borderRadius:30}}/>
           </View>
-          <View marginL-5>
+          <View marginH-5>
             <Text style={AppStyles.buttonlabel1}>{PatientName}</Text>
             <Text
               style={[

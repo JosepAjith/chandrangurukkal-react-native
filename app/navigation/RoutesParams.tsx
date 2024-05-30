@@ -17,7 +17,7 @@ export type RootStackParams = {
   PurchaseHistoryList: undefined;
   ReferNEarn: undefined;
   OfferScreen: undefined;
-  PurchaseHistoryDetails: undefined;
+  PurchaseHistoryDetails: {sid: any, pid: any, name: any, date: any, status: any};
   ScheduleAppointment: undefined;
   ConfirmAppointment: undefined;
   ConfirmRequest: {requestNo: any};

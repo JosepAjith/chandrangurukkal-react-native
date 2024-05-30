@@ -9,6 +9,7 @@ import { BranchResponse } from './branch/BranchResponse';
 import { LoginResponse } from './login/LoginCreateSlice';
 import { MasterResponse } from './master/MasterResponse';
 import { PackageResponse } from './package/PackageResponse';
+import { PurchaseDetailsResponse } from './purchase/PurchaseDetailsResponse';
 import { PurchaseResponse } from './purchase/PurchaseResponse';
 import { RegisterResponse } from './register/RegisterCreateSlice';
 import { ServiceResponse } from './service/ServiceResponse';
@@ -196,7 +197,24 @@ export const fetchPurchaseList = async (
   uri: any
 ): Promise<NetworkResponse<PurchaseResponse>> => {
   const response = await SimpleApiClient(uri);
+  if (response && response.status) {
+    const json = await response.data;
+    return {
+      kind: 'success',
+      body: json,
+    };
+  } else {
+    return {
+      kind: 'failure',
+    };
+  }
+};
 
+ //API FOR Purchase details
+ export const fetchPurchaseDetails = async (
+  uri: any
+): Promise<NetworkResponse<PurchaseDetailsResponse>> => {
+  const response = await SimpleApiClient(uri);
   if (response && response.status) {
     const json = await response.data;
     return {

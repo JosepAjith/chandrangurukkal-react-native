@@ -11,6 +11,7 @@ import AppointmentListSlice from "./app/api/appointment/AppointmentListSlice";
 import MasterDataSlice from "./app/api/master/MasterDataSlice";
 import RegisterCreateSlice from "./app/api/register/RegisterCreateSlice";
 import PurchaseListSlice from "./app/api/purchase/PurchaseListSlice";
+import PurchaseDetailsSlice from "./app/api/purchase/PurchaseDetailsSlice";
 
 const rootReducer = combineReducers({
     ServiceList: ServiceListSlice,
@@ -24,7 +25,8 @@ const rootReducer = combineReducers({
     AppointmentList: AppointmentListSlice,
     MasterData: MasterDataSlice,
     registerCreate: RegisterCreateSlice,
-    PurchaseList: PurchaseListSlice
+    PurchaseList: PurchaseListSlice,
+    PurchaseDetails: PurchaseDetailsSlice
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
