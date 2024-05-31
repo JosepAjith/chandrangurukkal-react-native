@@ -68,13 +68,12 @@ const PurchaseHistoryDetails: React.FC<Props> = ({route}: any) => {
     );
   }, []);
 
-
   const Continue = () => {
     if (details?.GetPackageHistoryResult) {
       const { PackageId, ServicePendingList } = details.GetPackageHistoryResult;
 
       const requestedServices = ServicePendingList.map(service => ({
-        ServiceId: service.SLNo
+        ServiceId: service.ServiceId
       }));
 
       const payload = [

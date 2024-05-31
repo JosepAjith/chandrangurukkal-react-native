@@ -20,6 +20,7 @@ export type PackageConsumingHistory = {
 
 export type ServicePendingList = {
     SLNo:        string;
+    ServiceId:   number;
     ServiceName: string;
     TotalQty:    number;
     ConsumedQty: number;
