@@ -131,36 +131,12 @@ const BottomTabs: React.FC<Props> = () => {
             ),
           }}
         />
-
         {/* <Tab.Screen
-        name="Callback"
-        component={CallBackScreen}
-        options={{
-          tabBarIcon: ({focused}) => (
-            <View center>
-              <Image
-                source={AppImages.CALLBACK}
-                resizeMode="contain"
-                style={{
-                  width: 20,
-                  height: 20,
-                  tintColor: focused ? AppColors.green : AppColors.greyBlack,
-                }}
-              />
-              <Text
-                style={[styles.text,{color: focused ? AppColors.green : AppColors.greyBlack}]}>
-                Callback
-              </Text>
-            </View>
-          )
-        }}
-      /> */}
-        <Tab.Screen
           name="Callback"
           listeners={{
             tabPress: e => {
-              e.preventDefault(); // Prevent the default action
-              toggleModal(); // Open the modal
+              e.preventDefault();
+              toggleModal();
             },
           }}
           options={{
@@ -186,7 +162,7 @@ const BottomTabs: React.FC<Props> = () => {
             ),
           }}>
           {() => null}
-        </Tab.Screen>
+        </Tab.Screen> */}
       </Tab.Navigator>
 
       {/* Modal for Callback */}

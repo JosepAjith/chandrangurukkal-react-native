@@ -59,7 +59,6 @@ const PurchaseHistoryDetails: React.FC<Props> = ({route}: any) => {
   const {details, loadingDetails} = useSelector(
     (state: RootState) => state.PurchaseDetails,
   );
-  const {PatientId} = useSelector((state: RootState) => state.GlobalVariables);
 
   useEffect(() => {
     dispatch(
@@ -69,8 +68,29 @@ const PurchaseHistoryDetails: React.FC<Props> = ({route}: any) => {
     );
   }, []);
 
+
   const Continue = () => {
-    navigation.navigate(RouteNames.ScheduleAppointment);
+    if (details?.GetPackageHistoryResult) {
+      const { PackageId, ServicePendingList } = details.GetPackageHistoryResult;
+
+      const requestedServices = ServicePendingList.map(service => ({
+        ServiceId: service.SLNo
+      }));
+
+      const payload = [
+        {
+          PackageId: PackageId,
+          requestedServices: requestedServices
+        }
+      ];
+
+      dispatch({
+        type: 'SET_REQUESTED_SERVICES_OR_PACKAGES',
+        payload
+      });
+
+      navigation.navigate(RouteNames.ScheduleAppointment);
+    }
   };
 
   return (

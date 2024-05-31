@@ -85,6 +85,7 @@ const PasswordScreen: React.FC<Props> = ({route}: any) => {
             ? ''
             : String(LoginData.CustomerLoginResult.PatientId),
         );
+
         AsyncStorage.setItem(
           AppStrings.PATIENT_NAME,
           LoginData.CustomerLoginResult.PatientName == null

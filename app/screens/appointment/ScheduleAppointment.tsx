@@ -79,8 +79,6 @@ const ScheduleAppointment: React.FC<Props> = () => {
     }, []),
   );
 
-  console.log(RequestedServicesOrPackages, RequestedServicesOrPackages[0].requestedServices)
-
   const CalendarClose = () => {
     setCalendarOpen(false);
   };

@@ -88,7 +88,7 @@ function DrawerStack() {
         }}
       />
 
-      <Drawer.Screen
+      {/* <Drawer.Screen
         name={RouteNames.MyProfile}
         component={MyProfile}
         options={{
@@ -99,7 +99,7 @@ function DrawerStack() {
             <Image source={AppImages.PROFILE} width={20} height={20} />
           ),
         }}
-      />
+      /> */}
 
       <Drawer.Screen
         name={RouteNames.AppointmentListScreen}

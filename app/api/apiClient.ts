@@ -7,7 +7,6 @@ let BASE_URL = 'http://demo.chandran.prompttechsolutions.in/Service1.svc/';
 export const SimpleApiClient = async (endPoint: string) => {
   const isConnected = await NetInfo.fetch().then(state => state.isConnected);
   if (isConnected) {
-    console.log(BASE_URL + endPoint)
     try {
       const response = await axios.get(BASE_URL + endPoint, {
         headers: {

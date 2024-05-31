@@ -10,7 +10,7 @@ const BackgroundLoader: React.FC<Props> = ({}) => {
     <View
       style={{
         ...StyleSheet.absoluteFillObject,
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        backgroundColor: 'rgba(0, 0, 0, 0.1)',
         zIndex: 999,
       }}>
       <View flex center>
