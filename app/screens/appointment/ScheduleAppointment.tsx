@@ -70,7 +70,7 @@ const ScheduleAppointment: React.FC<Props> = () => {
     RequestedServicesOrPackages,
   } = useSelector((state: RootState) => state.AppointRequest);
   const {PatientId} = useSelector((state: RootState) => state.GlobalVariables);
-
+console.log(RequestedServicesOrPackages)
   useFocusEffect(
     React.useCallback(() => {
       dispatch(fetchBranchList({uri: `GetAllBranches`}));
