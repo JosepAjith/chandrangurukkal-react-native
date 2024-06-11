@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {Button, Image, Incubator, Text, View} from 'react-native-ui-lib';
 import {RootStackParams, RouteNames} from '../../navigation';
 import {RouteProp, useFocusEffect} from '@react-navigation/native';
@@ -7,7 +7,14 @@ import {useNavigation} from '@react-navigation/native';
 import HomeHeader from '../../components/HomeHeader';
 import {styles} from './styles';
 import AppImages from '../../constants/AppImages';
-import {Dimensions, FlatList, ImageBackground, Pressable} from 'react-native';
+import {
+  Dimensions,
+  FlatList,
+  ImageBackground,
+  Pressable,
+  RefreshControl,
+  StyleSheet,
+} from 'react-native';
 import CommonButton from '../../components/CommonButton';
 import {AnyAction, ThunkDispatch} from '@reduxjs/toolkit';
 import {RootState} from '../../../store';
@@ -45,11 +52,11 @@ const AppointmentScreen: React.FC<Props> = () => {
   const {RequestedServicesOrPackages} = useSelector(
     (state: RootState) => state.AppointRequest,
   );
+  const [refreshing, setRefreshing] = useState(false);
 
   useFocusEffect(
     React.useCallback(() => {
       const companyId = '';
-
       const fetchPackagesPromise = dispatch(
         fetchPackageList({
           uri: `GetAllPackages?composite={"CompanyID":"${companyId}"}`,
@@ -68,15 +75,26 @@ const AppointmentScreen: React.FC<Props> = () => {
       return () => {
         // Cleanup if needed
       };
-    }, []),
+    }, [refreshing]),
   );
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+
+    // Simulate a network request
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, [dispatch]);
 
   const toggleSelection = (id: number, type: string) => {
     const isSelected = RequestedServicesOrPackages.some((item: any) => {
       if (type === 'package') {
         return item.PackageId === id;
       }
-      return item.requestedServices.some((service: any) => service.ServiceId === id);
+      return item.requestedServices.some(
+        (service: any) => service.ServiceId === id,
+      );
     });
 
     let updatedSelection;
@@ -86,15 +104,18 @@ const AppointmentScreen: React.FC<Props> = () => {
         if (type === 'package') {
           return item.PackageId !== id;
         }
-        return !item.requestedServices.some((service: any) => service.ServiceId === id);
+        return !item.requestedServices.some(
+          (service: any) => service.ServiceId === id,
+        );
       });
     } else {
       updatedSelection = [
         ...RequestedServicesOrPackages,
         {
           PackageId: type === 'package' ? id : 0,
-          requestedServices: type === 'service' ? [{ ServiceId: id }] : [{ ServiceId: 0 }]
-        }
+          requestedServices:
+            type === 'service' ? [{ServiceId: id}] : [{ServiceId: 0}],
+        },
       ];
     }
 
@@ -105,9 +126,8 @@ const AppointmentScreen: React.FC<Props> = () => {
   };
 
   const Continue = async () => {
-
-      navigation.navigate(RouteNames.ScheduleAppointment);
-  }
+    navigation.navigate(RouteNames.ScheduleAppointment);
+  };
 
   // console.log(packages?.GetAllPackagesResult?.Data, services?.GetAllServicesResult.Data)
 
@@ -132,6 +152,9 @@ const AppointmentScreen: React.FC<Props> = () => {
           ]}
           showsVerticalScrollIndicator={false}
           numColumns={2}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
           renderItem={({item, index}) => {
             const isEvenIndex = index % 2 === 0;
             const alignmentStyle = isEvenIndex ? 'flex-start' : 'flex-end';
@@ -152,25 +175,34 @@ const AppointmentScreen: React.FC<Props> = () => {
               id = item.ServiceId;
               type = 'service';
             }
+            const imageUrl = item.ImgUrl
+              ? `${item.ImgUrl}?t=${new Date().getTime()}`
+              : AppImages.NULLIMAGE;
             return (
               <View style={{alignItems: alignmentStyle, flex: 1}}>
                 <Pressable onPress={() => toggleSelection(id, type)}>
                   <ImageBackground
-                    source={
-                      item.ImgUrl ? {uri: item.ImgUrl} : AppImages.NULLIMAGE
-                    }
+                    source={{uri: imageUrl}}
                     style={[styles.itemView, {width: itemWidth}]}
                     imageStyle={{borderRadius: 5}}>
-                   {RequestedServicesOrPackages.some((selectedItem: any) => {
+                    <View
+                      style={{
+                        ...StyleSheet.absoluteFillObject,
+                        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                      }}
+                    />
+                    {RequestedServicesOrPackages.some((selectedItem: any) => {
                       if (type === 'package') {
                         return selectedItem.PackageId === id;
                       }
-                      return selectedItem.requestedServices.some((service: any) => service.ServiceId === id);
+                      return selectedItem.requestedServices.some(
+                        (service: any) => service.ServiceId === id,
+                      );
                     }) && (
-                        <View style={styles.chip}>
-                          <Image source={AppImages.ROUND} />
-                        </View>
-                      )}
+                      <View style={styles.chip}>
+                        <Image source={AppImages.ROUND} />
+                      </View>
+                    )}
 
                     <Text style={styles.title}>{title}</Text>
                   </ImageBackground>
@@ -186,7 +218,7 @@ const AppointmentScreen: React.FC<Props> = () => {
             if (RequestedServicesOrPackages.length == 0) {
               showToast('Select any services or packages to continue');
             } else {
-             Continue()
+              Continue();
             }
           }}
         />

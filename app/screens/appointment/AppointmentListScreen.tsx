@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {Button, Image, Incubator, Text, View} from 'react-native-ui-lib';
 import {RootStackParams, RouteNames} from '../../navigation';
 import {RouteProp, useFocusEffect} from '@react-navigation/native';
@@ -6,13 +6,14 @@ import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {useNavigation} from '@react-navigation/native';
 import Header from '../../components/Header';
 import {styles} from './styles';
-import {FlatList, ImageBackground, TouchableOpacity} from 'react-native';
+import {FlatList, ImageBackground, RefreshControl, TouchableOpacity} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../../store';
 import {AnyAction, ThunkDispatch} from '@reduxjs/toolkit';
 import {fetchAppointmentList} from '../../api/appointment/AppointmentListSlice';
 import AppColors from '../../constants/AppColors';
 import AppFonts from '../../constants/AppFonts';
+import BackgroundLoader from '../../components/BackgroundLoader';
 
 const {TextField} = Incubator;
 
@@ -35,6 +36,7 @@ const AppointmentListScreen: React.FC<Props> = () => {
   const {appointments, loadingAppointments, appointmentError} = useSelector(
     (state: RootState) => state.AppointmentList,
   );
+  const [refreshing, setRefreshing] = useState(false);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -45,12 +47,22 @@ const AppointmentListScreen: React.FC<Props> = () => {
       );
 
       return () => {};
-    }, []),
+    }, [refreshing]),
   );
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+
+    // Simulate a network request
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, [dispatch]);
 
   return (
     <View flex>
       <Header onPress={() => navigation.goBack()} color={'black'} />
+      {loadingAppointments && <BackgroundLoader />}
 
       <View flex paddingH-20>
         <Text style={styles.heading}>My Bookings</Text>
@@ -58,6 +70,9 @@ const AppointmentListScreen: React.FC<Props> = () => {
         <FlatList
           data={appointments?.GetAllAppointmentRequestsResult.Data}
           showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
           renderItem={({item}) => {
             return (
               <View style={styles.cardView1}>

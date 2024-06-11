@@ -1,11 +1,11 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {Incubator, Text, View} from 'react-native-ui-lib';
 import {RootStackParams, RouteNames} from '../../navigation';
 import {RouteProp, useFocusEffect} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {useNavigation} from '@react-navigation/native';
 import AppImages from '../../constants/AppImages';
-import {Dimensions, ScrollView} from 'react-native';
+import {Dimensions, RefreshControl, ScrollView} from 'react-native';
 import HomeHeader from '../../components/HomeHeader';
 import {styles} from './style';
 import AppColors from '../../constants/AppColors';
@@ -41,12 +41,22 @@ const HomeScreen: React.FC<Props> = () => {
   const {PatientName} = useSelector(
     (state: RootState) => state.GlobalVariables,
   );
+  const [refreshing, setRefreshing] = useState(false);
 
  useEffect(()=>{
   dispatch({
     type: 'CLEAR_ALL_VARIABLES'
   });
  },[loadingPackages,loadingServices]);
+
+ const onRefresh = useCallback(() => {
+  setRefreshing(true);
+
+  // Simulate a network request
+  setTimeout(() => {
+    setRefreshing(false);
+  }, 2000);
+}, [dispatch]);
 
   return (
     <View flex>
@@ -56,7 +66,10 @@ const HomeScreen: React.FC<Props> = () => {
       />
 
       {loadingPackages && loadingServices && <BackgroundLoader />}
-      <ScrollView>
+      <ScrollView
+              refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+              }>
         <View flex marginB-60>
           {/* <View style={styles.cardView}>
             <View style={{position: 'absolute', alignSelf: 'flex-end'}}>
@@ -81,14 +94,14 @@ const HomeScreen: React.FC<Props> = () => {
             <Text style={styles.nameText}>{PatientName}</Text>
             <Text style={styles.title}>Packages</Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-              <Packages navigation={navigation} />
+              <Packages navigation={navigation}  onRefresh={refreshing}/>
             </ScrollView>
           </View>
 
           <View>
             <Text style={[styles.title, {padding: 20}]}>Services</Text>
 
-            <Services navigation={navigation} />
+            <Services navigation={navigation}  onRefresh={refreshing}/>
           </View>
 
           {/* <CarouselView/> */}

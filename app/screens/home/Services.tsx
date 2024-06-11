@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Button, GridList, Image, Text, View} from 'react-native-ui-lib';
 import {ImageBackground, TouchableOpacity} from 'react-native';
 import {styles} from './style';
@@ -14,9 +14,10 @@ import AppStrings from '../../constants/AppStrings';
 
 interface Props {
     navigation : any;
+    onRefresh: any;
 }
 
-const Services = ({navigation}: Props) => {
+const Services = ({navigation, onRefresh}: Props) => {
     const dispatch: ThunkDispatch<RootState, any, AnyAction> = useDispatch();
     const {services, loadingServices, serviceError} = useSelector(
       (state: RootState) => state.ServiceList,
@@ -28,13 +29,12 @@ const Services = ({navigation}: Props) => {
     useFocusEffect(
       React.useCallback(() => {
         let companyId = '1';
-      
         dispatch(fetchServiceList({uri: `GetAllServices?composite={"CompanyID":"${companyId}"}`}));
   
         return () => {
           
         };
-      }, []),
+      }, [onRefresh]),
     );
 
     const Continue = (serviceId: number) => {
@@ -65,13 +65,14 @@ const Services = ({navigation}: Props) => {
     data={services?.GetAllServicesResult.Data}
     numColumns={4}
     renderItem={({item, index}) => {
+      const imageUrl = item.ImgUrl ? `${item.ImgUrl}?t=${new Date().getTime()}` : AppImages.NULLIMAGE;
       return (
         <TouchableOpacity
           onPress={() =>
            Continue(item.ServiceId)
           }>
           <View center>
-            <Image source={item.ImgUrl? {uri:item.ImgUrl} : AppImages.NULLIMAGE} width={70} height={70} style={{borderRadius:40}}/>
+            <Image source={{uri:imageUrl}} width={70} height={70} style={{borderRadius:40}}/>
             <Text style={styles.serviceText}>{item.ServiceName}</Text>
           </View>
         </TouchableOpacity>

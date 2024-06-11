@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {Button, Image, Incubator, Text, View} from 'react-native-ui-lib';
 import {RootStackParams, RouteNames} from '../../navigation';
 import {RouteProp} from '@react-navigation/native';
@@ -7,12 +7,13 @@ import {useNavigation} from '@react-navigation/native';
 import Header from '../../components/Header';
 import {styles} from './styles';
 import AppImages from '../../constants/AppImages';
-import {FlatList, ImageBackground, TouchableOpacity} from 'react-native';
+import {FlatList, ImageBackground, RefreshControl, TouchableOpacity} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../../store';
 import {AnyAction, ThunkDispatch} from '@reduxjs/toolkit';
 import {fetchPurchaseList} from '../../api/purchase/PurchaseListSlice';
 import { getSplitDate } from '../../constants/commonUtils';
+import BackgroundLoader from '../../components/BackgroundLoader';
 
 const {TextField} = Incubator;
 
@@ -35,6 +36,7 @@ const PurchaseHistoryList: React.FC<Props> = () => {
     (state: RootState) => state.PurchaseList,
   );
   const {PatientId} = useSelector((state: RootState) => state.GlobalVariables);
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     dispatch(
@@ -42,12 +44,22 @@ const PurchaseHistoryList: React.FC<Props> = () => {
         uri: `GetPurchaseList?composite={"PatientId":"${PatientId}"}`,
       }),
     );
-  }, []);
+  }, [refreshing]);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+
+    // Simulate a network request
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, [dispatch]);
 
 
   return (
     <View flex>
       <Header onPress={() => navigation.goBack()} color={'black'} />
+        {loadingPurchases && <BackgroundLoader/>}
 
       <View flex paddingH-20>
         <Text style={styles.heading}>Package History</Text>
@@ -61,6 +73,9 @@ const PurchaseHistoryList: React.FC<Props> = () => {
         <FlatList
           data={purchases?.GetPurchaseListResult.PurchasedPackages}
           showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
           renderItem={({item}) => {
             return (
               <TouchableOpacity
