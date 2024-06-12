@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {Button, Image, Incubator, Text, View} from 'react-native-ui-lib';
 import {RootStackParams, RouteNames} from '../../navigation';
-import {RouteProp} from '@react-navigation/native';
+import {RouteProp, useFocusEffect} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {useNavigation} from '@react-navigation/native';
 import Header from '../../components/Header';
@@ -38,13 +38,18 @@ const PurchaseHistoryList: React.FC<Props> = () => {
   const {PatientId} = useSelector((state: RootState) => state.GlobalVariables);
   const [refreshing, setRefreshing] = useState(false);
 
-  useEffect(() => {
-    dispatch(
-      fetchPurchaseList({
-        uri: `GetPurchaseList?composite={"PatientId":"${PatientId}"}`,
-      }),
-    );
-  }, [refreshing]);
+  useFocusEffect(
+    React.useCallback(() => {
+
+      dispatch(
+        fetchPurchaseList({
+          uri: `GetPurchaseList?composite={"PatientId":"${PatientId}"}`,
+        }),
+      );
+
+      return () => {};
+    }, [refreshing]),
+  );
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);

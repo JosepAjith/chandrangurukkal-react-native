@@ -189,10 +189,6 @@ const AppointmentScreen: React.FC<Props> = () => {
 
   return (
     <View flex>
-      <HomeHeader
-        leftIcon={AppImages.LEFT}
-        onPress={() => navigation.goBack()}
-      />
       {loadingPackages && loadingServices && <BackgroundLoader />}
 
       <View flex marginH-20 marginB-80>
