@@ -87,7 +87,7 @@ const AppointmentScreen: React.FC<Props> = () => {
     }, 2000);
   }, [dispatch]);
 
-  const toggleSelection = (id: number, type: string) => {
+  const toggleSelection = useCallback((id: number, type: string) => {
     const isSelected = RequestedServicesOrPackages.some((item: any) => {
       if (type === 'package') {
         return item.PackageId === id;
@@ -114,7 +114,7 @@ const AppointmentScreen: React.FC<Props> = () => {
         {
           PackageId: type === 'package' ? id : 0,
           requestedServices:
-            type === 'service' ? [{ServiceId: id}] : [{ServiceId: 0}],
+            type === 'service' ? [{ ServiceId: id }] : [{ ServiceId: 0 }],
         },
       ];
     }
@@ -123,13 +123,69 @@ const AppointmentScreen: React.FC<Props> = () => {
       type: 'SET_REQUESTED_SERVICES_OR_PACKAGES',
       payload: updatedSelection,
     });
-  };
+  }, [RequestedServicesOrPackages, dispatch]);
 
   const Continue = async () => {
     navigation.navigate(RouteNames.ScheduleAppointment);
   };
 
   // console.log(packages?.GetAllPackagesResult?.Data, services?.GetAllServicesResult.Data)
+
+  const renderItem = useCallback(({ item, index }) => {
+    const isEvenIndex = index % 2 === 0;
+    const alignmentStyle = isEvenIndex ? 'flex-start' : 'flex-end';
+    let title = '';
+    let id = 0;
+    let type = '';
+
+    if ('PackageName' in item) {
+      title = item.PackageName;
+    } else if ('ServiceName' in item) {
+      title = item.ServiceName;
+    }
+
+    if ('PackageId' in item) {
+      id = item.PackageId;
+      type = 'package';
+    } else if ('ServiceId' in item) {
+      id = item.ServiceId;
+      type = 'service';
+    }
+    const imageUrl = item.ImgUrl
+      ? `${item.ImgUrl}?t=${new Date().getTime()}`
+      : AppImages.NULLIMAGE;
+    return (
+      <View style={{ alignItems: alignmentStyle, flex: 1 }}>
+        <Pressable onPress={() => toggleSelection(id, type)}>
+          <ImageBackground
+            source={{ uri: imageUrl }}
+            style={[styles.itemView, { width: itemWidth }]}
+            imageStyle={{ borderRadius: 5 }}>
+            <View
+              style={{
+                ...StyleSheet.absoluteFillObject,
+                backgroundColor: 'rgba(0, 0, 0, 0.5)',
+              }}
+            />
+            {RequestedServicesOrPackages.some((selectedItem: any) => {
+              if (type === 'package') {
+                return selectedItem.PackageId === id;
+              }
+              return selectedItem.requestedServices.some(
+                (service: any) => service.ServiceId === id,
+              );
+            }) && (
+                <View style={styles.chip}>
+                  <Image source={AppImages.ROUND} />
+                </View>
+              )}
+
+            <Text style={styles.title}>{title}</Text>
+          </ImageBackground>
+        </Pressable>
+      </View>
+    );
+  }, [RequestedServicesOrPackages, itemWidth, toggleSelection]);
 
   return (
     <View flex>
@@ -155,61 +211,7 @@ const AppointmentScreen: React.FC<Props> = () => {
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
-          renderItem={({item, index}) => {
-            const isEvenIndex = index % 2 === 0;
-            const alignmentStyle = isEvenIndex ? 'flex-start' : 'flex-end';
-            let title = '';
-            let id = 0;
-            let type = '';
-
-            if ('PackageName' in item) {
-              title = item.PackageName;
-            } else if ('ServiceName' in item) {
-              title = item.ServiceName;
-            }
-
-            if ('PackageId' in item) {
-              id = item.PackageId;
-              type = 'package';
-            } else if ('ServiceId' in item) {
-              id = item.ServiceId;
-              type = 'service';
-            }
-            const imageUrl = item.ImgUrl
-              ? `${item.ImgUrl}?t=${new Date().getTime()}`
-              : AppImages.NULLIMAGE;
-            return (
-              <View style={{alignItems: alignmentStyle, flex: 1}}>
-                <Pressable onPress={() => toggleSelection(id, type)}>
-                  <ImageBackground
-                    source={{uri: imageUrl}}
-                    style={[styles.itemView, {width: itemWidth}]}
-                    imageStyle={{borderRadius: 5}}>
-                    <View
-                      style={{
-                        ...StyleSheet.absoluteFillObject,
-                        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                      }}
-                    />
-                    {RequestedServicesOrPackages.some((selectedItem: any) => {
-                      if (type === 'package') {
-                        return selectedItem.PackageId === id;
-                      }
-                      return selectedItem.requestedServices.some(
-                        (service: any) => service.ServiceId === id,
-                      );
-                    }) && (
-                      <View style={styles.chip}>
-                        <Image source={AppImages.ROUND} />
-                      </View>
-                    )}
-
-                    <Text style={styles.title}>{title}</Text>
-                  </ImageBackground>
-                </Pressable>
-              </View>
-            );
-          }}
+          renderItem={renderItem}
         />
 
         <CommonButton

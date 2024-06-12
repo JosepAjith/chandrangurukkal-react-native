@@ -70,7 +70,7 @@ const ScheduleAppointment: React.FC<Props> = () => {
     RequestedServicesOrPackages,
   } = useSelector((state: RootState) => state.AppointRequest);
   const {PatientId} = useSelector((state: RootState) => state.GlobalVariables);
-console.log(RequestedServicesOrPackages)
+
   useFocusEffect(
     React.useCallback(() => {
       dispatch(fetchBranchList({uri: `GetAllBranches`}));
@@ -115,15 +115,16 @@ console.log(RequestedServicesOrPackages)
       SalesId: SalesId,
       RequestedServicesOrPackages: RequestedServicesOrPackages,
     };
-    dispatch(
-      requestAppointment({
-        uri: `RequestAppointment?composite=${JSON.stringify(composite)}`,
-      }),
-    )
-      .then(() => {
-        dispatch(requestAppointmentReset());
-      })
-      .catch((err: any) => console.log(err));
+    console.log(composite)
+    // dispatch(
+    //   requestAppointment({
+    //     uri: `RequestAppointment?composite=${JSON.stringify(composite)}`,
+    //   }),
+    // )
+    //   .then(() => {
+    //     dispatch(requestAppointmentReset());
+    //   })
+    //   .catch((err: any) => console.log(err));
   };
 
   useEffect(() => {

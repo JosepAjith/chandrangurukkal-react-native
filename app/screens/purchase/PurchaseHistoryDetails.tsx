@@ -48,7 +48,6 @@ const PurchaseHistoryDetails: React.FC<Props> = ({route}: any) => {
     );
   }, [refreshing]);
 
-  console.log(details?.GetPackageHistoryResult.ServicePendingList)
 
   const toggleServiceSelection = (serviceId: any) => {
     if (status !== 'Completed') {
@@ -84,6 +83,10 @@ const PurchaseHistoryDetails: React.FC<Props> = ({route}: any) => {
           requestedServices: requestedServices
         }
       ];
+
+      dispatch({
+        type: 'SET_SALES_ID',
+        payload: sid})
 
       dispatch({
         type: 'SET_REQUESTED_SERVICES_OR_PACKAGES',
