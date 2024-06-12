@@ -115,16 +115,15 @@ const ScheduleAppointment: React.FC<Props> = () => {
       SalesId: SalesId,
       RequestedServicesOrPackages: RequestedServicesOrPackages,
     };
-    console.log(composite)
-    // dispatch(
-    //   requestAppointment({
-    //     uri: `RequestAppointment?composite=${JSON.stringify(composite)}`,
-    //   }),
-    // )
-    //   .then(() => {
-    //     dispatch(requestAppointmentReset());
-    //   })
-    //   .catch((err: any) => console.log(err));
+    dispatch(
+      requestAppointment({
+        uri: `RequestAppointment?composite=${JSON.stringify(composite)}`,
+      }),
+    )
+      .then(() => {
+        dispatch(requestAppointmentReset());
+      })
+      .catch((err: any) => console.log(err));
   };
 
   useEffect(() => {
