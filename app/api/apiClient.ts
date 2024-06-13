@@ -6,6 +6,7 @@ let BASE_URL = 'http://demo.chandran.prompttechsolutions.in/Service1.svc/';
 
 export const SimpleApiClient = async (endPoint: string) => {
   const isConnected = await NetInfo.fetch().then(state => state.isConnected);
+  console.log(console.log(isConnected,'net'))
   if (isConnected) {
     try {
       const response = await axios.get(BASE_URL + endPoint, {
@@ -16,16 +17,37 @@ export const SimpleApiClient = async (endPoint: string) => {
       });
       return response;
     } catch (error: any) {
-      if (error.response) {
-        // Update UI accordingly
-        showToast(error.response.data.message);
-        console.log(error.response.data, error.response.status);
-      } else if (error.request) {
-        showToast(error.request);
+      console.log(error)
+      if (axios.isAxiosError(error)) {
+        if (error.response) {
+          // The request was made and the server responded with a status code outside of the 2xx range
+          showToast(error.response.data.message);
+          console.log(error.response.data, error.response.status);
+        } else if (error.request) {
+          // The request was made but no response was received
+          showToast('No response received from the server.');
+          console.log(error.request);
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          showToast(`Error message: ${error.message}`);
+          console.log('Error', error.message);
+        }
       } else {
-        showToast(`Error message: ${error.message}`);
+        // Handle errors that are not Axios errors
+        showToast(`Unexpected error: ${error.message}`);
+        console.log('Unexpected error', error);
       }
-      throw error; // Rethrow the error to propagate it to the calling code
+      throw error;
+      // if (error.response) {
+      //   // Update UI accordingly
+      //   showToast(error.response.data.message);
+      //   console.log(error.response.data, error.response.status);
+      // } else if (error.request) {
+      //   showToast(error.request);
+      // } else {
+      //   showToast(`Error message: ${error.message}`);
+      // }
+      // throw error; // Rethrow the error to propagate it to the calling code
     }
   } else {
     showToast('Need Internet connection');
