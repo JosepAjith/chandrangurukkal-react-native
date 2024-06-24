@@ -18,7 +18,7 @@ import {AnyAction, ThunkDispatch} from '@reduxjs/toolkit';
 import {RootState} from '../../../store';
 import {useDispatch, useSelector} from 'react-redux';
 import BackgroundLoader from '../../components/BackgroundLoader';
-import { createRegister, reset } from '../../api/register/RegisterCreateSlice';
+import {createRegister, reset} from '../../api/register/RegisterCreateSlice';
 
 const {TextField} = Incubator;
 
@@ -34,8 +34,10 @@ export type RegisterScreenRouteProps = RouteProp<
 
 interface Props {}
 
-const RegisterScreen: React.FC<Props> = () => {
+const RegisterScreen: React.FC<Props> = ({route}: any) => {
   const navigation = useNavigation<RegisterScreenNavigationProps>();
+  const isRegistered = route.params.isRegistered;
+  const [regNo, setRegNo] = useState('');
   const [registerInput, setRegister] = useState<RegisterRequest>(
     new RegisterRequest(),
   );
@@ -48,6 +50,14 @@ const RegisterScreen: React.FC<Props> = () => {
   );
 
   function Validate() {
+    if (isRegistered && regNo == '') {
+      setValidate({
+        ...registerValidate,
+        InvalidRegNo: true,
+        error: '*Required',
+      });
+      return false;
+    }
     if (registerInput.FullName == '') {
       setValidate({
         ...registerValidate,
@@ -97,7 +107,6 @@ const RegisterScreen: React.FC<Props> = () => {
       return false;
     }
 
-
     if (registerInput.UserId == '') {
       setValidate({
         ...registerValidate,
@@ -136,11 +145,13 @@ const RegisterScreen: React.FC<Props> = () => {
   }
 
   const Register = async () => {
-    dispatch(
-      createRegister({
-        uri: `SaveSignUpDetails?composite=${JSON.stringify(registerInput)}`,
-      }),
-    )
+    const input = isRegistered ? { ...registerInput, RegistrationNo: regNo } : registerInput;
+    
+    const uri = isRegistered
+      ? `SaveSignUpDetailsForExistingCustomer?composite=${JSON.stringify(input)}`
+      : `SaveSignUpDetails?composite=${JSON.stringify(input)}`;
+    
+    dispatch(createRegister({ uri }))
       .then(() => {
         dispatch(reset());
       })
@@ -155,7 +166,7 @@ const RegisterScreen: React.FC<Props> = () => {
         !RegisterData.SaveSignUpDetailsResult.Error
       ) {
         showToast(RegisterData.SaveSignUpDetailsResult.Message);
-        navigation.replace(RouteNames.LoginScreen)
+        navigation.replace(RouteNames.LoginScreen);
       } else {
         showToast(RegisterData.SaveSignUpDetailsResult.Message);
       }
@@ -165,13 +176,34 @@ const RegisterScreen: React.FC<Props> = () => {
   return (
     <View style={styles.container}>
       {loadingRegister && <BackgroundLoader />}
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View flex centerH>
           <View style={[styles.logoContainer, {marginVertical: 20}]}>
             <Image source={AppImages.LOGO} width={113} height={113} />
           </View>
 
           <Text style={styles.title}>Signup</Text>
+
+          {isRegistered && (
+            <TextField
+              placeholder={'Registration No'}
+              placeholderTextColor={AppColors.gray}
+              fieldStyle={styles.fieldStyle}
+              paddingH-15
+              marginB-20
+              onChangeText={text => {
+                setRegNo(text);
+                setValidate({...registerValidate, InvalidRegNo: false});
+              }}
+              trailingAccessory={
+                <View>
+                  {registerValidate.InvalidRegNo && (
+                    <Text red10>*Required</Text>
+                  )}
+                </View>
+              }
+            />
+          )}
 
           <TextField
             placeholder={'Full Name'}
@@ -235,7 +267,6 @@ const RegisterScreen: React.FC<Props> = () => {
               setRegister({...registerInput, Location: text});
               setValidate({...registerValidate, InvalidLoc: false});
             }}
-
             trailingAccessory={
               <View>
                 {registerValidate.InvalidLoc && <Text red10>*Required</Text>}
@@ -283,7 +314,9 @@ const RegisterScreen: React.FC<Props> = () => {
             }}
             trailingAccessory={
               <View>
-                {registerValidate.InvalidPassword && <Text red10>*Required</Text>}
+                {registerValidate.InvalidPassword && (
+                  <Text red10>*Required</Text>
+                )}
               </View>
             }
           />

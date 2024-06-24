@@ -5,6 +5,7 @@ export class RegisterValidation {
     InvalidUserId: boolean = false;
     InvalidPhone: boolean = false;
     InvalidLoc: boolean = false;
+    InvalidRegNo: boolean = false;
     error: string = '';
     showPassword: boolean = false;
     showConfirmPass: boolean = false;

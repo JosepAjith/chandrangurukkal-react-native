@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 22,
     color: AppColors.black,
-    marginBottom:40,
+    marginTop:20,
     fontFamily:AppFonts.LATO_BOLD
   },
   text:{
@@ -93,8 +93,8 @@ const styles = StyleSheet.create({
     fontFamily:AppFonts.LATO_REGULAR,
     fontSize:14,
     color:AppColors.green,
-    alignSelf:'center',
-    marginTop:40
+    marginTop:10,
+    
   },
   already: {
     textAlign: 'center',

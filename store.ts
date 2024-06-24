@@ -12,6 +12,7 @@ import MasterDataSlice from "./app/api/master/MasterDataSlice";
 import RegisterCreateSlice from "./app/api/register/RegisterCreateSlice";
 import PurchaseListSlice from "./app/api/purchase/PurchaseListSlice";
 import PurchaseDetailsSlice from "./app/api/purchase/PurchaseDetailsSlice";
+import ForgotPasswordSlice from "./app/api/forgotPassword/ForgotPasswordSlice";
 
 const rootReducer = combineReducers({
     ServiceList: ServiceListSlice,
@@ -26,7 +27,8 @@ const rootReducer = combineReducers({
     MasterData: MasterDataSlice,
     registerCreate: RegisterCreateSlice,
     PurchaseList: PurchaseListSlice,
-    PurchaseDetails: PurchaseDetailsSlice
+    PurchaseDetails: PurchaseDetailsSlice,
+    ForgotPassword: ForgotPasswordSlice
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

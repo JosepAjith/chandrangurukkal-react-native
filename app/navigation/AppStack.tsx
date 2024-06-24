@@ -3,15 +3,10 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {RouteNames} from './Routes';
 import WelcomeScreen from '../screens/welcome/WelcomeScreen';
 import LoginScreen from '../screens/login/LoginScreen';
-import PasswordScreen from '../screens/login/PasswordScreen';
 import GuestLogin from '../screens/login/GuestLogin';
 import BottomTabs from '../screens/Dashboard/BottomTabs';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import MenuDrawer from '../screens/drawer/MenuDrawer';
-import OfferScreen from '../screens/offers/OfferScreen';
-import ReferNEarn from '../screens/refer_earn/ReferNEarn';
-import PrescriptionDetails from '../screens/prescription/PrescriptionDetails';
-import MyProfile from '../screens/profile/MyProfile';
 import {Image} from 'react-native-ui-lib';
 import AppImages from '../constants/AppImages';
 import AppColors from '../constants/AppColors';
@@ -23,6 +18,7 @@ import ConfirmAppointment from '../screens/appointment/ConfirmAppointment';
 import ConfirmRequest from '../screens/appointment/ConfirmRequest';
 import AppointmentListScreen from '../screens/appointment/AppointmentListScreen';
 import RegisterScreen from '../screens/register/RegisterScreen';
+import ForgotPasswordScreen from '../screens/login/ForgotPasswordScreen';
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -40,8 +36,8 @@ const AppStack = () => {
       <Stack.Screen name={RouteNames.LoginScreen} component={LoginScreen} />
       <Stack.Screen name={RouteNames.RegisterScreen} component={RegisterScreen} />
       <Stack.Screen
-        name={RouteNames.PasswordScreen}
-        component={PasswordScreen}
+        name={RouteNames.ForgotPasswordScreen}
+        component={ForgotPasswordScreen}
       />
       <Stack.Screen name={RouteNames.GuestLogin} component={GuestLogin} />
       <Stack.Screen name={RouteNames.Dashboard} component={DrawerStack} />
