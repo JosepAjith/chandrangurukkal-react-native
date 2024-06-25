@@ -190,9 +190,7 @@ const LoginScreen: React.FC<Props> = () => {
           title={'Sign Up'}
           source={AppImages.USER}
           onPress={() => {
-            navigation.navigate(RouteNames.RegisterScreen, {
-              isRegistered: true,
-            });
+            navigation.navigate(RouteNames.SignUpPage);
           }}
         />
       </View>

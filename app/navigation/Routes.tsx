@@ -20,5 +20,6 @@ export const RouteNames = {
   ScheduleAppointment: 'ScheduleAppointment',
   ConfirmAppointment:'ConfirmAppointment',
   ConfirmRequest: 'ConfirmRequest',
-  AppointmentListScreen:'AppointmentListScreen'
+  AppointmentListScreen:'AppointmentListScreen',
+  SignUpPage: 'SignUpPage'
 } as const;

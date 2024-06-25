@@ -22,4 +22,5 @@ export type RootStackParams = {
   ConfirmAppointment: undefined;
   ConfirmRequest: {requestNo: any};
   AppointmentListScreen: undefined;
+  SignUpPage: undefined;
 };

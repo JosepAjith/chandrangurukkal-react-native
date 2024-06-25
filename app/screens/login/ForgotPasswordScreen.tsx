@@ -74,7 +74,7 @@ const ForgotPasswordScreen: React.FC<Props> = ({route}: any) => {
   }, [ForgotPasswordData]);
 
   return (
-    <View flex>
+    <View flex backgroundColor='white'>
       <Header
         onPress={() => {
           navigation.goBack();

@@ -180,9 +180,10 @@ const RegisterScreen: React.FC<Props> = ({route}: any) => {
         <View flex centerH>
           <View style={[styles.logoContainer, {marginVertical: 20}]}>
             <Image source={AppImages.LOGO} width={113} height={113} />
+            <Text style={styles.title}>Signup</Text>
           </View>
 
-          <Text style={styles.title}>Signup</Text>
+          
 
           {isRegistered && (
             <TextField

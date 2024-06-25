@@ -19,6 +19,7 @@ import ConfirmRequest from '../screens/appointment/ConfirmRequest';
 import AppointmentListScreen from '../screens/appointment/AppointmentListScreen';
 import RegisterScreen from '../screens/register/RegisterScreen';
 import ForgotPasswordScreen from '../screens/login/ForgotPasswordScreen';
+import SignUpPage from '../screens/register/SignupPage';
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -52,6 +53,10 @@ const AppStack = () => {
       <Stack.Screen
         name={RouteNames.ConfirmRequest}
         component={ConfirmRequest}
+      />
+            <Stack.Screen
+        name={RouteNames.SignUpPage}
+        component={SignUpPage}
       />
     </Stack.Navigator>
   );

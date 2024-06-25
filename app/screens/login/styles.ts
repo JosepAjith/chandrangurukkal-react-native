@@ -102,6 +102,27 @@ const styles = StyleSheet.create({
     color: AppColors.black,
     fontFamily:AppFonts.LATO_MEDIUM
   },
+  rect: {
+    borderWidth: 1,
+    borderColor: AppColors.stroke,
+    backgroundColor: AppColors.fill,
+    width: '100%',
+    borderRadius: 5,
+    paddingHorizontal:20,
+    paddingVertical:15,
+    fontFamily:AppFonts.LATO_REGULAR
+  },
+  SignUpText: {
+    color: '#3A3A3A',
+    fontSize: 16,
+    fontFamily:AppFonts.LATO_MEDIUM
+  },
+  SignUpDesc: {
+    color: '#8A8A8A',
+    fontSize: 14,
+    fontFamily:AppFonts.LATO_REGULAR,
+    marginTop:10
+  },
 });
 
 export default styles;
