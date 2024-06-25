@@ -2,12 +2,8 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import * as apiInterface from '../apiInterface';
 
 export type ForgotPasswordResponse = {
-  SaveForgotPasswordDetailsResult: SaveForgotPasswordResult;
-}
-
-export type SaveForgotPasswordResult = {
-    Error:   boolean;
-    Message: string;
+  Error:   boolean;
+  Message: string;
 }
 
 export type ForgotPasswordState = {

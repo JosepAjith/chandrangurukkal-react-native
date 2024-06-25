@@ -1,17 +1,20 @@
 import React, {useEffect, useState} from 'react';
 import {Button, Image, Incubator, Text, View} from 'react-native-ui-lib';
-import {RootStackParams} from '../../navigation';
+import {RootStackParams, RouteNames} from '../../navigation';
 import {RouteProp} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {useNavigation} from '@react-navigation/native';
 import styles from './styles';
 import Header from '../../components/Header';
 import AppColors from '../../constants/AppColors';
-import { AnyAction, ThunkDispatch } from '@reduxjs/toolkit';
-import { RootState } from '../../../store';
-import { useDispatch, useSelector } from 'react-redux';
-import { createForgotPassword, reset } from '../../api/forgotPassword/ForgotPasswordSlice';
-import { showToast } from '../../constants/commonUtils';
+import {AnyAction, ThunkDispatch} from '@reduxjs/toolkit';
+import {RootState} from '../../../store';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  createForgotPassword,
+  reset,
+} from '../../api/forgotPassword/ForgotPasswordSlice';
+import {showToast} from '../../constants/commonUtils';
 import CommonButton from '../../components/CommonButton';
 import BackgroundLoader from '../../components/BackgroundLoader';
 
@@ -34,9 +37,8 @@ const ForgotPasswordScreen: React.FC<Props> = ({route}: any) => {
   const [userId, setUserId] = useState('');
   const [InvalidId, setInvalidId] = useState(false);
   const dispatch: ThunkDispatch<RootState, any, AnyAction> = useDispatch();
-  const {ForgotPasswordData, loadingForgotPassword, ForgotPasswordError} = useSelector(
-    (state: RootState) => state.ForgotPassword,
-  );
+  const {ForgotPasswordData, loadingForgotPassword, ForgotPasswordError} =
+    useSelector((state: RootState) => state.ForgotPassword);
 
   function Validate() {
     if (userId == '') {
@@ -64,17 +66,18 @@ const ForgotPasswordScreen: React.FC<Props> = ({route}: any) => {
       if (
         !loadingForgotPassword &&
         !ForgotPasswordError &&
-        !ForgotPasswordData.SaveForgotPasswordDetailsResult.Error
+        !ForgotPasswordData.Error
       ) {
-        showToast(ForgotPasswordData.SaveForgotPasswordDetailsResult.Message);
+        showToast(ForgotPasswordData.Message);
+        navigation.replace(RouteNames.LoginScreen);
       } else {
-        showToast(ForgotPasswordData.SaveForgotPasswordDetailsResult.Message);
+        showToast(ForgotPasswordData.Message);
       }
     }
   }, [ForgotPasswordData]);
 
   return (
-    <View flex backgroundColor='white'>
+    <View flex backgroundColor="white">
       <Header
         onPress={() => {
           navigation.goBack();
@@ -82,13 +85,11 @@ const ForgotPasswordScreen: React.FC<Props> = ({route}: any) => {
         color={'black'}
       />
 
-{loadingForgotPassword && <BackgroundLoader />}
+      {loadingForgotPassword && <BackgroundLoader />}
 
       <View flex padding-20>
         <Text style={styles.title1}>Forgot password</Text>
-        <Text style={styles.text}>
-          Enter your userId to set your password.
-        </Text>
+        <Text style={styles.text}>Enter your userId to set your password.</Text>
 
         <TextField
           placeholder={'User ID'}
@@ -105,8 +106,7 @@ const ForgotPasswordScreen: React.FC<Props> = ({route}: any) => {
           }
         />
 
-<CommonButton title={'Continue'} onPress={ForgotPassword} />
-
+        <CommonButton title={'Continue'} onPress={ForgotPassword} />
       </View>
     </View>
   );

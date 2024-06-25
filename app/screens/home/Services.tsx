@@ -72,7 +72,7 @@ const Services = ({navigation, onRefresh}: Props) => {
            Continue(item.ServiceId)
           }>
           <View center>
-            <Image source={{uri:imageUrl}} width={70} height={70} style={{borderRadius:40}}/>
+            <Image  source={item.ImgUrl ? {uri: imageUrl} : AppImages.NULLIMAGE} width={70} height={70} style={{borderRadius:40}}/>
             <Text style={styles.serviceText}>{item.ServiceName}</Text>
           </View>
         </TouchableOpacity>

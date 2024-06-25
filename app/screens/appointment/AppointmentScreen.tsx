@@ -158,7 +158,7 @@ const AppointmentScreen: React.FC<Props> = () => {
       <View style={{ alignItems: alignmentStyle, flex: 1 }}>
         <Pressable onPress={() => toggleSelection(id, type)}>
           <ImageBackground
-            source={{ uri: imageUrl }}
+             source={item.ImgUrl ? {uri: imageUrl} : AppImages.NULLIMAGE}
             style={[styles.itemView, { width: itemWidth }]}
             imageStyle={{ borderRadius: 5 }}>
             <View
@@ -191,7 +191,7 @@ const AppointmentScreen: React.FC<Props> = () => {
     <View flex>
       {loadingPackages && loadingServices && <BackgroundLoader />}
 
-      <View flex marginH-20 marginB-80>
+      <View flex marginH-20 marginB-80 marginT-20>
         <Text style={styles.heading}>Book An Appointment</Text>
 
         <Text style={styles.subHeading}>

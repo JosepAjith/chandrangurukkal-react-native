@@ -2,7 +2,8 @@ import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import * as apiInterface from '../apiInterface';
 
 export type RegisterResponse = {
-  SaveSignUpDetailsResult: SaveSignUpDetailsResult;
+  SaveSignUpDetailsResult?: SaveSignUpDetailsResult;
+  SaveSignUpDetailsForExistingCustomerResult?: SaveSignUpDetailsResult
 }
 
 export type SaveSignUpDetailsResult = {

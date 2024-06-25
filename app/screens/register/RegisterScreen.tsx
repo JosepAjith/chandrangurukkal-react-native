@@ -160,16 +160,32 @@ const RegisterScreen: React.FC<Props> = ({route}: any) => {
 
   useEffect(() => {
     if (RegisterData != null) {
-      if (
-        !loadingRegister &&
-        !RegisterError &&
-        !RegisterData.SaveSignUpDetailsResult.Error
-      ) {
-        showToast(RegisterData.SaveSignUpDetailsResult.Message);
-        navigation.replace(RouteNames.LoginScreen);
-      } else {
-        showToast(RegisterData.SaveSignUpDetailsResult.Message);
+      console.log(RegisterData)
+      if(isRegistered){
+        if (
+          !loadingRegister &&
+          !RegisterError &&
+          !RegisterData.SaveSignUpDetailsForExistingCustomerResult?.Error
+        ) {
+          showToast(RegisterData.SaveSignUpDetailsForExistingCustomerResult?.Message);
+          navigation.replace(RouteNames.LoginScreen);
+        } else {
+          showToast(RegisterData.SaveSignUpDetailsForExistingCustomerResult?.Message);
+        }
       }
+      else{
+        if (
+          !loadingRegister &&
+          !RegisterError &&
+          !RegisterData.SaveSignUpDetailsResult?.Error
+        ) {
+          showToast(RegisterData.SaveSignUpDetailsResult?.Message);
+          navigation.replace(RouteNames.LoginScreen);
+        } else {
+          showToast(RegisterData.SaveSignUpDetailsResult?.Message);
+        }
+      }
+
     }
   }, [RegisterData]);
 

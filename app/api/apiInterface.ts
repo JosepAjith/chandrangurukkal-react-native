@@ -197,8 +197,7 @@ export const createRegister = async (
 export const createForgotPassword = async (
   uri: any
  ): Promise<NetworkResponse<ForgotPasswordResponse | null>> => {
-   const response = await PostApiClient(uri);
- console.log(response,'forgot')
+   const response = await SimpleApiClient(uri);
    if (response && response.status) {
      const json = await response.data;
      return {

@@ -38,7 +38,7 @@ const MenuDrawer = (props: any) => {
           <View >
             <Image source={AppImages.PLACEHOLDER} style={{width:60, height:60, borderRadius:30}}/>
           </View>
-          <View marginH-5>
+          <View marginH-5 style={{width:'80%'}}>
             <Text style={AppStyles.buttonlabel1}>{PatientName}</Text>
             <Text
               style={[
@@ -73,5 +73,4 @@ const MenuDrawer = (props: any) => {
   );
 };
 
-const inlineStyle = StyleSheet.create({});
 export default MenuDrawer;

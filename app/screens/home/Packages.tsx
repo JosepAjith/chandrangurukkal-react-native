@@ -72,7 +72,7 @@ const Packages = ({navigation, onRefresh}: Props) => {
           <View key={index} marginT-10 marginR-10>
             <TouchableOpacity onPress={() => Continue(item.PackageId)}>
               <ImageBackground
-                source={{uri: imageUrl}}
+                source={item.ImgUrl ? {uri: imageUrl} : AppImages.NULLIMAGE}
                 style={{width: 330, height: 180}}
                 imageStyle={{borderRadius: 10}}>
                 <View
