@@ -89,7 +89,7 @@ const ForgotPasswordScreen: React.FC<Props> = ({route}: any) => {
 
       <View flex padding-20>
         <Text style={styles.title1}>Forgot password</Text>
-        <Text style={styles.text}>Enter your userId to set your password.</Text>
+        <Text style={styles.text}>Enter your userId to get your password.</Text>
 
         <TextField
           placeholder={'User ID'}

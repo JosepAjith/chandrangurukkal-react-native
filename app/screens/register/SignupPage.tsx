@@ -48,10 +48,10 @@ const SignUpPage: React.FC<Props> = ({route}: any) => {
             ]}
             marginT-30
             marginB-20>
-            <Text style={styles.SignUpText}>Signup as exisiting customer</Text>
+            <Text style={styles.SignUpText}>Signup as existing patient</Text>
             <Text style={styles.SignUpDesc}>
               If you have visited our clinic before, please use your
-              registration number to sign up
+              registration number to signup.
             </Text>
           </View>
         </TouchableOpacity>
@@ -66,9 +66,9 @@ const SignUpPage: React.FC<Props> = ({route}: any) => {
               },
             ]}
             marginB-30>
-            <Text style={styles.SignUpText}>Signup as new customer</Text>
+            <Text style={styles.SignUpText}>Signup as new patient</Text>
             <Text style={styles.SignUpDesc}>
-              If you are new to our clinic, please sign up as a new customer
+              If you are new to our clinic, please signup as a new patient.
             </Text>
           </View>
         </TouchableOpacity>

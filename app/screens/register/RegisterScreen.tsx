@@ -160,7 +160,6 @@ const RegisterScreen: React.FC<Props> = ({route}: any) => {
 
   useEffect(() => {
     if (RegisterData != null) {
-      console.log(RegisterData)
       if(isRegistered){
         if (
           !loadingRegister &&

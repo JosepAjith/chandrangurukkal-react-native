@@ -90,7 +90,7 @@ const HomeScreen: React.FC<Props> = () => {
           </View> */}
 
           <View paddingL-20>
-            <Text style={styles.title}>Welcome back,</Text>
+            <Text style={styles.title}>Welcome,</Text>
             <Text style={styles.nameText}>{PatientName}</Text>
             <Text style={styles.title}>Packages</Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
