@@ -42,6 +42,7 @@ const AppStack = () => {
       />
       <Stack.Screen name={RouteNames.GuestLogin} component={GuestLogin} />
       <Stack.Screen name={RouteNames.Dashboard} component={DrawerStack} />
+      <Stack.Screen name={RouteNames.ScheduleAppointment} component={ScheduleAppointment} />
       <Stack.Screen
         name={RouteNames.ConfirmAppointment}
         component={ConfirmAppointment}

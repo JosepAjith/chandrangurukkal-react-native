@@ -41,10 +41,10 @@ const ConfirmRequest: React.FC<Props> = ({route}: any) => {
           </View>
         </View>
 
-        <CommonButton
+        {/* <CommonButton
           title="Bookings"
         onPress={()=>navigation.navigate(RouteNames.AppointmentListScreen)}
-        />
+        /> */}
       </View>
   );
 };
