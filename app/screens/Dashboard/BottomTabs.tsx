@@ -25,6 +25,7 @@ import AppStrings from '../../constants/AppStrings';
 import { useDispatch } from 'react-redux';
 import { AnyAction, ThunkDispatch } from '@reduxjs/toolkit';
 import { RootState } from '../../../store';
+import ScheduleAppointment from '../appointment/ScheduleAppointment';
 
 const Tab = createBottomTabNavigator();
 
@@ -107,8 +108,9 @@ const BottomTabs: React.FC<Props> = () => {
         />
         <Tab.Screen
           name="Appointment"
-          component={AppointmentScreen}
+          component={ScheduleAppointment}
           options={{
+            tabBarStyle:{display:'none'},
             tabBarIcon: ({focused}) => (
               <View center>
                 <Image
@@ -129,6 +131,7 @@ const BottomTabs: React.FC<Props> = () => {
                 </Text>
               </View>
             ),
+            
           }}
         />
         {/* <Tab.Screen

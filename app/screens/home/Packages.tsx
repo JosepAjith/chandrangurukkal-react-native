@@ -28,7 +28,7 @@ const Packages = ({navigation, onRefresh}: Props) => {
 
   useFocusEffect(
     React.useCallback(() => {
-      let companyId = '1';
+      let companyId = '';
 
       dispatch(
         fetchPackageList({
@@ -70,7 +70,7 @@ const Packages = ({navigation, onRefresh}: Props) => {
 
         return (
           <View key={index} marginT-10 marginR-10>
-            <TouchableOpacity onPress={() => Continue(item.PackageId)}>
+            {/* <TouchableOpacity onPress={() => Continue(item.PackageId)}> */}
               <ImageBackground
                 source={item.ImgUrl ? {uri: imageUrl} : AppImages.NULLIMAGE}
                 style={{width: 330, height: 180}}
@@ -94,7 +94,7 @@ const Packages = ({navigation, onRefresh}: Props) => {
                 </View> */}
                 </View>
               </ImageBackground>
-            </TouchableOpacity>
+            {/* </TouchableOpacity> */}
           </View>
         );
       })}

@@ -6,7 +6,7 @@ import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {useNavigation} from '@react-navigation/native';
 import Header from '../../components/Header';
 import {styles} from './styles';
-import {FlatList, ImageBackground, RefreshControl, TouchableOpacity} from 'react-native';
+import {BackHandler, FlatList, ImageBackground, RefreshControl, TouchableOpacity} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../../store';
 import {AnyAction, ThunkDispatch} from '@reduxjs/toolkit';
@@ -45,8 +45,16 @@ const AppointmentListScreen: React.FC<Props> = () => {
           uri: `GetAllAppointmentRequests?composite={"PatientId":"${PatientId}"}`,
         }),
       );
+      const onBackPress = () => {
+        navigation.replace(RouteNames.Dashboard);
+        return true; // Prevent default back behavior
+      };
 
-      return () => {};
+      BackHandler.addEventListener('hardwareBackPress', onBackPress);
+
+      return () => {
+        BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+      };
     }, [refreshing]),
   );
 
@@ -61,7 +69,7 @@ const AppointmentListScreen: React.FC<Props> = () => {
 
   return (
     <View flex>
-      <Header onPress={() => navigation.goBack()} color={'black'} />
+      <Header onPress={() => navigation.replace(RouteNames.Dashboard)} color={'black'} />
       {loadingAppointments && <BackgroundLoader />}
 
       <View flex paddingH-20>

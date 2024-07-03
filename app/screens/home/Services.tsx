@@ -28,7 +28,7 @@ const Services = ({navigation, onRefresh}: Props) => {
   
     useFocusEffect(
       React.useCallback(() => {
-        let companyId = '1';
+        let companyId = '';
         dispatch(fetchServiceList({uri: `GetAllServices?composite={"CompanyID":"${companyId}"}`}));
   
         return () => {
@@ -67,15 +67,15 @@ const Services = ({navigation, onRefresh}: Props) => {
     renderItem={({item, index}) => {
       const imageUrl = item.ImgUrl ? `${item.ImgUrl}?t=${new Date().getTime()}` : AppImages.NULLIMAGE;
       return (
-        <TouchableOpacity
-          onPress={() =>
-           Continue(item.ServiceId)
-          }>
+        // <TouchableOpacity
+        //   onPress={() =>
+        //    Continue(item.ServiceId)
+        //   }>
           <View center>
             <Image  source={item.ImgUrl ? {uri: imageUrl} : AppImages.NULLIMAGE} width={70} height={70} style={{borderRadius:40}}/>
             <Text style={styles.serviceText}>{item.ServiceName}</Text>
           </View>
-        </TouchableOpacity>
+        // </TouchableOpacity>
       );
     }}
   />

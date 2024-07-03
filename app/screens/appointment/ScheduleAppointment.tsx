@@ -115,6 +115,7 @@ const ScheduleAppointment: React.FC<Props> = () => {
       SalesId: SalesId,
       RequestedServicesOrPackages: RequestedServicesOrPackages,
     };
+    console.log(composite)
     dispatch(
       requestAppointment({
         uri: `RequestAppointment?composite=${JSON.stringify(composite)}`,
@@ -140,7 +141,7 @@ const ScheduleAppointment: React.FC<Props> = () => {
             requestAppointmentData.RequestAppointmentResult
               .AppointmentRequestId,
         });
-        navigation.replace(RouteNames.ConfirmRequest, {
+        navigation.navigate(RouteNames.ConfirmRequest, {
           requestNo:
             requestAppointmentData.RequestAppointmentResult
               .AppointmentRequestNo,
@@ -159,10 +160,10 @@ const ScheduleAppointment: React.FC<Props> = () => {
       />
 
       <View flex marginH-20 marginB-20>
-        <Text style={styles.heading}>Schedule Your Appointment</Text>
+        <Text style={styles.heading}>Book Your Appointment</Text>
 
           <Text style={styles.subHeading}>
-            Select a date, time and preferred location for your appointment
+            Select a date, time and preferred location for your appointment.
           </Text>
 
         <View flex>
