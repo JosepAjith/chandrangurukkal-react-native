@@ -191,7 +191,7 @@ const RegisterScreen: React.FC<Props> = ({route}: any) => {
   return (
     <View style={styles.container}>
       {loadingRegister && <BackgroundLoader />}
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps='handled'>
         <View flex centerH>
           <View style={[styles.logoContainer, {marginVertical: 20}]}>
             <Image source={AppImages.LOGO} width={113} height={113} />

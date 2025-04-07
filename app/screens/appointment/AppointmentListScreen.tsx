@@ -45,15 +45,16 @@ const AppointmentListScreen: React.FC<Props> = () => {
           uri: `GetAllAppointmentRequests?composite={"PatientId":"${PatientId}"}`,
         }),
       );
+  
       const onBackPress = () => {
         navigation.replace(RouteNames.Dashboard);
         return true; // Prevent default back behavior
       };
-
-      BackHandler.addEventListener('hardwareBackPress', onBackPress);
-
+  
+      const backHandler = BackHandler.addEventListener('hardwareBackPress', onBackPress);
+  
       return () => {
-        BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+        backHandler.remove();
       };
     }, [refreshing]),
   );

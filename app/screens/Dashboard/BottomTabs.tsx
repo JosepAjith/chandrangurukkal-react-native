@@ -78,6 +78,7 @@ const BottomTabs: React.FC<Props> = () => {
             position: 'absolute',
             height: 65,
             backgroundColor: AppColors.white,
+            justifyContent:'space-between'
           },
         }}>
         <Tab.Screen
@@ -170,10 +171,10 @@ const BottomTabs: React.FC<Props> = () => {
 
       {/* Modal for Callback */}
 
-      <CallBackScreen
+      {/* <CallBackScreen
         modalVisible={isModalVisible}
         setModalVisible={setIsModalVisible}
-      />
+      /> */}
     </>
   );
 };
