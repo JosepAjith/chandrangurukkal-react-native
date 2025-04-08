@@ -16,6 +16,7 @@ import {styles} from './styles';
 import AppImages from '../../constants/AppImages';
 import {
   Animated,
+  BackHandler,
   FlatList,
   ImageBackground,
   TouchableOpacity,
@@ -71,13 +72,22 @@ const ScheduleAppointment: React.FC<Props> = () => {
   } = useSelector((state: RootState) => state.AppointRequest);
   const {PatientId} = useSelector((state: RootState) => state.GlobalVariables);
 
-  useFocusEffect(
-    React.useCallback(() => {
-      dispatch(fetchBranchList({uri: `GetAllBranches`}));
-
-      return () => {};
-    }, []),
-  );
+    useFocusEffect(
+      React.useCallback(() => {
+        dispatch(fetchBranchList({uri: `GetAllBranches`}));
+    
+        const onBackPress = () => {
+          navigation.replace(RouteNames.Dashboard);
+          return true; // Prevent default back behavior
+        };
+    
+        const backHandler = BackHandler.addEventListener('hardwareBackPress', onBackPress);
+    
+        return () => {
+          backHandler.remove();
+        };
+      }, []),
+    );
 
   const CalendarClose = () => {
     setCalendarOpen(false);
@@ -156,7 +166,7 @@ const ScheduleAppointment: React.FC<Props> = () => {
     <View flex backgroundColor={AppColors.white}>
       <HomeHeader
         leftIcon={AppImages.LEFT}
-        onPress={() => navigation.goBack()}
+        onPress={() =>  navigation.replace(RouteNames.Dashboard)}
       />
 
       <View flex marginH-20 marginB-20>

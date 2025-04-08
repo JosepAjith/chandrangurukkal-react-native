@@ -10,7 +10,7 @@ import styles from './styles';
 import AppColors from '../../constants/AppColors';
 import CommonButton from '../../components/CommonButton';
 import ButtonView from '../../components/ButtonView';
-import {ScrollView, TouchableOpacity} from 'react-native';
+import {KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity} from 'react-native';
 import {AnyAction, ThunkDispatch} from '@reduxjs/toolkit';
 import {RootState} from '../../../store';
 import {useDispatch, useSelector} from 'react-redux';
@@ -119,7 +119,15 @@ const LoginScreen: React.FC<Props> = () => {
   }, [LoginData]);
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+    behavior={Platform.OS === "ios" ? "padding" : "height"}
+    style={styles.container}
+  >
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      keyboardShouldPersistTaps="handled"
+      contentContainerStyle={{ flexGrow: 1 }}
+    >
       <View style={styles.logoContainer}>
         <Image source={AppImages.LOGO} width={113} height={113} />
         <Text style={styles.title}>Login</Text>
@@ -194,7 +202,8 @@ const LoginScreen: React.FC<Props> = () => {
           }}
         />
       </View>
-
+    
+</ScrollView>
       <View style={styles.footer}>
         <Text style={styles.privacyPolicy}>
           By clicking on Continue you agree to Chandran Gurukal’s
@@ -204,7 +213,8 @@ const LoginScreen: React.FC<Props> = () => {
           <Text color={AppColors.green}>privacy policy</Text>
         </Text>
       </View>
-    </View>
+      
+    </KeyboardAvoidingView>
   );
 };
 export default LoginScreen;

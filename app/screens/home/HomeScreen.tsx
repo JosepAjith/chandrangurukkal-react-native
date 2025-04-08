@@ -1,11 +1,11 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {Incubator, Text, View} from 'react-native-ui-lib';
 import {RootStackParams, RouteNames} from '../../navigation';
-import {RouteProp, useFocusEffect} from '@react-navigation/native';
+import {RouteProp, useFocusEffect, useIsFocused} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {useNavigation} from '@react-navigation/native';
 import AppImages from '../../constants/AppImages';
-import {Dimensions, RefreshControl, ScrollView} from 'react-native';
+import {BackHandler, Dimensions, RefreshControl, ScrollView} from 'react-native';
 import HomeHeader from '../../components/HomeHeader';
 import {styles} from './style';
 import AppColors from '../../constants/AppColors';
@@ -15,6 +15,7 @@ import Services from './Services';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../../store';
 import BackgroundLoader from '../../components/BackgroundLoader';
+import { showToast } from '../../constants/commonUtils';
 
 const {TextField} = Incubator;
 
@@ -30,6 +31,8 @@ interface Props {}
 const HomeScreen: React.FC<Props> = () => {
   const navigation = useNavigation<HomeScreenNavigationProps>();
   const windowWidth = Dimensions.get('window').width;
+  const isFocused = useIsFocused();
+  const shouldExitApp = React.useRef(false);
   const dispatch = useDispatch();
   const itemWidth = (windowWidth - 50) / 2;
   const {loadingPackages} = useSelector(
@@ -42,6 +45,30 @@ const HomeScreen: React.FC<Props> = () => {
     (state: RootState) => state.GlobalVariables,
   );
   const [refreshing, setRefreshing] = useState(false);
+
+  useEffect(() => {
+    if (isFocused) {
+      const backHandler = BackHandler.addEventListener(
+        'hardwareBackPress',
+        handleBackPress,
+      );
+      return () => backHandler.remove();
+    }
+  }, [isFocused]);
+
+  const handleBackPress = () => {
+    if (shouldExitApp.current) {
+      BackHandler.exitApp();
+      return true;
+    } else {
+      shouldExitApp.current = true;
+      showToast('Press back again to exit');
+      setTimeout(() => {
+        shouldExitApp.current = false;
+      }, 2000); // 2 seconds timeout to reset the shouldExitApp flag
+      return true;
+    }
+  };
 
  useEffect(()=>{
   dispatch({

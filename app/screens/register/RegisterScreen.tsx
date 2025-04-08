@@ -145,13 +145,17 @@ const RegisterScreen: React.FC<Props> = ({route}: any) => {
   }
 
   const Register = async () => {
-    const input = isRegistered ? { ...registerInput, RegistrationNo: regNo } : registerInput;
-    
+    const input = isRegistered
+      ? {...registerInput, RegistrationNo: regNo}
+      : registerInput;
+
     const uri = isRegistered
-      ? `SaveSignUpDetailsForExistingCustomer?composite=${JSON.stringify(input)}`
+      ? `SaveSignUpDetailsForExistingCustomer?composite=${JSON.stringify(
+          input,
+        )}`
       : `SaveSignUpDetails?composite=${JSON.stringify(input)}`;
-    
-    dispatch(createRegister({ uri }))
+
+    dispatch(createRegister({uri}))
       .then(() => {
         dispatch(reset());
       })
@@ -160,19 +164,22 @@ const RegisterScreen: React.FC<Props> = ({route}: any) => {
 
   useEffect(() => {
     if (RegisterData != null) {
-      if(isRegistered){
+      if (isRegistered) {
         if (
           !loadingRegister &&
           !RegisterError &&
           !RegisterData.SaveSignUpDetailsForExistingCustomerResult?.Error
         ) {
-          showToast(RegisterData.SaveSignUpDetailsForExistingCustomerResult?.Message);
+          showToast(
+            RegisterData.SaveSignUpDetailsForExistingCustomerResult?.Message,
+          );
           navigation.replace(RouteNames.LoginScreen);
         } else {
-          showToast(RegisterData.SaveSignUpDetailsForExistingCustomerResult?.Message);
+          showToast(
+            RegisterData.SaveSignUpDetailsForExistingCustomerResult?.Message,
+          );
         }
-      }
-      else{
+      } else {
         if (
           !loadingRegister &&
           !RegisterError &&
@@ -184,21 +191,20 @@ const RegisterScreen: React.FC<Props> = ({route}: any) => {
           showToast(RegisterData.SaveSignUpDetailsResult?.Message);
         }
       }
-
     }
   }, [RegisterData]);
 
   return (
     <View style={styles.container}>
       {loadingRegister && <BackgroundLoader />}
-      <ScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps='handled'>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps="handled">
         <View flex centerH>
           <View style={[styles.logoContainer, {marginVertical: 20}]}>
             <Image source={AppImages.LOGO} width={113} height={113} />
             <Text style={styles.title}>Signup</Text>
           </View>
-
-          
 
           {isRegistered && (
             <TextField
@@ -324,15 +330,29 @@ const RegisterScreen: React.FC<Props> = ({route}: any) => {
             fieldStyle={styles.fieldStyle}
             paddingH-15
             marginB-20
+            secureTextEntry={!registerValidate.showPassword}
             onChangeText={text => {
               setRegister({...registerInput, Password: text});
               setValidate({...registerValidate, InvalidPassword: false});
             }}
             trailingAccessory={
-              <View>
+              <View row center>
                 {registerValidate.InvalidPassword && (
                   <Text red10>*Required</Text>
                 )}
+                <TouchableOpacity
+                  onPress={() =>
+                    setValidate({
+                      ...registerValidate,
+                      showPassword: !registerValidate.showPassword,
+                    })
+                  }>
+                  {registerValidate.showPassword ? (
+                    <Image source={AppImages.EYECLOSE} width={23} height={15} />
+                  ) : (
+                    <Image source={AppImages.EYE} />
+                  )}
+                </TouchableOpacity>
               </View>
             }
           />
@@ -343,9 +363,27 @@ const RegisterScreen: React.FC<Props> = ({route}: any) => {
             fieldStyle={styles.fieldStyle}
             paddingH-15
             marginB-20
+            secureTextEntry={!registerValidate.showConfirmPass}
             onChangeText={text => {
               setValidate({...registerValidate, confirmPass: text});
             }}
+            trailingAccessory={
+              <View row center>
+                <TouchableOpacity
+                  onPress={() =>
+                    setValidate({
+                      ...registerValidate,
+                      showConfirmPass: !registerValidate.showConfirmPass,
+                    })
+                  }>
+                  {registerValidate.showConfirmPass ? (
+                    <Image source={AppImages.EYECLOSE} width={23} height={15} />
+                  ) : (
+                    <Image source={AppImages.EYE} />
+                  )}
+                </TouchableOpacity>
+              </View>
+            }
           />
 
           <CommonButton
