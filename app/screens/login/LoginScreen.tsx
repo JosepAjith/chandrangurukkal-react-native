@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Button, Image, Incubator, Text, View} from 'react-native-ui-lib';
 import {RootStackParams} from '../../navigation';
 import {RouteProp} from '@react-navigation/native';
@@ -10,7 +10,12 @@ import styles from './styles';
 import AppColors from '../../constants/AppColors';
 import CommonButton from '../../components/CommonButton';
 import ButtonView from '../../components/ButtonView';
-import {KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity} from 'react-native';
+import {
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
 import {AnyAction, ThunkDispatch} from '@reduxjs/toolkit';
 import {RootState} from '../../../store';
 import {useDispatch, useSelector} from 'react-redux';
@@ -38,6 +43,10 @@ const LoginScreen: React.FC<Props> = () => {
   const [password, setPassword] = useState('');
   const [invalidPass, setInvalidPass] = useState(false);
   const [showPass, setShowPass] = useState(false);
+
+  const userIdRef = useRef<any>(null);
+  const passwordRef = useRef<any>(null);
+  
   const dispatch: ThunkDispatch<RootState, any, AnyAction> = useDispatch();
   const {LoginData, loadingLogin, LoginError} = useSelector(
     (state: RootState) => state.loginCreate,
@@ -46,10 +55,12 @@ const LoginScreen: React.FC<Props> = () => {
   function Validate() {
     if (userId == '') {
       setInvalidId(true);
+      userIdRef.current?.focus();
       return false;
     }
     if (password == '') {
       setInvalidPass(true);
+      passwordRef.current?.focus(); 
       return false;
     }
     return true;
@@ -120,73 +131,77 @@ const LoginScreen: React.FC<Props> = () => {
 
   return (
     <KeyboardAvoidingView
-    behavior={Platform.OS === "ios" ? "padding" : "height"}
-    style={styles.container}
-  >
-    <ScrollView
-      showsVerticalScrollIndicator={false}
-      keyboardShouldPersistTaps="handled"
-      contentContainerStyle={{ flexGrow: 1 }}
-    >
-      <View style={styles.logoContainer}>
-        <Image source={AppImages.LOGO} width={113} height={113} />
-        <Text style={styles.title}>Login</Text>
-      </View>
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={styles.container}>
+         {loadingLogin && <BackgroundLoader />}
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps="handled"
+        contentContainerStyle={{flexGrow: 1}}>
+        <View style={styles.logoContainer}>
+          <Image source={AppImages.LOGO} width={113} height={113} />
+          <Text style={styles.title}>Login</Text>
+        </View>
 
-      {loadingLogin && <BackgroundLoader />}
-      <View flex centerH>
-        <TextField
-          placeholder={'User ID'}
-          placeholderTextColor={AppColors.gray}
-          fieldStyle={styles.fieldStyle}
-          paddingH-15
-          marginB-15
-          onChangeText={text => {
-            setUserId(text);
-            setInvalidId(false);
-          }}
-          trailingAccessory={
-            <View>{InvalidId && <Text red10>*Required</Text>}</View>
-          }
-        />
+       
+        <View flex centerH>
+          <TextField
+          ref={userIdRef}
+            placeholder={'User ID'}
+            placeholderTextColor={AppColors.gray}
+            fieldStyle={styles.fieldStyle}
+            paddingH-15
+            marginB-15
+            onChangeText={text => {
+              setUserId(text);
+              setInvalidId(false);
+            }}
+            trailingAccessory={
+              <View>{InvalidId && <Text red10>*Required</Text>}</View>
+            }
+          />
 
-        <TextField
-          placeholder={'Password'}
-          placeholderTextColor={AppColors.gray}
-          fieldStyle={styles.fieldStyle}
-          paddingH-15
-          marginB-15
-          secureTextEntry={!showPass}
-          trailingAccessory={
-            <View row center>
-              <Text marginR-10 red10>
-                {invalidPass ? '*Required' : ''}
-              </Text>
-              <TouchableOpacity onPress={() => setShowPass(!showPass)}>
-                {showPass ? (
-                  <Image source={AppImages.EYECLOSE} width={23} height={15} />
-                ) : (
-                  <Image source={AppImages.EYE} />
-                )}
-              </TouchableOpacity>
-            </View>
-          }
-          onChangeText={(text: any) => {
-            setPassword(text);
-            setInvalidPass(false);
-          }}
-        />
+          <TextField
+          ref={passwordRef}
+            placeholder={'Password'}
+            placeholderTextColor={AppColors.gray}
+            fieldStyle={styles.fieldStyle}
+            paddingH-15
+            marginB-15
+            secureTextEntry={!showPass}
+            trailingAccessory={
+              <View row center>
+                <Text marginR-10 red10>
+                  {invalidPass ? '*Required' : ''}
+                </Text>
+                <TouchableOpacity onPress={() => setShowPass(!showPass)}>
+                  {showPass ? (
+                    <Image source={AppImages.EYECLOSE} width={23} height={15} />
+                  ) : (
+                    <Image source={AppImages.EYE} />
+                  )}
+                </TouchableOpacity>
+              </View>
+            }
+            onChangeText={(text: any) => {
+              setPassword(text);
+              setInvalidPass(false);
+            }}
+          />
 
-        <CommonButton title={'Login'} onPress={LoginUser} />
+          <CommonButton title={'Login'} onPress={LoginUser} />
 
-        <TouchableOpacity style={{alignSelf:'flex-end'}}
-          onPress={() => navigation.navigate(RouteNames.ForgotPasswordScreen)}>
-          <Text style={styles.fgtPass}>Forgot Password?</Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={{alignSelf: 'flex-end'}}
+            onPress={() =>
+              navigation.navigate(RouteNames.ForgotPasswordScreen)
+            }>
+            <Text style={styles.fgtPass}>Forgot Password?</Text>
+          </TouchableOpacity>
 
-        <Text style={styles.or}>or</Text>
+          <Text style={styles.or}>or</Text>
 
-        {/* <ButtonView
+          {/* <ButtonView
           title={'Guest Login'}
           source={AppImages.USER}
           onPress={() => {
@@ -194,16 +209,15 @@ const LoginScreen: React.FC<Props> = () => {
           }}
         /> */}
 
-        <ButtonView
-          title={'Sign Up'}
-          source={AppImages.USER}
-          onPress={() => {
-            navigation.navigate(RouteNames.SignUpPage);
-          }}
-        />
-      </View>
-    
-</ScrollView>
+          <ButtonView
+            title={'Sign Up'}
+            source={AppImages.USER}
+            onPress={() => {
+              navigation.navigate(RouteNames.SignUpPage);
+            }}
+          />
+        </View>
+      </ScrollView>
       <View style={styles.footer}>
         <Text style={styles.privacyPolicy}>
           By clicking on Continue you agree to Chandran Gurukal’s
@@ -213,7 +227,6 @@ const LoginScreen: React.FC<Props> = () => {
           <Text color={AppColors.green}>privacy policy</Text>
         </Text>
       </View>
-      
     </KeyboardAvoidingView>
   );
 };

@@ -134,6 +134,15 @@ const AppointmentListScreen: React.FC<Props> = () => {
                     Status :{' '}
                     {item.IsConfirmed ? 'Booking Confirmed' : 'Booking Pending'}
                   </Text>
+                  <Text
+                    marginT-10
+                    style={[
+                      styles.title,
+                      {color: AppColors.greyBlack, fontSize: 16},
+                    ]}>
+                    Appointment Status :{' '}
+                    {item.AppointmentStatus}
+                  </Text>
                 </View>
               </View>
             );

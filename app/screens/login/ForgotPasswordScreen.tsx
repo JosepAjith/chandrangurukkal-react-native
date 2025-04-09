@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Button, Image, Incubator, Text, View} from 'react-native-ui-lib';
 import {RootStackParams, RouteNames} from '../../navigation';
 import {RouteProp} from '@react-navigation/native';
@@ -35,6 +35,7 @@ interface Props {}
 const ForgotPasswordScreen: React.FC<Props> = ({route}: any) => {
   const navigation = useNavigation<ForgotPasswordScreenNavigationProps>();
   const [userId, setUserId] = useState('');
+  const userIdRef = useRef<any>(null);
   const [InvalidId, setInvalidId] = useState(false);
   const dispatch: ThunkDispatch<RootState, any, AnyAction> = useDispatch();
   const {ForgotPasswordData, loadingForgotPassword, ForgotPasswordError} =
@@ -43,12 +44,14 @@ const ForgotPasswordScreen: React.FC<Props> = ({route}: any) => {
   function Validate() {
     if (userId == '') {
       setInvalidId(true);
+      userIdRef.current?.focus();
       return false;
     }
     return true;
   }
 
   const ForgotPassword = async () => {
+    console.log('jjj')
     if (!Validate()) return;
     dispatch(
       createForgotPassword({
@@ -62,6 +65,7 @@ const ForgotPasswordScreen: React.FC<Props> = ({route}: any) => {
   };
 
   useEffect(() => {
+    console.log(ForgotPasswordData)
     if (ForgotPasswordData != null) {
       if (
         !loadingForgotPassword &&
@@ -92,6 +96,7 @@ const ForgotPasswordScreen: React.FC<Props> = ({route}: any) => {
         <Text style={styles.text}>Enter your userId to get your password.</Text>
 
         <TextField
+          ref={userIdRef}
           placeholder={'User ID'}
           placeholderTextColor={AppColors.gray}
           fieldStyle={styles.fieldStyle}

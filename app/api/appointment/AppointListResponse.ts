@@ -15,6 +15,7 @@ export type Datum = {
     AppointmentNo:        string;
     AppointmentRequestId: number;
     AppointmentRequestNo: string;
+    AppointmentStatus:    string;
     AppointmentToTime:    string;
     ConfirmedBranchId:    number;
     ConfirmedBranchName:  string;

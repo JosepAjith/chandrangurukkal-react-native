@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Button, Image, Incubator, Text, View} from 'react-native-ui-lib';
 import {RootStackParams} from '../../navigation';
 import {RouteProp} from '@react-navigation/native';
@@ -38,6 +38,8 @@ const RegisterScreen: React.FC<Props> = ({route}: any) => {
   const navigation = useNavigation<RegisterScreenNavigationProps>();
   const isRegistered = route.params.isRegistered;
   const [regNo, setRegNo] = useState('');
+  const regRef = useRef<any>(null);
+  const fullNameRef = useRef<any>(null);
   const [registerInput, setRegister] = useState<RegisterRequest>(
     new RegisterRequest(),
   );
@@ -48,6 +50,14 @@ const RegisterScreen: React.FC<Props> = ({route}: any) => {
   const {RegisterData, loadingRegister, RegisterError} = useSelector(
     (state: RootState) => state.registerCreate,
   );
+
+  useEffect(() => {
+    if (isRegistered) {
+      regRef.current?.focus();
+    } else {
+      fullNameRef.current?.focus();
+    }
+  }, [isRegistered]);
 
   function Validate() {
     if (isRegistered && regNo == '') {
@@ -208,6 +218,7 @@ const RegisterScreen: React.FC<Props> = ({route}: any) => {
 
           {isRegistered && (
             <TextField
+              ref={regRef}
               placeholder={'Registration No'}
               placeholderTextColor={AppColors.gray}
               fieldStyle={styles.fieldStyle}
@@ -228,6 +239,7 @@ const RegisterScreen: React.FC<Props> = ({route}: any) => {
           )}
 
           <TextField
+            ref={fullNameRef}
             placeholder={'Full Name'}
             placeholderTextColor={AppColors.gray}
             fieldStyle={styles.fieldStyle}
@@ -398,7 +410,7 @@ const RegisterScreen: React.FC<Props> = ({route}: any) => {
           <View marginT-10 marginB-20>
             <TouchableOpacity
               onPress={() => navigation.replace(RouteNames.LoginScreen)}>
-              <Text style={styles.already}>Already have an account? Login</Text>
+              <Text style={styles.already}>Already have an account? <Text color={AppColors.green}>Login</Text></Text>
             </TouchableOpacity>
           </View>
         </View>
